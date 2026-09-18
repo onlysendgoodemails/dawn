@@ -1,0 +1,28 @@
+{% comment %}
+  Renders the eyebrow + headline + body-text pattern used across the custom homepage
+  sections (Pakete 2-8 in plans/startseite.md). Design/spacing is fixed in
+  assets/custom-section-heading.css so every section that includes this snippet looks
+  consistent without extra settings.
+
+  Accepts:
+  - eyebrow: {String} small uppercase label above the headline (optional)
+  - heading: {String} the large headline
+  - text: {String} body copy below the headline (optional)
+  - alignment: {String} 'center' (default) or 'left'
+  - heading_tag: {String} HTML tag for the headline, defaults to 'h2'
+{% endcomment %}
+{%- liquid
+  assign alignment = alignment | default: 'center'
+  assign heading_tag = heading_tag | default: 'h2'
+-%}
+<div class="custom-section-heading custom-section-heading--{{ alignment }}">
+  {%- if eyebrow != blank -%}
+    <p class="custom-section-heading__eyebrow">{{ eyebrow }}</p>
+  {%- endif -%}
+  {%- if heading != blank -%}
+    <{{ heading_tag }} class="custom-section-heading__title">{{ heading }}</{{ heading_tag }}>
+  {%- endif -%}
+  {%- if text != blank -%}
+    <div class="custom-section-heading__text">{{ text }}</div>
+  {%- endif -%}
+</div>

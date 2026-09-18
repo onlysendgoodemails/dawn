@@ -1,0 +1,57 @@
+/* Typografie-Skala fuer Section-Ueberschriften (Eyebrow + Headline + Fliesstext).
+   Wird von snippets/custom-section-heading.liquid genutzt; einbinden per
+   {{ 'custom-section-heading.css' | asset_url | stylesheet_tag }} in jeder Section,
+   die das Snippet rendert. */
+
+.custom-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 54rem;
+}
+
+.custom-section-heading--center {
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+}
+
+.custom-section-heading--left {
+  margin: 0;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.custom-section-heading__eyebrow {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.custom-section-heading__title {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
+  font-size: 3.2rem;
+  line-height: 1.15;
+  color: rgb(var(--color-foreground));
+}
+
+.custom-section-heading__text {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+@media screen and (min-width: 750px) {
+  .custom-section-heading__title {
+    font-size: 4rem;
+  }
+}
