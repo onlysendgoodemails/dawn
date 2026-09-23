@@ -29,7 +29,7 @@
       {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
     </div>
   {%- endif -%}
-  <div class="banner__content banner__content--middle-center page-width">
+  <div class="banner__content banner__content--bottom-center page-width">
     <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
       {% render 'custom-section-heading',
         eyebrow: section.settings.eyebrow,
@@ -87,6 +87,11 @@
             {{ 'newsletter.button_label' | t }}
           </button>
         </div>
+        {%- if shop.privacy_policy != blank -%}
+          <p class="custom-newsletter__disclaimer">
+            {{ 'sections.custom-newsletter.privacy_disclaimer_html' | t: link: shop.privacy_policy.url }}
+          </p>
+        {%- endif -%}
         {%- if form.errors -%}
           <small class="newsletter-form__message form__message" id="NewsletterError-{{ section.id }}">
             <span class="svg-wrapper">

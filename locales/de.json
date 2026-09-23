@@ -267,6 +267,9 @@
     }
   },
   "sections": {
+    "custom-newsletter": {
+      "privacy_disclaimer_html": "Mit deiner Anmeldung stimmst du unserer <a href=\"{{ link }}\">Datenschutzerklärung</a> zu."
+    },
     "header": {
       "announcement": "Ankündigung",
       "menu": "Menü",

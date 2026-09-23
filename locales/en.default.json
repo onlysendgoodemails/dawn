@@ -267,6 +267,9 @@
     }
   },
   "sections": {
+    "custom-newsletter": {
+      "privacy_disclaimer_html": "By signing up, you agree to our <a href=\"{{ link }}\">Privacy Policy</a>."
+    },
     "announcements": {
       "previous_announcement": "Previous announcement",
       "next_announcement": "Next announcement",

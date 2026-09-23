@@ -14,6 +14,32 @@
   margin-top: 2.8rem;
 }
 
+.custom-newsletter__disclaimer {
+  margin: 1.2rem 0 0;
+  font-size: 1.3rem;
+  text-align: center;
+  color: rgba(var(--color-foreground), 0.85);
+}
+
+.custom-newsletter__disclaimer a {
+  color: inherit;
+}
+
+/* Dawn only defines the bottom-center content position from 750px up (see
+   assets/section-image-banner.css); mirror it below that so mobile keeps the same "further
+   down" placement instead of falling back to centered. Mobile image is ~20% taller than
+   Dawn's stock banner--large (39rem -> 46.8rem) so the form has more room to breathe. */
+@media screen and (max-width: 749px) {
+  .custom-newsletter.banner--large:not(.banner--mobile-bottom):not(.banner--adapt) .banner__content {
+    min-height: 46.8rem;
+  }
+
+  .custom-newsletter .banner__content.banner__content--bottom-center {
+    align-items: flex-end;
+    justify-content: center;
+  }
+}
+
 .custom-newsletter__fields {
   display: flex;
   flex-direction: column;
@@ -44,7 +70,8 @@
 
   .custom-newsletter__button {
     width: auto;
-    padding-left: 2.8rem;
-    padding-right: 2.8rem;
+    min-width: 20rem;
+    padding-left: 3.2rem;
+    padding-right: 3.2rem;
   }
 }
