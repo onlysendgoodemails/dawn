@@ -21,14 +21,12 @@ gegenüber neuen Dawn-Versionen bleiben.
 3. **Nach jeder Änderung klar benennen, welche Datei(en) geändert wurden** (Pfad angeben), damit
    der Diff in GitHub Desktop leicht nachvollziehbar ist.
 
-4. **Commit & Push zu GitHub übernimmt Claude.** `dawn/main` ist in Shopify aktuell nur als
-   Theme-Entwurf verbunden (nicht das aktive Live-Theme, siehe Setup unten). Ein Push auf
-   `main` aktualisiert deshalb ausschließlich diesen Entwurf/die Vorschau, nie direkt Kunden.
-   Claude darf daher nach einer fertigen, funktionierenden Änderung selbstständig `git add`,
-   `git commit` und `git push` ausführen. Ausnahme: Sobald `dawn/main` selbst jemals als
-   Live-Theme veröffentlicht wird (siehe Go-Live-Workflow — sollte laut Setup unten eigentlich
-   nicht passieren), gilt diese Erlaubnis nicht mehr und es gelten wieder die allgemeinen
-   Git-Sicherheitsregeln (nachfragen vor Push).
+4. **Kein eigenständiges `git commit` / `git push` durch Claude.** Commit und Push macht der
+   Nutzer bewusst über GitHub Desktop (dort reicht ein Klick, Zugangsdaten sind dort bereits
+   hinterlegt — command-line Git in Claudes Sandbox hat keinen Zugriff auf GitHub-Credentials).
+   `dawn/main` ist in Shopify ohnehin nur als Theme-Entwurf verbunden (nicht live, siehe Setup
+   unten), ein Push aktualisiert also nur die Vorschau — aber der manuelle Schritt bleibt beim
+   Nutzer.
 
 ## Setup: Shopify-Store ↔ GitHub ↔ Live-Theme
 

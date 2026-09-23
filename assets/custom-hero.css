@@ -1,0 +1,6 @@
+/* Hero CTA always renders as a solid dark button with a light label, regardless of the
+   section's color_scheme (which only controls the headline/text color over the photo). */
+.custom-hero__button.button--primary {
+  --color-button: 14, 43, 56;
+  --color-button-text: 244, 248, 248;
+}

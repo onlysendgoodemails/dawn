@@ -63,14 +63,52 @@ Element/Section eingesetzt — aktuell z.B. als `sale_badge_color_scheme` (schem
 Pakete können scheme-6 gezielt für einzelne Buttons/Hover-Effekte nutzen, wo es im Mockup/Konzept
 passt.
 
-### Paket 2 — Header + Hero-Slideshow
-**Status:** offen
+### Paket 2 — Header + Hero
+**Status:** erledigt
 **Ziel:** Kopfbereich + erster Bildschirm.
-- Header: Logo links, Hauptmenü, Icons (Suche/Account/Warenkorb) rechts
-- Hero: Vollflächiges Bild, Overlay-Text (Headline + Subtext + Button), Pfeile + Slide-Zähler
-  (z.B. "01/03") für mehrere Slides
-**Abhängigkeit:** Paket 1
-**Entstehende/geänderte Dateien:** _wird beim Umsetzen ergänzt_
+
+**Abweichung vom ursprünglichen Mockup (auf Wunsch des Nutzers):**
+- Header-Layout **nicht** wie im Mockup (Logo links, Icons rechts), sondern nach Vorbild
+  [malbon.com](https://malbon.com): Navigation **links**, Logo **mittig**, rechts nur
+  **Account- und Warenkorb-Icon** (kein Such-Icon).
+- Hero **ohne Slider**: nur ein statisches Vollflächenbild, kein Pfeile/Zähler-UI (Paket war
+  ursprünglich als Slideshow geplant, per Anweisung auf Einzelbild reduziert).
+
+**Umsetzung:**
+- Header: bestehende Dawn-Grid-Variante "middle-center" (Logo mittig) + Menütyp "dropdown"
+  fest im Code verankert (Einstellungen dafür aus dem Schema entfernt, da nicht mehr
+  variabel). Such-Icon komplett entfernt. Account- und Warenkorb-Icon unverändert von Dawn
+  übernommen (bewusst *keine* Text-Links "ACCOUNT"/"CART", um
+  [sections/cart-icon-bubble.liquid](../sections/cart-icon-bubble.liquid) nicht anfassen zu
+  müssen — siehe Hinweis unten).
+- Hero: eigene, schlanke Section ohne Blocks (direkte Settings statt Heading/Text/Buttons-Blocks),
+  Position der Textbox fest unten links, kein Textbox-Hintergrund (Text direkt auf dem Bild),
+  Button immer dunkel/schwarz mit hellem Label unabhängig vom gewählten Farbschema (siehe
+  `assets/custom-hero.css`).
+
+**Entstehende/geänderte Dateien:**
+- `sections/custom-header.liquid` (neu): Kopie von `sections/header.liquid`, Layout auf
+  „Navigation links / Logo mittig / Icons rechts" fixiert, Einstellungen `logo_position` und
+  `menu_type_desktop` entfernt (nicht mehr wählbar), Suche entfernt.
+- `sections/header-group.json` (geändert): `header`-Block nutzt jetzt `"type": "custom-header"`,
+  `logo_position`/`menu_type_desktop` aus den Settings entfernt.
+- `sections/custom-hero.liquid` (neu): Vollflächen-Bild-Hero ohne Slider/Blocks — Settings:
+  Bild, Overlay-Opacity, Farbschema (steuert nur Headline/Text-Farbe), Heading, Text,
+  Button-Label + -Link.
+- `assets/custom-hero.css` (neu): erzwingt dunklen Button mit hellem Label im Hero, unabhängig
+  vom gewählten Farbschema.
+- `templates/index.json` (geändert): Dawns Standard-`image-banner`-Section durch `custom-hero`
+  ersetzt (Platzhaltertexte, Bild muss im Theme-Editor noch hochgeladen werden).
+
+**Bewusst nicht angefasst:** `sections/cart-icon-bubble.liquid` — hätte für Text-Links
+"ACCOUNT"/"CART" direkt angepasst werden müssen (Dateiname ist in mehreren JS-Dateien fest
+verdrahtet, keine `custom-`-Kopie möglich). Nutzer hat sich stattdessen für Icons entschieden.
+Falls Text-Links später doch gewünscht sind: neue Anfrage/neuer Chat, dann diese Datei bewusst
+direkt anpassen (Ausnahme von Golden Rule 1, siehe Diskussion in diesem Chat).
+
+**Hinweis zur Prüfung:** Bild für den Hero im Theme-Editor hochladen (aktuell Platzhalter-SVG,
+da `templates/index.json` noch kein Bild referenziert). Menü "main-menu" im Theme-Editor mit den
+gewünschten Nav-Punkten (Shop/Our Story/Journal o.ä.) befüllen, falls noch nicht geschehen.
 
 ### Paket 3 — Intro-Text + Produktgrid (wiederverwendbar)
 **Status:** offen
