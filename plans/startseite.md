@@ -64,7 +64,7 @@ Pakete können scheme-6 gezielt für einzelne Buttons/Hover-Effekte nutzen, wo e
 passt.
 
 ### Paket 2 — Header + Hero
-**Status:** erledigt
+**Status:** in Arbeit (ein offener Punkt, siehe unten)
 **Ziel:** Kopfbereich + erster Bildschirm.
 
 **Abweichung vom ursprünglichen Mockup (auf Wunsch des Nutzers):**
@@ -110,15 +110,76 @@ direkt anpassen (Ausnahme von Golden Rule 1, siehe Diskussion in diesem Chat).
 da `templates/index.json` noch kein Bild referenziert). Menü "main-menu" im Theme-Editor mit den
 gewünschten Nav-Punkten (Shop/Our Story/Journal o.ä.) befüllen, falls noch nicht geschehen.
 
+**Offener Punkt (noch nicht gelöst, für später gemerkt):** Trustbar (Announcement-Bar) und Footer
+zeigen in der Live-Vorschau noch nicht die richtigen Farben (Footer wirkt blau statt grün,
+Trustbar wirkt schwarz statt Fjord-Navy). Im Code/Repo ist es zweifach geprüft korrekt gesetzt:
+- `sections/footer-group.json` → footer `color_scheme`: `scheme-3` (Forest Green `#1F382C`)
+- `sections/header-group.json` → announcement-bar `color_scheme`: `scheme-4` (Fjord Navy `#0E2B38`)
+
+`git status` zeigt `main` exakt auf Stand von `origin/main` — der Fix ist also gepusht. Nutzer
+bestätigt, im richtigen (aktuellen, GitHub-verbundenen) Theme zu schauen, da die Hero-Bild-Anpassungen
+dort sichtbar ankommen. Farb-Änderungen an Footer/Trustbar kommen dort aber (noch) nicht an, obwohl
+andere Änderungen (Hero) im selben Zeitraum sehr wohl durchschlagen — das schließt einen reinen
+"falsches Theme"-Fehler eher aus. Mögliche nächste Schritte für eine künftige Session:
+- Prüfen, ob `footer`/`announcement-bar` evtl. per Shopify-Theme-Editor-Autosave wieder auf alte
+  Werte zurückgeschrieben wurden (Race Condition zwischen GitHub-Push und offener
+  Editor-Session) — dazu `sections/footer-group.json`/`header-group.json` im Theme-Editor direkt
+  gegenchecken, nicht nur im Git-Repo.
+- Prüfen, ob es einen CSS-Spezifitäts-/Kaskaden-Bug gibt, der `color-scheme-3`/`color-scheme-4`
+  auf `.utility-bar`/Footer überschreibt (bisher nicht tief genug untersucht).
+- Ggf. Screenshot/Live-URL vom Nutzer anfordern, um selbst per Browser zu prüfen statt nur den
+  Code zu lesen.
+
 ### Paket 3 — Intro-Text + Produktgrid (wiederverwendbar)
-**Status:** offen
+**Status:** erledigt (eine Instanz der Produktgrid-Section im Template; zweite Instanz "The
+Essentials" folgt, siehe Hinweis unten)
 **Ziel:** Zwei Vorkommen im Mockup: "Featured" und "The Essentials".
 - Zentrierte Intro-Text-Section (Eyebrow, Headline, Fließtext)
 - Produktgrid-Section: Heading + "Shop All/View All"-Link, 5 Produkte mit Bild, Titel, Preis,
   Farbvarianten-Punkten — als **eine** wiederverwendbare Section gebaut, die zweimal mit
   unterschiedlicher Collection eingesetzt wird
 **Abhängigkeit:** Paket 1
-**Entstehende/geänderte Dateien:** _wird beim Umsetzen ergänzt_
+
+**Umsetzung:**
+- Intro-Text: eigene, schlanke Section, nutzt das aus Paket 1 stammende Snippet
+  `custom-section-heading` mit `alignment: 'center'` — kein eigener Text-Kram doppelt gebaut.
+- Produktgrid: eigene Section mit Settings für Collection, Heading, "View all"-Label und
+  Produktanzahl (Default 5) — Spaltenzahl/Abstände/Kartendesign sind fest im Code (Mobile 2,
+  Tablet 3, Desktop 5 Spalten), damit beide Vorkommen ("Featured"/"The Essentials") optisch
+  identisch bleiben und nur Collection + Texte variieren.
+- Produktkarte als eigenes Snippet: Bild (Hintergrund nutzt das globale Theme-Setting
+  `card_color_scheme`, aktuell scheme-5 Snow White — siehe Paket 1), Titel, Preis (über Dawns
+  `snippets/price.liquid`), sowie Farbvarianten-Punkte über Dawns natives Swatch-Feature
+  (`snippets/swatch.liquid`, gleiche Erkennung wie in `snippets/product-variant-picker.liquid`:
+  erste Produktoption mit konfigurierten Swatches). Ohne Collection zeigt die Section
+  Platzhalter-Karten (wie Dawns eigene `featured-collection`-Section im leeren Zustand).
+
+**Entstehende/geänderte Dateien:**
+- `sections/custom-intro-text.liquid` (neu): zentrierte Eyebrow/Headline/Text-Section.
+- `sections/custom-product-grid.liquid` (neu): wiederverwendbare Produktgrid-Section
+  (Settings: `heading`, `collection`, `products_to_show`, `view_all_label`, `color_scheme`,
+  Padding).
+- `snippets/custom-product-card.liquid` (neu): einzelne Produktkarte (Bild, Titel, Preis,
+  Farbvarianten-Punkte) inkl. Platzhalter-Zustand ohne Produkt.
+- `assets/custom-product-grid.css` (neu): Heading-Zeile mit "View all"-Link, Grid-Layout
+  (2/3/5 Spalten je Breakpoint), Karten- und Swatch-Styling.
+- `templates/index.json` (geändert): Dawns generische Platzhalter-Section `featured-collection`
+  ersetzt durch `intro_text` (custom-intro-text) + `featured_grid` (custom-product-grid,
+  Heading "Featured", Collection "all", Link "Shop All").
+
+**Offener Punkt / nächster Schritt:** Die zweite Instanz "The Essentials" (gleiche Section,
+anderes Heading/"View All"-Label/andere Collection) ist bewusst noch nicht in `templates/index.json`
+platziert, weil ihre richtige Position im Layout von den noch fehlenden Paketen 4–6 abhängt
+("Our Story", Icon-Row, Details-Triptychon liegen im Mockup dazwischen). Sobald diese Sections
+existieren: im Theme-Editor einfach ein zweites Mal "Custom Product Grid" hinzufügen, Heading auf
+"The Essentials" und Link-Label auf "View All" setzen, passende Collection wählen — kein weiterer
+Code nötig, das ist der Zweck der wiederverwendbaren Section.
+
+**Hinweis zur Prüfung:** Intro-Text und "Featured"-Grid sind über die Shopify-Vorschau direkt
+sichtbar (Platzhalter-Produkte, falls noch keine Collection "all" mit Produkten existiert).
+Farbvarianten-Punkte erscheinen nur bei Produkten, die Shopifys native Variantenfarben
+(Options mit Swatch, z. B. Option "Color" mit hinterlegten Farb-/Bild-Swatches) konfiguriert
+haben — ohne das bleibt die Punktreihe leer, das ist erwartet.
 
 ### Paket 4 — Bild+Text-Section (wiederverwendbar, hell & dunkel)
 **Status:** offen

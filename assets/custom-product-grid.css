@@ -1,0 +1,101 @@
+/* Styles for the reusable "Featured" / "The Essentials" product grid (Paket 3, see
+   plans/startseite.md). Used by sections/custom-product-grid.liquid together with
+   snippets/custom-product-card.liquid; include via stylesheet_tag in the section. */
+
+.custom-product-grid__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-bottom: 2.4rem;
+}
+
+.custom-product-grid__heading {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
+  font-size: 2.4rem;
+  color: rgb(var(--color-foreground));
+}
+
+.custom-product-grid__view-all {
+  flex-shrink: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  white-space: nowrap;
+}
+
+.custom-product-grid__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem 1.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-product-grid__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .custom-product-grid__list {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3.2rem 2rem;
+  }
+}
+
+.custom-product-card {
+  display: flex;
+  flex-direction: column;
+  color: currentColor;
+  text-decoration: none;
+}
+
+.custom-product-card__media {
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: rgb(var(--color-background));
+}
+
+.custom-product-card__media img,
+.custom-product-card__media svg,
+.custom-product-card__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-product-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+}
+
+.custom-product-card__title {
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  color: rgb(var(--color-foreground));
+}
+
+.custom-product-card__price {
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.custom-product-card__swatches {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.custom-product-card__swatches .swatch {
+  --swatch--size: 1rem;
+}
