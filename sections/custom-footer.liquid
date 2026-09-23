@@ -77,7 +77,7 @@
       {%- if section.settings.wordmark_image != blank %}
         style="background-image: url({{ section.settings.wordmark_image | image_url: width: 3000 }});"
       {%- endif %}
-    >{{ shop.name }}</p>
+    >{{ section.settings.wordmark_text }}</p>
   </div>
 
   <div class="page-width custom-footer__bottom">
@@ -132,10 +132,17 @@
       "content": "Giant wordmark"
     },
     {
+      "type": "text",
+      "id": "wordmark_text",
+      "label": "Wordmark text",
+      "default": "Northern Links",
+      "info": "Fixed brand lettering, independent of the shop name in Shopify's admin settings."
+    },
+    {
       "type": "image_picker",
       "id": "wordmark_image",
       "label": "Texture image (optional)",
-      "info": "Shown through the giant shop-name lettering above the copyright row. Leave empty for a solid bold wordmark."
+      "info": "Shown through the giant lettering above the copyright row. Leave empty for a solid bold wordmark."
     },
     {
       "type": "header",

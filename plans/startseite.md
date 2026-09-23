@@ -525,12 +525,21 @@ falls ein Bildlogo statt der Textwortmarke gewünscht ist.
   sich um den offenen Punkt aus Paket 2 kümmert.
 
 **Geänderte Datei (Nachtrag):**
-- `sections/custom-footer.liquid`: neue Settings `wordmark_image`, `cancellation_link_label`,
-  `cancellation_link_url`; neue Markup-Blöcke für den Schriftzug (zwischen Spalten und
-  Copyright-Zeile) und den Widerrufs-Link (in `.custom-footer__legal`).
+- `sections/custom-footer.liquid`: neue Settings `wordmark_text`, `wordmark_image`,
+  `cancellation_link_label`, `cancellation_link_url`; neue Markup-Blöcke für den Schriftzug
+  (zwischen Spalten und Copyright-Zeile) und den Widerrufs-Link (in `.custom-footer__legal`).
 - `assets/custom-footer.css`: neue Regeln `.custom-footer__wordmark` /
   `.custom-footer__wordmark-text` (fluid Typografie, `background-clip: text`, `@supports`-Fallback
   für ältere Browser ohne `background-clip: text`).
+
+**Korrektur nach erstem Test:** Schriftzug lief über die volle Breite hinaus (Overflow). Ursache:
+`clamp(4.5rem, 13vw, 18rem)` war an "DRYLL" (5 Zeichen) angelehnt und damit für "Northern Links"
+(14 Zeichen inkl. Leerzeichen) deutlich zu groß dimensioniert — bei größeren Viewports hätte der
+Text weit über 100% der verfügbaren Breite gebraucht. Auf `clamp(2.5rem, 9vw, 10rem)`
+herunterskaliert (Faustrechnung: ~0.62em Zeichenbreite bei fettem Uppercase-Grotesk × 14 Zeichen,
+Zielbreite ~75–90% der Viewport-Breite je Breakpoint). Zusätzlich: Schriftzug nutzt jetzt das neue
+Setting `wordmark_text` (Default "Northern Links") statt `shop.name` — dynamischer Shop-Name im
+Shopify-Admin ändert den Schriftzug damit nicht mehr, nur der Wert im Theme-Editor.
 
 **Hinweis zur Prüfung (Nachtrag):** Schriftzug ist sofort sichtbar (Platzhalter: einfarbiger
 "NORTHERN LINKS"-Schriftzug in Textfarbe des Farbschemas). Für den Bild-Effekt im Theme-Editor
