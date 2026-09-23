@@ -1,6 +1,7 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 {{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+{{ 'https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap' | stylesheet_tag }}
 
 {%- liquid
   assign has_social_icons = true
@@ -71,38 +72,41 @@
     {%- endfor -%}
   </div>
 
-  <div class="custom-footer__wordmark">
+  <div class="page-width custom-footer__wordmark">
     {%- liquid
-      assign wordmark_text = section.settings.wordmark_text | upcase
+      assign wordmark_words = section.settings.wordmark_text | upcase | split: ' '
+      assign wordmark_line_1 = wordmark_words | first
+      assign wordmark_line_2 = wordmark_words | slice: 1, 10 | join: ' '
       assign wordmark_clip_id = 'custom-footer-wordmark-' | append: section.id
+      assign wordmark_image_url = 'https://cdn.shopify.com/s/files/1/0888/1186/4401/files/LandOfLinks.png?v=1733215608'
+      if section.settings.wordmark_image != blank
+        assign wordmark_image_url = section.settings.wordmark_image | image_url: width: 2000
+      endif
     -%}
     <svg
       class="custom-footer__wordmark-svg"
-      viewBox="0 0 1000 160"
+      viewBox="0 0 1000 340"
       preserveAspectRatio="xMidYMid meet"
       role="img"
-      aria-label="{{ wordmark_text }}"
+      aria-label="{{ section.settings.wordmark_text | escape }}"
     >
-      {%- if section.settings.wordmark_image != blank -%}
-        <defs>
-          <clipPath id="{{ wordmark_clip_id }}">
-            <text x="0" y="50%" dominant-baseline="central" textLength="1000" lengthAdjust="spacing">
-              {{- wordmark_text -}}
-            </text>
-          </clipPath>
-        </defs>
-        <image
-          href="{{ section.settings.wordmark_image | image_url: width: 2000 }}"
-          width="1000"
-          height="160"
-          preserveAspectRatio="xMidYMid slice"
-          clip-path="url(#{{ wordmark_clip_id }})"
-        />
-      {%- else -%}
-        <text x="0" y="50%" dominant-baseline="central" textLength="1000" lengthAdjust="spacing">
-          {{- wordmark_text -}}
-        </text>
-      {%- endif -%}
+      <defs>
+        <clipPath id="{{ wordmark_clip_id }}">
+          <text x="0" y="85" dominant-baseline="central" textLength="1000" lengthAdjust="spacingAndGlyphs"
+            >{{- wordmark_line_1 -}}</text
+          >
+          {%- if wordmark_line_2 != blank -%}
+            <text x="0" y="255" dominant-baseline="central">{{- wordmark_line_2 -}}</text>
+          {%- endif -%}
+        </clipPath>
+      </defs>
+      <image
+        href="{{ wordmark_image_url }}"
+        width="1000"
+        height="340"
+        preserveAspectRatio="xMidYMid slice"
+        clip-path="url(#{{ wordmark_clip_id }})"
+      />
     </svg>
   </div>
 
@@ -178,8 +182,8 @@
     {
       "type": "image_picker",
       "id": "wordmark_image",
-      "label": "Texture image (optional)",
-      "info": "Shown through the giant lettering above the copyright row. Leave empty for a solid bold wordmark."
+      "label": "Texture image",
+      "info": "Shown through the giant two-line lettering above the copyright row. Leave empty to use the default \"Land of Links\" photo."
     },
     {
       "type": "header",

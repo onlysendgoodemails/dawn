@@ -79,7 +79,7 @@
 }
 
 .custom-footer__wordmark {
-  padding: 0 0 4.8rem;
+  padding-bottom: 4.8rem;
 }
 
 .custom-footer__wordmark-svg {
@@ -89,11 +89,9 @@
 }
 
 .custom-footer__wordmark-svg text {
-  font-family: var(--font-body-family);
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  font-size: 110px;
-  fill: rgb(var(--color-foreground));
+  font-family: 'Archivo Black', var(--font-body-family), sans-serif;
+  letter-spacing: -0.005em;
+  font-size: 164px;
 }
 
 .custom-footer__bottom {

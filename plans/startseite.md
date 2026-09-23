@@ -589,6 +589,59 @@ unter dem neuen Setting "Texture image" ein Bild hochladen. Für den Widerrufs-L
 Theme-Editor unter "Legal" → "Cancellation link URL" die Ziel-URL eintragen, sobald die
 entsprechende Seite/der Flow existiert.
 
+**Finale Variante (nach Design-Review mit 2 Chat-Entwürfen) — zweizeilig, breite Schrift,
+Bild-Clip statt Volltonfarbe:** Nutzer hat sich für "Entwurf B" (zweizeilig: "NORTHERN" über
+"LINKS", gleiche Schriftgröße für beide Zeilen, "Northern" bestimmt die Größe) entschieden, dann
+noch eine Variante C angefragt (breitere Schrift, Bild scheint statt Volltonfarbe durch die
+Buchstaben) — beide vorab als statische HTML-Vorschauen im Chat gezeigt (nicht im Repo), C wurde
+final ausgewählt.
+
+- **Layout:** `viewBox="0 0 1000 340"`, zwei `<text>`-Elemente (`y="85"`/`y="255"`, je die halbe
+  Höhe), `dominant-baseline="central"`. Zeilenaufteilung per Liquid: `wordmark_text` wird bei
+  Leerzeichen gesplittet, erstes Wort = Zeile 1, Rest = Zeile 2
+  (`section.settings.wordmark_text | upcase | split: ' '`). Nur Zeile 1 bekommt
+  `textLength="1000" lengthAdjust="spacingAndGlyphs"` (zwingt exakte Breite, verhindert
+  Overflow wie beim vorherigen einzeiligen Versuch) — Zeile 2 läuft **ohne** `textLength` mit
+  identischem `font-size` aus der Stylesheet-Regel, dadurch automatisch schmaler statt
+  künstlich gestreckt: genau das geforderte "Northern gibt die Größe vor"-Verhalten. Bei einem
+  einzelnen Wort (kein Leerzeichen in `wordmark_text`) bleibt Zeile 2 leer und wird nicht
+  gerendert.
+- **Schrift:** "Archivo Black" von Google Fonts geladen (`stylesheet_tag`-Filter auf die externe
+  Google-Fonts-URL, wie ein normaler Asset-Stylesheet-Include) — bewusst nicht über Shopifys
+  Font-Picker-System (`settings.type_header_font`), da es sich um eine einmalige, rein
+  dekorative Display-Schrift nur für dieses eine Element handelt, kein theme-weites Setting
+  nötig. Deutlich breitere/blockigere Großbuchstaben als das bisherige Body-Font, passend zum
+  Wunsch nach "noch breiterer Schrift".
+- **Bild-Clip:** Beide `<text>`-Zeilen liegen jetzt gemeinsam in **einem** `<clipPath>`, ein
+  einzelnes `<image>` (volle 1000×340-Fläche, `preserveAspectRatio="xMidYMid slice"`) wird
+  dadurch geclippt — das Foto läuft als eine zusammenhängende Fläche hinter beiden Zeilen durch,
+  nicht zweimal einzeln zugeschnitten.
+- **Bild-Quelle:** Vom Nutzer gelieferte Shopify-CDN-URL
+  (`cdn.shopify.com/.../LandOfLinks.png`) fest als Default in `assign wordmark_image_url`
+  hinterlegt — direkt als `<image href="...">` nutzbar, kein `image_url`-Filter nötig (der ist
+  nur für Shopify-`image_picker`-Objekte da, nicht für fertige externe URLs). Das bestehende
+  Setting `wordmark_image` bleibt als Override erhalten: sobald im Theme-Editor ein eigenes Bild
+  hochgeladen wird, ersetzt das den Default.
+- **Padding-Fix:** `.custom-footer__wordmark` trägt jetzt zusätzlich die Klasse `page-width`
+  (wie die Spalten-Reihe und die Copyright-Zeile) statt randlos/full-bleed zu sein — behebt den
+  gemeldeten Bug, dass der Schriftzug ohne seitlichen Abstand über die Content-Breite
+  hinausragte. In `assets/custom-footer.css` dafür `padding: 0 0 4.8rem` auf `padding-bottom:
+  4.8rem` reduziert, damit die von `page-width` gesetzten linken/rechten Ränder nicht
+  überschrieben werden.
+
+**Geänderte Dateien (finale Variante):**
+- `sections/custom-footer.liquid`: Wordmark-Markup auf zwei `<text>`-Zeilen umgebaut, Google-Fonts-
+  Include für Archivo Black ergänzt, `wordmark_image_url`-Fallback auf die gelieferte Foto-URL
+  gesetzt, `.custom-footer__wordmark` um `page-width` ergänzt.
+- `assets/custom-footer.css`: `.custom-footer__wordmark-svg text` auf `Archivo Black`,
+  `font-size: 164px` umgestellt (kein `fill` mehr nötig, da Text nur noch als Clip-Geometrie
+  dient); `.custom-footer__wordmark` Padding-Shorthand auf `padding-bottom` verengt.
+
+**Hinweis zur Prüfung (finale Variante):** Schriftzug zeigt jetzt direkt das Nutzer-Foto
+("Land of Links") durch beide Zeilen hindurch, mit demselben seitlichen Abstand wie die
+Spalten-Reihe darüber. Eigenes Bild lässt sich weiterhin im Theme-Editor unter "Giant wordmark"
+→ "Texture image" hochladen, um den Default zu ersetzen.
+
 ## Empfohlene Reihenfolge
 
 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
