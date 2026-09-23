@@ -71,6 +71,15 @@
     {%- endfor -%}
   </div>
 
+  <div class="custom-footer__wordmark">
+    <p
+      class="custom-footer__wordmark-text"
+      {%- if section.settings.wordmark_image != blank %}
+        style="background-image: url({{ section.settings.wordmark_image | image_url: width: 3000 }});"
+      {%- endif %}
+    >{{ shop.name }}</p>
+  </div>
+
   <div class="page-width custom-footer__bottom">
     <small class="custom-footer__copyright"
       >&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. All rights reserved.</small
@@ -81,6 +90,13 @@
           <li><a href="{{ policy.url }}" class="link link--text">{{ policy.title | escape }}</a></li>
         {%- endif -%}
       {%- endfor -%}
+      {%- if section.settings.cancellation_link_url != blank -%}
+        <li>
+          <a href="{{ section.settings.cancellation_link_url }}" class="link link--text">
+            {{ section.settings.cancellation_link_label }}
+          </a>
+        </li>
+      {%- endif -%}
     </ul>
   </div>
 </footer>
@@ -110,6 +126,32 @@
       "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>",
       "label": "Description",
       "info": "Logo/name comes from Theme settings → Logo (falls back to the shop name). Social icons come from Theme settings → Social media."
+    },
+    {
+      "type": "header",
+      "content": "Giant wordmark"
+    },
+    {
+      "type": "image_picker",
+      "id": "wordmark_image",
+      "label": "Texture image (optional)",
+      "info": "Shown through the giant shop-name lettering above the copyright row. Leave empty for a solid bold wordmark."
+    },
+    {
+      "type": "header",
+      "content": "Legal"
+    },
+    {
+      "type": "text",
+      "id": "cancellation_link_label",
+      "label": "Cancellation link label",
+      "default": "Verträge hier widerrufen",
+      "info": "EU/German requirement (§ 312k BGB) for subscription contracts. Only shown once a link is set below."
+    },
+    {
+      "type": "url",
+      "id": "cancellation_link_url",
+      "label": "Cancellation link URL"
     },
     {
       "type": "header",

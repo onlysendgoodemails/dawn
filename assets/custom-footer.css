@@ -78,6 +78,36 @@
   text-underline-offset: 0.3rem;
 }
 
+.custom-footer__wordmark {
+  overflow: hidden;
+  padding: 0 0 4.8rem;
+}
+
+.custom-footer__wordmark-text {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-weight: 900;
+  font-size: clamp(4.5rem, 13vw, 18rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background-color: rgb(var(--color-foreground));
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .custom-footer__wordmark-text {
+    background: none;
+    color: rgb(var(--color-foreground));
+  }
+}
+
 .custom-footer__bottom {
   display: flex;
   flex-direction: column;

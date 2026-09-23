@@ -491,6 +491,53 @@ Richtlinien die entsprechenden Seiten hinterlegt sein — ohne das bleibt die Ze
 übliches Verhalten, kein Bug). Logo im Theme-Editor unter Theme-Einstellungen → Logo hochladen,
 falls ein Bildlogo statt der Textwortmarke gewünscht ist.
 
+**Nachtrag — Widerrufs-Link + großer Brand-Schriftzug (auf Wunsch, Vorbild dryll.co):**
+- **Widerrufs-/Kündigungs-Link:** statt eines separaten Ghost-Buttons als weiterer Eintrag in der
+  unteren Legal-Zeile ergänzt (wie im dryll.co-Screenshot: unauffälliger Text-Link neben
+  Impressum/Datenschutz/AGB, kein eigenes Button-Element) — zwei neue Settings
+  `cancellation_link_label` (Text, Default "Verträge hier widerrufen") und
+  `cancellation_link_url` (URL, noch leer). Der Link erscheint erst, sobald im Theme-Editor eine
+  URL hinterlegt ist (zeigt auf die tatsächliche Kündigungs-/Widerrufs-Seite bzw. den
+  Self-Service-Flow, sobald diese existiert) — ohne URL bleibt er ausgeblendet, damit kein toter
+  Link online geht. **Wichtig:** Das ist nur das Frontend-Element (§ 312k BGB verlangt zusätzlich
+  eine funktionierende Kündigungsbestätigungsseite dahinter — die ist hier nicht Teil der
+  Theme-Umsetzung).
+- **Großer Brand-Schriftzug:** neue, volle Section-Breite (randlos, außerhalb `page-width`)
+  zwischen den 4 Spalten oben und der Copyright-Zeile unten — `shop.name` sehr groß (fluid via
+  `clamp()`, skaliert mit der Viewport-Breite) und sehr fett (`font-weight: 900`) dargestellt,
+  per CSS Uppercase + enger Laufweite. Technik bewusst **ohne SVG/`textLength`-Streckung**
+  gewählt: Ein SVG-Textpfad auf exakte Breite zu zwingen hätte bei "Northern Links" (14 Zeichen)
+  zu sichtbar gestauchten/verzerrten Buchstaben geführt (anders als beim kurzen "DRYLL" im
+  Vorbild) — stattdessen skaliert der Schriftzug natürlich mit und wird bei sehr schmalen
+  Viewports/langen Namen einfach sauber am Rand abgeschnitten (`overflow: hidden`).
+  Bild-durch-Text-Effekt wie im Vorbild-Screenshot über `background-clip: text` gelöst (ein neues
+  optionales Setting `wordmark_image`): mit Bild scheint die Textur durch die Buchstaben, ohne
+  Bild bleibt es ein einfarbiger fetter Schriftzug in der Vordergrundfarbe des Farbschemas — beide
+  Fälle laufen über denselben CSS-Mechanismus, kein zusätzlicher Code-Pfad nötig.
+- **Schriftfamilie bewusst `--font-body-family` (Sans) statt `--font-heading-family`:** Das
+  aktuell hinterlegte Heading-Font (`assistant_n4`, siehe unten) hat vermutlich keinen echten
+  900er-Schnitt; der Body-Font liefert für dieses dekorative Element ein zuverlässigeres,
+  kräftigeres Ergebnis. **Unabhängig davon aufgefallen:** `config/settings_data.json` zeigt aktuell
+  `type_header_font`/`type_body_font` beide als `assistant_n4` (Shopify-Standard), nicht wie in
+  Paket 1 dokumentiert `libre_caslon_display_n4` für die Headline-Serife — passt zum bereits in
+  Paket 2 offen notierten Editor-Sync-Bug (Race Condition zwischen GitHub-Push und offener
+  Theme-Editor-Session). Nicht Teil dieser Änderung, aber relevant für eine künftige Session, die
+  sich um den offenen Punkt aus Paket 2 kümmert.
+
+**Geänderte Datei (Nachtrag):**
+- `sections/custom-footer.liquid`: neue Settings `wordmark_image`, `cancellation_link_label`,
+  `cancellation_link_url`; neue Markup-Blöcke für den Schriftzug (zwischen Spalten und
+  Copyright-Zeile) und den Widerrufs-Link (in `.custom-footer__legal`).
+- `assets/custom-footer.css`: neue Regeln `.custom-footer__wordmark` /
+  `.custom-footer__wordmark-text` (fluid Typografie, `background-clip: text`, `@supports`-Fallback
+  für ältere Browser ohne `background-clip: text`).
+
+**Hinweis zur Prüfung (Nachtrag):** Schriftzug ist sofort sichtbar (Platzhalter: einfarbiger
+"NORTHERN LINKS"-Schriftzug in Textfarbe des Farbschemas). Für den Bild-Effekt im Theme-Editor
+unter dem neuen Setting "Texture image" ein Bild hochladen. Für den Widerrufs-Link im
+Theme-Editor unter "Legal" → "Cancellation link URL" die Ziel-URL eintragen, sobald die
+entsprechende Seite/der Flow existiert.
+
 ## Empfohlene Reihenfolge
 
 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
