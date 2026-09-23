@@ -269,6 +269,7 @@
       this.setHeaderHeight();
 
       this.mobileMediaQuery.addEventListener('change', this.setHeaderHeight);
+      window.addEventListener('resize', this.setHeaderHeight);
 
       if (this.headerIsAlwaysSticky) {
         this.header.classList.add('shopify-section-header-sticky');
@@ -289,12 +290,17 @@
 
     setHeaderHeight() {
       document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
+      const headerGroup = document.querySelector('.shopify-section-group-header-group');
+      if (headerGroup) {
+        document.documentElement.style.setProperty('--header-group-height', `${headerGroup.offsetHeight}px`);
+      }
     }
 
     disconnectedCallback() {
       this.mobileMediaQuery.removeEventListener('change', this.setHeaderHeight);
       this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
       window.removeEventListener('scroll', this.onScrollHandler);
+      window.removeEventListener('resize', this.setHeaderHeight);
     }
 
     createObserver() {
