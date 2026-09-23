@@ -105,6 +105,17 @@
         "link_url": "shopify://collections/all"
       }
     },
+    "essentials_grid": {
+      "type": "custom-product-grid",
+      "settings": {
+        "heading": "The Essentials",
+        "products_to_show": 5,
+        "view_all_label": "View All",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 56
+      }
+    },
     "newsletter": {
       "type": "custom-newsletter",
       "settings": {
@@ -123,6 +134,7 @@
     "our_story",
     "icon_row",
     "details_triptych",
+    "essentials_grid",
     "newsletter"
   ]
 }

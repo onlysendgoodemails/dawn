@@ -215,9 +215,13 @@ Referenz stehen, falls der Sync-Bug bei einem künftigen Dawn-Update erneut auft
   ersetzt durch `intro_text` (custom-intro-text) + `featured_grid` (custom-product-grid,
   Heading "Featured", Collection "all", Link "Shop All").
 
-**Erledigt:** Die zweite Instanz "The Essentials" ist inzwischen vom Nutzer selbst im Theme-Editor
-ergänzt (zweite "Custom Product Grid"-Instanz, Heading "The Essentials", Link-Label "View All",
-eigene Collection) — genau wie hier vorgesehen, ohne weiteren Code.
+**Erledigt (korrigiert 2026-09-23):** Die zweite Instanz "The Essentials" war zunächst nur live im
+Shopify-Theme-Editor vorhanden, aber nicht in diesem Repo — Theme-Editor-Änderungen fließen bei
+diesem Setup nicht automatisch zurück nach GitHub (nur GitHub → Shopify, nicht umgekehrt, siehe
+[../CLAUDE.md](../CLAUDE.md)). Jetzt in `templates/index.json` nachgetragen: neue Instanz
+`essentials_grid` (Typ `custom-product-grid`) nach `details_triptych` eingefügt — Heading "The
+Essentials", Link-Label "View All", Collection bewusst leer gelassen (zeigt Platzhalter-Karten,
+bis im Theme-Editor eine Collection gewählt wird), Padding wie bei `featured_grid` (36/56).
 
 **Hinweis zur Prüfung:** Intro-Text und "Featured"-Grid sind über die Shopify-Vorschau direkt
 sichtbar (Platzhalter-Produkte, falls noch keine Collection "all" mit Produkten existiert).
@@ -261,9 +265,12 @@ haben — ohne das bleibt die Punktreihe leer, das ist erwartet.
   Texte/Button-Label passend zum Mockup ("Our Story"). Bild und finaler Button-Link sind im
   Theme-Editor noch zu ergänzen (aktuell Platzhalter-SVG, Link leer).
 
-**Erledigt:** Die zweite Instanz "Promo-Banner" ist inzwischen vom Nutzer selbst im Theme-Editor
-ergänzt (zweite "Custom Image + Text"-Instanz, dunkles Farbschema, nur Headline + "Learn
-More"-Button, kurz vor der Newsletter-Section) — genau wie hier vorgesehen, ohne weiteren Code.
+**Korrektur (2026-09-23):** Wie bei "The Essentials" (siehe Paket 3) war auch die zweite Instanz
+"Promo-Banner" nur live im Shopify-Theme-Editor vorhanden, nicht in `templates/index.json` in
+diesem Repo — beim Nachtragen von "The Essentials" aufgefallen. **Noch offen:** In
+`templates/index.json` fehlt aktuell noch eine zweite `custom-image-text`-Instanz zwischen
+`essentials_grid` und `newsletter`. Nachgetragen werden kann sie, sobald klar ist, welches Bild/
+welcher Button-Link verwendet werden soll (siehe Rückfrage im Chat).
 
 **Hinweis zur Prüfung:** "Our Story"-Section ist über die Shopify-Vorschau direkt nach dem
 "Featured"-Grid sichtbar (Platzhalter-Bild, da `templates/index.json` noch kein Bild referenziert;
@@ -648,9 +655,11 @@ in anderer Reihenfolge oder parallel in verschiedenen Chats bearbeitet werden.)
 
 ## Nach Fertigstellung aller Pakete
 
-- Sections in `templates/index.json` in der Reihenfolge des Mockups zusammenstellen (das machst
-  du selbst im Theme-Editor, sobald die Sections existieren) — **erledigt** (2026-09-23, vom
-  Nutzer im Theme-Editor bestätigt, inkl. der beiden Zweitinstanzen aus Paket 3 & 4).
+- Sections in `templates/index.json` in der Reihenfolge des Mockups zusammenstellen — Reihenfolge
+  live im Shopify-Theme-Editor bestätigt, aber **nur teilweise im Repo nachgezogen**: die
+  Zweitinstanz aus Paket 3 ("The Essentials") ist jetzt in `templates/index.json` nachgetragen,
+  die aus Paket 4 ("Promo-Banner") noch **offen** (siehe Korrektur-Hinweis bei Paket 4). Ursache:
+  Theme-Editor-Änderungen syncen bei diesem Setup nicht automatisch zurück nach GitHub.
 - Kurzer visueller Abgleich gegen [assets/homepage-mockup.webp](assets/homepage-mockup.webp) —
   **erledigt**, Desktop-Reihenfolge stimmt mit dem Mockup überein (vom Nutzer per Screenshot
   bestätigt).
