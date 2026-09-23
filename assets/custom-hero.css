@@ -6,10 +6,19 @@
 }
 
 /* Dawn's stock mobile hero height is a fixed 39rem, which reads almost square on a phone
-   and crops portrait shots awkwardly. Tie it to viewport width instead (~4:5 portrait) so it
-   stays tall and proportional across phone sizes, closer to the mockup's taller mobile crop. */
+   and crops portrait shots awkwardly. Tie it to viewport width instead (3:4 portrait, i.e.
+   height = width * 4/3) so it stays tall and proportional across phone sizes and reads as a
+   near-full first screen together with the header above it. */
 @media screen and (max-width: 749px) {
   .custom-hero.banner--large:not(.banner--mobile-bottom):not(.banner--adapt) .banner__content {
-    min-height: 125vw;
+    min-height: 133.34vw;
+  }
+
+  /* Dawn only defines the bottom-left content position from 750px up; below that it falls
+     back to centered. Mirror the desktop placement so the text sits in the same relative
+     spot (bottom-left) instead of floating in the middle of the taller mobile image. */
+  .custom-hero .banner__content.banner__content--bottom-left {
+    align-items: flex-end;
+    justify-content: flex-start;
   }
 }
