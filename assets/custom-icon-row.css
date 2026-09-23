@@ -1,0 +1,41 @@
+/* Styles for the 4-column icon/USP bar (Paket 5, see plans/startseite.md).
+   Used by sections/custom-icon-row.liquid. */
+
+.custom-icon-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.2rem 1.6rem;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-icon-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.6rem;
+  }
+}
+
+.custom-icon-row__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.custom-icon-row__icon {
+  margin-bottom: 1rem;
+}
+
+.custom-icon-row__icon .svg-wrapper {
+  width: 2.8rem;
+  height: 2.8rem;
+  fill: rgb(var(--color-foreground));
+}
+
+.custom-icon-row__label {
+  margin: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  color: rgb(var(--color-foreground));
+}

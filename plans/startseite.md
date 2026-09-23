@@ -142,13 +142,37 @@ Pixelgenaue Analyse eines vom Nutzer geschickten Screenshots der Schemata-Karten
 
 Das bestätigt: Was im Theme-Editor unter "Theme-Einstellungen → Farben" zu sehen ist, stimmt
 **nicht** mit `config/settings_data.json` in diesem Repo überein — weder Anzahl noch Farbwerte
-passen. Naheliegendste Erklärung: Im Theme-Editor ist gerade nicht der GitHub-verbundene
-Theme-Entwurf `dawn/main` geöffnet, sondern ein anderer Theme-Stand (z.B. das entkoppelte
-Live-Theme oder ein alter Entwurf), der nie den Paket-1-Push erhalten hat. Nächster Schritt: im
-Shopify-Admin unter "Online Store → Themes" prüfen, unter welchem Theme-Namen/-Eintrag man sich
-befindet, wenn man auf "Anpassen" → "Theme-Einstellungen" geht, und sicherstellen, dass es
-derselbe Eintrag ist, der mit `dawn/main` auf GitHub verknüpft ist (nicht das veröffentlichte
-Live-Theme).
+passen.
+
+**Nutzer hat per Screenshot bestätigt:** Es ist tatsächlich `dawn/main` geöffnet (Theme-Entwürfe
+zeigt "dawn/main", GitHub-Icon, "Zuletzt gespeichert: 12:54", Version 16.0.0) — die "falsches
+Theme"-Theorie ist damit widerlegt.
+
+**Ursache gefunden (Abgleich mit Git-Historie):** Die 5 im Screenshot sichtbaren Farbwerte
+(`#FFFFFF`, `#F3F3F3`, `#242833`, `#121212`, `#334FB4`) sind **exakt** die 5 Default-Farbschemata
+von Stock-Dawn 16.0.0 vor der Paket-1-Anpassung (Commit `258f00f6`, zu sehen via
+`git show 258f00f6:config/settings_data.json`) — nicht nur ähnlich, sondern identisch bis auf
+minimale JPEG/Screenshot-Rundung. `git log`/`git status` bestätigen: Paket 1 (Commit `7801397f`)
+ist Teil der Historie von `origin/main`, der lokale Stand ist "up to date with origin/main" — der
+Push ist also nachweislich passiert. Das Repo/GitHub hat die richtigen 6 Northern-Forest-Schemata;
+Shopify zeigt trotzdem die alten 5 Stock-Werte.
+
+**Wahrscheinlichste Erklärung:** Race Condition zwischen Git-Push und einer offenen
+Theme-Editor-Session, wie schon oben vermutet — der Theme-Editor autosaved beim Öffnen/Bearbeiten
+der Theme-Einstellungen offenbar seinen eigenen (alten, im Browser zwischengespeicherten) Stand
+zurück nach Shopify und überschreibt damit lokal, was der GitHub-Push gerade reingebracht hat.
+Das ist ein reiner Shopify-Editor-Effekt, betrifft nur die Live-Kopie der Datei bei Shopify, nicht
+das Git-Repo selbst (git bleibt korrekt).
+
+**Empfohlener nächster Schritt für den Nutzer:**
+1. Alle offenen Tabs/Fenster mit dem `dawn/main`-Theme-Editor schließen.
+2. Kurz warten, dann den Theme-Editor frisch neu öffnen (harter Reload, kein Tab-Wiederherstellen)
+   und direkt zu Theme-Einstellungen → Farben gehen, **ohne** vorher etwas zu ändern.
+3. Zeigt es dann immer noch die 5 Stock-Werte: erneut pushen (z.B. eine minimale Änderung an
+   `config/settings_data.json` committen/pushen, um den Sync zu erzwingen) und den Editor **nicht**
+   öffnen, bevor der Sync durchgelaufen ist.
+4. Danach gegenchecken, ob Footer/Trustbar (der ursprüngliche Auslöser dieses offenen Punkts) jetzt
+   die richtigen Farben zeigen.
 
 ### Paket 3 — Intro-Text + Produktgrid (wiederverwendbar)
 **Status:** erledigt (eine Instanz der Produktgrid-Section im Template; zweite Instanz "The
@@ -255,11 +279,41 @@ Button verlinkt noch nirgends). Im Theme-Editor testweise `image_position` auf "
 Button-Farbe wie erwartet kippen.
 
 ### Paket 5 — Icon-Row (USP-Leiste)
-**Status:** offen
+**Status:** erledigt
 **Ziel:** 4-spaltige Leiste mit Icon + Label (z.B. Nachhaltigkeit, Versand, weltweit, sicher).
 - Schlanke Section, kein Dawn-Pendant vorhanden (Dawns `multicolumn` ist zu "schwer" dafür)
 **Abhängigkeit:** Paket 1
-**Entstehende/geänderte Dateien:** _wird beim Umsetzen ergänzt_
+
+**Umsetzung:**
+- Eigene, blockbasierte Section (max. 4 Blöcke vom Typ "Icon"), damit Icon + Label im
+  Theme-Editor frei befüllt/umsortiert werden können, das 4-spaltige Layout selbst aber fest im
+  Code bleibt (Mobile 2 Spalten, ab 750px 4 Spalten).
+- Icon-Auswahl nutzt Dawns vorhandenes Icon-Set (`assets/icon-*.svg`, ca. 44 Icons) über dieselbe
+  Render-Logik wie Dawns eigene `icon_with_text`-Blöcke: `snippets/icon-accordion.liquid`
+  (Icon-Name → `icon-<name>.svg` → `inline_asset_content`). Die Options-Liste im Schema
+  referenziert bewusst dieselben `t:`-Übersetzungsschlüssel wie
+  `sections/main-product.liquid` (`blocks.collapsible_tab.settings.icon.options__N.label`) —
+  kein neues Locale-Wording nötig, mehrsprachig sofort korrekt.
+- Icon-Farbe folgt automatisch dem Farbschema der Section (`fill: rgb(var(--color-foreground))`
+  auf `.svg-wrapper`, analog zum Button-Verhalten aus Paket 4) — kein Farb-Hack nötig.
+- Für "weltweit" gibt es in Dawns Icon-Set kein Globus-Icon; im Preset stattdessen `plane`
+  verwendet (nächstliegende Bedeutung für internationalen Versand). Bei Bedarf im Theme-Editor
+  auf ein anderes Icon aus der Liste umstellbar.
+
+**Entstehende/geänderte Dateien:**
+- `sections/custom-icon-row.liquid` (neu): Section mit Settings `color_scheme`, `padding_top`,
+  `padding_bottom` sowie Block-Typ `icon` (Settings `icon` [Select, 44 Optionen + "Keins"],
+  `label` [Text]), `max_blocks: 4`.
+- `assets/custom-icon-row.css` (neu): Grid-Layout (2 Spalten Mobile, 4 Spalten ab 750px),
+  Icon-Größe (2.8rem) inkl. Farb-Vererbung, Label-Typografie.
+- `templates/index.json` (geändert): neue Instanz `icon_row` (Typ `custom-icon-row`) nach
+  `our_story` eingefügt — Farbschema scheme-1 (Arctic White), 4 Platzhalter-Blöcke (Leaf/Truck/
+  Plane/Lock, Label je "Lorem Ipsum").
+
+**Hinweis zur Prüfung:** Icon-Row ist über die Shopify-Vorschau direkt nach der "Our Story"-Section
+sichtbar (4 Icons mit Platzhaltertext "Lorem Ipsum"). Im Theme-Editor testweise ein Icon auf
+"Keins" stellen (Block bleibt mit nur Label bestehen) sowie `color_scheme` auf ein dunkles Schema
+stellen, um zu prüfen, dass Icon- und Textfarbe automatisch mitkippen.
 
 ### Paket 6 — Details-Triptychon
 **Status:** offen
