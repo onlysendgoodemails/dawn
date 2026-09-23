@@ -290,10 +290,10 @@
 
     setHeaderHeight() {
       document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
-      const headerGroup = document.querySelector('.shopify-section-group-header-group');
-      if (headerGroup) {
-        document.documentElement.style.setProperty('--header-group-height', `${headerGroup.offsetHeight}px`);
-      }
+      const announcementBar = document.querySelector('.announcement-bar-section');
+      const announcementHeight = announcementBar ? announcementBar.offsetHeight : 0;
+      const groupHeight = this.header.offsetHeight + announcementHeight;
+      document.documentElement.style.setProperty('--header-group-height', `${groupHeight}px`);
     }
 
     disconnectedCallback() {

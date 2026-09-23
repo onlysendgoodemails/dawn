@@ -7,13 +7,14 @@
 
 /* Dawn's stock mobile hero height is a fixed 39rem, which reads almost square on a phone.
    Instead, fill the screen together with the trust bar + header above it: --header-group-height
-   is measured in custom-header.liquid's JS from .shopify-section-group-header-group, so
-   header-group + hero together add up to exactly one viewport (e.g. iPhone 14 portrait). The
-   130px fallback covers the brief moment before that JS measurement runs. */
+   is measured in custom-header.liquid's JS (trust bar + header offsetHeight, summed directly
+   rather than relying on a shared wrapper) so header-group + hero together add up to exactly
+   one viewport (e.g. iPhone 14 portrait). The 160px fallback covers the brief moment before
+   that JS measurement runs. */
 @media screen and (max-width: 749px) {
   .custom-hero.banner--large:not(.banner--mobile-bottom):not(.banner--adapt) .banner__content {
-    min-height: calc(100vh - var(--header-group-height, 130px));
-    min-height: calc(100svh - var(--header-group-height, 130px));
+    min-height: calc(100vh - var(--header-group-height, 160px));
+    min-height: calc(100svh - var(--header-group-height, 160px));
   }
 
   /* Dawn only defines the bottom-left content position from 750px up; below that it falls
