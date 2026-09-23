@@ -1,0 +1,54 @@
+/* Reusable image+text section (Paket 4, see plans/startseite.md). Used for both the light
+   "Our Story" occurrence and the dark promo-banner occurrence on the homepage — layout/spacing
+   is fixed here so both stay visually consistent; only image, color scheme and copy vary. */
+
+.custom-image-text {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.custom-image-text__media {
+  min-height: 24rem;
+}
+
+.custom-image-text__content {
+  display: flex;
+  align-items: center;
+}
+
+.custom-image-text__content-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2.4rem;
+  width: 100%;
+  padding: 4rem 2rem;
+}
+
+.custom-image-text__button {
+  flex-shrink: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-image-text {
+    grid-template-columns: 3fr 2fr;
+    align-items: stretch;
+  }
+
+  .custom-image-text--image-right .custom-image-text__media {
+    order: 2;
+  }
+
+  .custom-image-text--image-right .custom-image-text__content {
+    order: 1;
+  }
+
+  .custom-image-text__media {
+    min-height: 36rem;
+  }
+
+  .custom-image-text__content-inner {
+    max-width: 44rem;
+    padding: 4rem 6rem;
+  }
+}

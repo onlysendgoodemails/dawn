@@ -130,6 +130,26 @@ andere Änderungen (Hero) im selben Zeitraum sehr wohl durchschlagen — das sch
 - Ggf. Screenshot/Live-URL vom Nutzer anfordern, um selbst per Browser zu prüfen statt nur den
   Code zu lesen.
 
+**Update (2026-09-23), Screenshot-Auswertung Theme-Einstellungen → Farben → Schemata:**
+Pixelgenaue Analyse eines vom Nutzer geschickten Screenshots der Schemata-Kartenübersicht zeigt:
+- Nur **5 Farbschema-Karten** sichtbar (plus "Schema hinzufügen"-Button) statt der 6 in
+  `config/settings_data.json` definierten Schemata.
+- Die Farbtöne der sichtbaren Karten passen nicht zum Northern-Forest-Konzept: Karte 2 zeigt
+  neutrales Grau (`#f3f3f3`/`#ebebeb`) statt des blaugrauen `#DCE8EC` (scheme-2 Glacier Mist);
+  Karte 3 zeigt ein dunkles Blaugrau (`#252832`) statt des Waldgrüns `#1F382C` (scheme-3 Forest
+  Green); Karte 4 zeigt reines Nahezu-Schwarz (`#121212`) statt des Navy-Tons `#0E2B38`
+  (scheme-4 Fjord Navy).
+
+Das bestätigt: Was im Theme-Editor unter "Theme-Einstellungen → Farben" zu sehen ist, stimmt
+**nicht** mit `config/settings_data.json` in diesem Repo überein — weder Anzahl noch Farbwerte
+passen. Naheliegendste Erklärung: Im Theme-Editor ist gerade nicht der GitHub-verbundene
+Theme-Entwurf `dawn/main` geöffnet, sondern ein anderer Theme-Stand (z.B. das entkoppelte
+Live-Theme oder ein alter Entwurf), der nie den Paket-1-Push erhalten hat. Nächster Schritt: im
+Shopify-Admin unter "Online Store → Themes" prüfen, unter welchem Theme-Namen/-Eintrag man sich
+befindet, wenn man auf "Anpassen" → "Theme-Einstellungen" geht, und sicherstellen, dass es
+derselbe Eintrag ist, der mit `dawn/main` auf GitHub verknüpft ist (nicht das veröffentlichte
+Live-Theme).
+
 ### Paket 3 — Intro-Text + Produktgrid (wiederverwendbar)
 **Status:** erledigt (eine Instanz der Produktgrid-Section im Template; zweite Instanz "The
 Essentials" folgt, siehe Hinweis unten)
@@ -182,12 +202,57 @@ Farbvarianten-Punkte erscheinen nur bei Produkten, die Shopifys native Varianten
 haben — ohne das bleibt die Punktreihe leer, das ist erwartet.
 
 ### Paket 4 — Bild+Text-Section (wiederverwendbar, hell & dunkel)
-**Status:** offen
+**Status:** erledigt (eine Instanz "Our Story" im Template; zweite Instanz Promo-Banner folgt,
+siehe Hinweis unten)
 **Ziel:** Zwei Vorkommen im Mockup: "Our Story" (hell) und Promo-Banner (dunkel).
 - Bild links/rechts, Textblock mit Eyebrow, Headline, Fließtext, Button
 - Farbschema (hell/dunkel) als Einstellung, damit eine Section beide Fälle abdeckt
 **Abhängigkeit:** Paket 1
-**Entstehende/geänderte Dateien:** _wird beim Umsetzen ergänzt_
+
+**Umsetzung:**
+- Eine Section für beide Mockup-Vorkommen: Bild (fixes Seitenverhältnis über
+  `.media`-Klasse/`object-fit: cover`) auf 60%, Textblock auf 40% der Breite (Desktop,
+  `grid-template-columns: 3fr 2fr`), per Setting `image_position` links/rechts tauschbar. Mobile
+  gestapelt (Bild oben, Text unten), unabhängig von `image_position`.
+- Textblock nutzt das aus Paket 1 stammende Snippet `custom-section-heading` (Eyebrow, Headline,
+  Fließtext — jedes Feld optional/leer lassbar) + eigener Button darunter. Für "Our Story":
+  Eyebrow + Headline + Text + Button "Our Story". Für den kompakten Promo-Banner: nur Headline +
+  Button (Eyebrow/Text leer lassen), siehe Hinweis unten.
+- **Kein Farb-Hack nötig** (anders als beim Hero in Paket 2): Der Button nutzt Dawns normale
+  `button button--primary`-Klasse, die ihre Farben automatisch vom umgebenden
+  `color-scheme-*`-Wrapper bekommt. Da in `config/settings_data.json` jedes Farbschema
+  passende Button-Farben definiert (z.B. scheme-2 Glacier Mist → dunkler Button/helles Label,
+  scheme-4 Fjord Navy → heller Button/dunkles Label), kippt der Button automatisch korrekt je
+  nach gewähltem Farbschema — exakt das Hell/Dunkel-Verhalten aus dem Mockup.
+- Section ist randlos/vollflächig (wie der Hero aus Paket 2, kein `page-width`-Wrapper), da beide
+  Mockup-Vorkommen bis an den Viewport-Rand reichen.
+
+**Entstehende/geänderte Dateien:**
+- `sections/custom-image-text.liquid` (neu): wiederverwendbare Bild+Text-Section (Settings:
+  `image`, `image_position` links/rechts, `color_scheme`, `eyebrow`, `heading`, `text`,
+  `button_label`, `button_link`).
+- `assets/custom-image-text.css` (neu): Grid-Layout (60/40 Desktop, gestapelt Mobile),
+  Innenabstände Textblock, Spalten-Tausch für `image_position: right`.
+- `templates/index.json` (geändert): neue Instanz `our_story` (Typ `custom-image-text`) direkt
+  nach `featured_grid` eingefügt — Farbschema scheme-2 (Glacier Mist, hell), Bild links,
+  Texte/Button-Label passend zum Mockup ("Our Story"). Bild und finaler Button-Link sind im
+  Theme-Editor noch zu ergänzen (aktuell Platzhalter-SVG, Link leer).
+
+**Offener Punkt / nächster Schritt:** Die zweite Instanz "Promo-Banner" (dunkles Farbschema, z.B.
+scheme-4 Fjord Navy oder scheme-3 Forest Green, nur Headline + Button, kein Eyebrow/Text) ist
+bewusst noch nicht in `templates/index.json` platziert — ihre Position im Layout liegt laut
+Mockup erst nach "The Essentials"-Grid, kurz vor der Newsletter-Section, und hängt damit von den
+noch fehlenden Paketen 5–6 ab. Sobald diese Sections existieren: im Theme-Editor einfach ein
+zweites Mal "Custom Image + Text" hinzufügen, dunkles Farbschema wählen, Bild hochladen, nur
+Headline ("Lorem ipsum dolor sit amet, consectetur.") + Button-Label ("Learn More") setzen,
+Eyebrow/Text-Feld leer lassen — kein weiterer Code nötig, das ist der Zweck der wiederverwendbaren
+Section.
+
+**Hinweis zur Prüfung:** "Our Story"-Section ist über die Shopify-Vorschau direkt nach dem
+"Featured"-Grid sichtbar (Platzhalter-Bild, da `templates/index.json` noch kein Bild referenziert;
+Button verlinkt noch nirgends). Im Theme-Editor testweise `image_position` auf "Right" und
+`color_scheme` auf ein dunkles Schema (z.B. Fjord Navy) stellen, um zu prüfen, dass Bild-Seite und
+Button-Farbe wie erwartet kippen.
 
 ### Paket 5 — Icon-Row (USP-Leiste)
 **Status:** offen

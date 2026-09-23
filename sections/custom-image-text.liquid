@@ -1,0 +1,123 @@
+{{ 'custom-section-heading.css' | asset_url | stylesheet_tag }}
+{{ 'custom-image-text.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="custom-image-text color-{{ section.settings.color_scheme }} gradient{% if section.settings.image_position == 'right' %} custom-image-text--image-right{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+>
+  <div class="custom-image-text__media media">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 1600
+        | image_tag:
+          loading: 'lazy',
+          sizes: '(min-width: 750px) 60vw, 100vw',
+          widths: '375, 550, 750, 1100, 1500, 1600'
+      }}
+    {%- else -%}
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+  <div class="custom-image-text__content">
+    <div class="custom-image-text__content-inner">
+      {% render 'custom-section-heading',
+        eyebrow: section.settings.eyebrow,
+        heading: section.settings.heading,
+        text: section.settings.text,
+        alignment: 'left'
+      %}
+      {%- if section.settings.button_label != blank -%}
+        <a
+          {% if section.settings.button_link == blank %}
+            role="link" aria-disabled="true"
+          {% else %}
+            href="{{ section.settings.button_link }}"
+          {% endif %}
+          class="button button--primary custom-image-text__button"
+        >
+          {{- section.settings.button_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Image + Text",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "info": "Use a light scheme (e.g. Glacier Mist) or a dark scheme (e.g. Fjord Navy) — the button color adapts automatically.",
+      "default": "scheme-2"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "Lorem Ipsum",
+      "label": "Eyebrow",
+      "info": "Optional. Leave blank to omit — e.g. for a shorter promo banner without an eyebrow."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Lorem ipsum dolor sit amet.",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+      "label": "Text",
+      "info": "Optional. Leave blank for a compact banner with only a heading and button."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Image + Text"
+    }
+  ]
+}
+{% endschema %}

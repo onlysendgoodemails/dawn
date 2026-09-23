@@ -2,6 +2,7 @@
   "current": "Dawn",
   "presets": {
     "Dawn": {
+      "logo": "shopify://shop_images/northernlinks_plain_black_stich.png",
       "logo_width": 90,
       "customer_account_menu": "customer-account-main-menu",
       "color_schemes": {
