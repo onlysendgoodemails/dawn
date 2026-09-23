@@ -1,0 +1,177 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
+{{ 'custom-section-heading.css' | asset_url | stylesheet_tag }}
+{{ 'custom-newsletter.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #Newsletter-{{ section.id }}::after {
+    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<div
+  id="Newsletter-{{ section.id }}"
+  class="custom-newsletter banner banner--large banner--content-align-center banner--content-align-mobile-center banner--desktop-transparent{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+>
+  {%- if section.settings.image != blank -%}
+    <div class="banner__media media">
+      {{
+        section.settings.image
+        | image_url: width: 3840
+        | image_tag:
+          sizes: '100vw',
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+          loading: 'lazy'
+      }}
+    </div>
+  {%- else -%}
+    <div class="banner__media media placeholder">
+      {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+  {%- endif -%}
+  <div class="banner__content banner__content--middle-center page-width">
+    <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
+      {% render 'custom-section-heading',
+        eyebrow: section.settings.eyebrow,
+        heading: section.settings.heading,
+        text: section.settings.text,
+        alignment: 'center'
+      %}
+      {% form 'customer', class: 'newsletter-form custom-newsletter__form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="custom-newsletter__fields color-scheme-5 gradient">
+          <div class="field custom-newsletter__field">
+            <input
+              id="NewsletterFirstName-{{ section.id }}"
+              type="text"
+              name="contact[first_name]"
+              class="field__input"
+              value="{{ form.first_name }}"
+              autocomplete="given-name"
+              placeholder="{{ 'customer.register.first_name' | t }}"
+            >
+            <label class="field__label" for="NewsletterFirstName-{{ section.id }}">
+              {{ 'customer.register.first_name' | t }}
+            </label>
+          </div>
+          <div class="field custom-newsletter__field">
+            <input
+              id="NewsletterEmail-{{ section.id }}"
+              type="email"
+              name="contact[email]"
+              class="field__input"
+              value="{{ form.email }}"
+              aria-required="true"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              {%- if form.errors %}
+                autofocus
+                aria-invalid="true"
+                aria-describedby="NewsletterError-{{ section.id }}"
+              {%- elsif form.posted_successfully? %}
+                aria-describedby="NewsletterSuccess-{{ section.id }}"
+              {%- endif %}
+              placeholder="{{ 'newsletter.label' | t }}"
+              required
+            >
+            <label class="field__label" for="NewsletterEmail-{{ section.id }}">
+              {{ 'newsletter.label' | t }}
+            </label>
+          </div>
+          <button
+            type="submit"
+            class="custom-newsletter__button button button--primary"
+            name="commit"
+          >
+            {{ 'newsletter.button_label' | t }}
+          </button>
+        </div>
+        {%- if form.errors -%}
+          <small class="newsletter-form__message form__message" id="NewsletterError-{{ section.id }}">
+            <span class="svg-wrapper">
+              {{- 'icon-error.svg' | inline_asset_content -}}
+            </span>
+            {{- form.errors.translated_fields.email | capitalize }}
+            {{ form.errors.messages.email -}}
+          </small>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <h3
+            class="newsletter-form__message newsletter-form__message--success form__message"
+            id="NewsletterSuccess-{{ section.id }}"
+            tabindex="-1"
+            autofocus
+          >
+            <span class="svg-wrapper">
+              {{- 'icon-success.svg' | inline_asset_content -}}
+            </span>
+            {{- 'newsletter.success' | t }}
+          </h3>
+        {%- endif -%}
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Newsletter",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "info": "Controls the eyebrow/heading/text color over the photo. The form fields and button always use a fixed light/dark combination (Snow White + Fjord Navy) for consistent contrast against any photo.",
+      "default": "scheme-4"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "Stay in Touch",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Lorem ipsum dolor sit amet.",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Newsletter"
+    }
+  ]
+}
+{% endschema %}

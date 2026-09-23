@@ -360,13 +360,61 @@ Theme-Editor testweise `color_scheme` auf ein dunkles Schema stellen, um zu prü
 Textfarbe/Link automatisch mitkippen, ohne die Bilder zu beeinflussen.
 
 ### Paket 7 — Newsletter-Section
-**Status:** offen
+**Status:** erledigt
 **Ziel:** Vollflächiges Hintergrundbild, zentrierter Text, Formular mit **Vorname + E-Mail** +
 Button ("Anmelden").
 - Basis: Aufbau ähnlich Dawns `email-signup-banner` (hat Hintergrundbild-Setting), zusätzlich
   ein Vorname-Feld ergänzen (in Dawn nativ nicht vorhanden)
 **Abhängigkeit:** Paket 1
-**Entstehende/geänderte Dateien:** _wird beim Umsetzen ergänzt_
+
+**Umsetzung:**
+- Vollflächiges Bild wie beim Hero aus Paket 2 (`banner`/`banner--large`-Mechanik aus Dawns
+  `section-image-banner.css` wiederverwendet), Text zentriert (`banner__content--middle-center`,
+  `banner--desktop-transparent` — kein Textbox-Hintergrund, Text direkt auf dem Bild). Eyebrow +
+  Headline + Fließtext über das aus Paket 1 stammende Snippet `custom-section-heading`
+  (`alignment: 'center'`), `color_scheme` steuert wie beim Hero ausschließlich diese Textfarbe.
+- Formular: Dawns natives `{% form 'customer' %}` (wie in `sections/email-signup-banner.liquid`)
+  um ein zweites Feld `contact[first_name]` ergänzt — in Dawn nativ nicht vorhanden, aber vom
+  zugrundeliegenden `/contact`-Endpunkt (Formular-Typ `customer`) unterstützt, da dieser jedes
+  `contact[ATTRIBUT]`-Feld auf das entstehende Customer-Objekt schreibt (offiziell dokumentiert
+  ist nur `contact[email]`, s. Hinweis zur Prüfung unten). Vorname-Feld optional (kein
+  `required`), E-Mail-Feld wie im Original required + Fehler-/Erfolgsmeldungen 1:1 aus
+  `email-signup-banner.liquid` übernommen.
+- **Kein neuer Übersetzungsschlüssel nötig:** Vorname-Label/Placeholder nutzt den bereits
+  vorhandenen Schlüssel `customer.register.first_name` ("First name"/"Vorname"), E-Mail nutzt
+  `newsletter.label` ("Email"/"E-Mail"), Button nutzt `newsletter.button_label`
+  ("Subscribe"/"Abonnieren") — exakt wie schon in `email-signup-banner.liquid`, keine
+  `locales/*.json`-Änderung nötig (Golden Rule 1: Original-Locale-Dateien unangetastet).
+- **Kein Farb-Hack nötig für die Felder/den Button:** Der Wrapper um Felder+Button trägt direkt
+  die Klasse `color-scheme-5` (Snow White: weißer Feld-Hintergrund, dunkler Fjord-Navy-Button
+  mit hellem Label) — unabhängig vom gewählten `color_scheme` der Section, analog zum
+  Hero-Button aus Paket 2, aber über Dawns bestehende Farbschema-Klassen statt hartkodierter
+  Hex-Werte gelöst.
+- Formular-Zeile (Vorname-Feld, E-Mail-Feld, Button) per eigenem CSS als Reihe (Desktop) bzw.
+  gestapelt (Mobile) — die Einzelfelder (`.field`/`.field__input`/`.field__label`) selbst kommen
+  unverändert aus Dawns globalem `base.css`, keine eigene Feld-Optik gebaut.
+
+**Entstehende/geänderte Dateien:**
+- `sections/custom-newsletter.liquid` (neu): Section mit Settings `image`,
+  `image_overlay_opacity`, `color_scheme`, `eyebrow`, `heading`, `text`; Formular fest im Code
+  (Vorname + E-Mail + Button, keine weiteren Einstellungen nötig).
+- `assets/custom-newsletter.css` (neu): Layout der Formular-Zeile (Reihe ab 750px, gestapelt
+  darunter), Innenabstand des Feld-Wrappers.
+- `templates/index.json` (geändert): neue Instanz `newsletter` (Typ `custom-newsletter`) nach
+  `details_triptych` eingefügt — Farbschema scheme-4 (Fjord Navy, für die Textfarbe über dem
+  Foto), Platzhaltertexte passend zum Mockup ("Stay in Touch"-Eyebrow), Bild im Theme-Editor noch
+  hochzuladen (aktuell Platzhalter-SVG).
+
+**Hinweis zur Prüfung:** Newsletter-Section ist über die Shopify-Vorschau direkt nach dem
+Details-Triptychon sichtbar (Platzhalter-Bild, Vorname- und E-Mail-Feld nebeneinander mit
+dunklem "Subscribe"/"Abonnieren"-Button). **Wichtig:** einmal testweise mit einer noch nicht
+verwendeten E-Mail-Adresse durch das Formular gehen und danach im Shopify-Admin unter
+Kunden prüfen, ob der neu angelegte Kunde tatsächlich mit Vorname gespeichert wurde — das
+`contact[first_name]`-Feld auf dem `customer`-Formular ist ein in der Praxis verbreitetes,
+aber von Shopify nicht offiziell in der Liquid-Referenz zugesichertes Verhalten. Falls der
+Vorname dort NICHT ankommt, wäre ein Umbau auf eine externe Newsletter-App/-Integration nötig,
+die eigene Formularfelder unterstützt (kein Liquid-Fix möglich, da rein serverseitiges
+Shopify-Verhalten).
 
 ### Paket 8 — Footer
 **Status:** offen

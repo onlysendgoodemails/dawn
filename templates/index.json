@@ -104,6 +104,16 @@
         "link_label": "Discover Our Products",
         "link_url": "shopify://collections/all"
       }
+    },
+    "newsletter": {
+      "type": "custom-newsletter",
+      "settings": {
+        "image_overlay_opacity": 0,
+        "color_scheme": "scheme-4",
+        "eyebrow": "Stay in Touch",
+        "heading": "Lorem ipsum dolor sit amet.",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+      }
     }
   },
   "order": [
@@ -112,6 +122,7 @@
     "featured_grid",
     "our_story",
     "icon_row",
-    "details_triptych"
+    "details_triptych",
+    "newsletter"
   ]
 }
