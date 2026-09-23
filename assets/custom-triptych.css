@@ -1,0 +1,48 @@
+/* "Details make the difference" triptych (Paket 6, see plans/startseite.md): image - text -
+   image, edge-to-edge, equal thirds on desktop. Layout/spacing is fixed here so only the two
+   images, color scheme and copy vary. */
+
+.custom-triptych {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.custom-triptych__media {
+  min-height: 24rem;
+}
+
+.custom-triptych__content {
+  display: flex;
+  align-items: center;
+}
+
+.custom-triptych__content-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2.4rem;
+  width: 100%;
+  padding: 4rem 2rem;
+}
+
+.custom-triptych__link {
+  flex-shrink: 0;
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-triptych {
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .custom-triptych__media {
+    min-height: 34rem;
+  }
+
+  .custom-triptych__content-inner {
+    max-width: 34rem;
+    padding: 3rem;
+  }
+}

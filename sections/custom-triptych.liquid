@@ -1,0 +1,128 @@
+{{ 'custom-section-heading.css' | asset_url | stylesheet_tag }}
+{{ 'custom-triptych.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="custom-triptych color-{{ section.settings.color_scheme }} gradient{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+>
+  <div class="custom-triptych__media media">
+    {%- if section.settings.image_left != blank -%}
+      {{
+        section.settings.image_left
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'lazy',
+          sizes: '(min-width: 750px) 33vw, 100vw',
+          widths: '375, 550, 750, 1100, 1200'
+      }}
+    {%- else -%}
+      {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+  <div class="custom-triptych__content">
+    <div class="custom-triptych__content-inner">
+      {% render 'custom-section-heading',
+        eyebrow: section.settings.eyebrow,
+        heading: section.settings.heading,
+        text: section.settings.text,
+        alignment: 'left'
+      %}
+      {%- if section.settings.link_label != blank -%}
+        <a
+          {% if section.settings.link_url == blank %}
+            role="link" aria-disabled="true"
+          {% else %}
+            href="{{ section.settings.link_url }}"
+          {% endif %}
+          class="link animate-arrow custom-triptych__link"
+        >
+          {{- section.settings.link_label | escape -}}
+          <span class="svg-wrapper"
+            ><span class="icon-wrap">&nbsp;{{ 'icon-arrow.svg' | inline_asset_content }}</span></span
+          >
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="custom-triptych__media media">
+    {%- if section.settings.image_right != blank -%}
+      {{
+        section.settings.image_right
+        | image_url: width: 1200
+        | image_tag:
+          loading: 'lazy',
+          sizes: '(min-width: 750px) 33vw, 100vw',
+          widths: '375, 550, 750, 1100, 1200'
+      }}
+    {%- else -%}
+      {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Details Triptych",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Left image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right image"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "info": "Controls the middle text panel's background/text color only — the two images are unaffected.",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "Details",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Details make the difference.",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "default": "Discover Our Products",
+      "label": "Link label"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Details Triptych"
+    }
+  ]
+}
+{% endschema %}

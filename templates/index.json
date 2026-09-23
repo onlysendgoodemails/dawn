@@ -93,6 +93,17 @@
         "padding_top": 48,
         "padding_bottom": 48
       }
+    },
+    "details_triptych": {
+      "type": "custom-triptych",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Details",
+        "heading": "Details make the difference.",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "link_label": "Discover Our Products",
+        "link_url": "shopify://collections/all"
+      }
     }
   },
   "order": [
@@ -100,6 +111,7 @@
     "intro_text",
     "featured_grid",
     "our_story",
-    "icon_row"
+    "icon_row",
+    "details_triptych"
   ]
 }

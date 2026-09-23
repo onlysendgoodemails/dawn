@@ -316,12 +316,48 @@ sichtbar (4 Icons mit Platzhaltertext "Lorem Ipsum"). Im Theme-Editor testweise 
 stellen, um zu prüfen, dass Icon- und Textfarbe automatisch mitkippen.
 
 ### Paket 6 — Details-Triptychon
-**Status:** offen
+**Status:** erledigt
 **Ziel:** Dreispaltiger Bereich "Details make the difference." (Bild – Text – Bild, asymmetrisch,
 teils dunkles Bild links/rechts).
 - Prüfen, ob Dawns `collage`-Section als Basis taugt oder eine eigene Section nötig ist
-**Abhängigkeit:** Paket 1
-**Entstehende/geänderte Dateien:** _wird beim Umsetzen ergänzt_
+
+**Umsetzung:**
+- Dawns `collage`-Section wurde bewusst **nicht** als Basis verwendet: Sie ist blockbasiert für
+  bis zu 4 gemischte Medientypen (Bild/Produkt/Video) ausgelegt und dafür deutlich zu "schwer"
+  für den hier gebrauchten, fest dreispaltigen Aufbau (Bild – Text – Bild) — passend zum
+  Projekt-Ansatz aus Paket 1 (kleine, zweckgebundene Sections statt großer Sammel-Module).
+- Eigene, schlanke Section ohne Blocks: zwei Bild-Settings (links/rechts) + Text-Settings für
+  die mittlere Spalte, Layout/Abstände fest im Code. Bildpixelanalyse des Mockups
+  (`plans/assets/homepage-mockup.webp`) bestätigt nahezu exakte Drittelung der Breite → Desktop
+  fix auf `grid-template-columns: 1fr 1fr 1fr` (keine Einstellung für asymmetrische Breiten
+  nötig). "Asymmetrisch" im Mockup bezieht sich nur auf die Bildmotive selbst (Nahaufnahme
+  Rückenpartie vs. Cap), nicht auf die Spaltenbreiten.
+- Mittlere Spalte nutzt wie Paket 2–5 das Snippet `custom-section-heading` (Eyebrow "Details",
+  Headline "Details make the difference.", Fließtext) plus einen Link mit Pfeil-Icon
+  ("Discover Our Products →") — exakt das `link animate-arrow` + `icon-arrow.svg`-Muster aus
+  `sections/custom-product-grid.liquid` (kein neuer Link-Stil nötig).
+- Bilder nutzen Dawns globale `.media`-Klasse (position:relative + object-fit:cover für
+  Kind-Elemente), wie schon in Paket 4 (`custom-image-text`) — keine eigene Crop-Logik nötig.
+- "Teils dunkles Bild" ist reine Bildmotiv-Eigenschaft, kein Code-Setting — Farbschema
+  (`color_scheme`) steuert ausschließlich Hintergrund/Text der mittleren Spalte, nicht die
+  Bilder.
+- Mobile: einspaltig gestapelt (Bild – Text – Bild in DOM-Reihenfolge, keine Umsortierung nötig,
+  da das bereits der gewünschten Lesereihenfolge entspricht).
+
+**Entstehende/geänderte Dateien:**
+- `sections/custom-triptych.liquid` (neu): dreispaltige Section (Settings: `image_left`,
+  `image_right`, `color_scheme`, `eyebrow`, `heading`, `text`, `link_label`, `link_url`).
+- `assets/custom-triptych.css` (neu): Grid-Layout (1 Spalte Mobile, 1fr 1fr 1fr ab 750px),
+  Bild-Mindesthöhen, Innenabstand der Textspalte.
+- `templates/index.json` (geändert): neue Instanz `details_triptych` (Typ `custom-triptych`)
+  nach `icon_row` eingefügt — Farbschema scheme-1 (Arctic White), Platzhaltertexte passend zum
+  Mockup, Bilder im Theme-Editor noch hochzuladen (aktuell Platzhalter-SVG), Link zeigt auf
+  `shopify://collections/all` (ggf. im Theme-Editor auf eine spezifischere Collection anpassen).
+
+**Hinweis zur Prüfung:** Triptychon ist über die Shopify-Vorschau direkt nach der Icon-Row
+sichtbar (zwei Platzhalter-Bilder links/rechts, Textspalte mit Pfeil-Link in der Mitte). Im
+Theme-Editor testweise `color_scheme` auf ein dunkles Schema stellen, um zu prüfen, dass
+Textfarbe/Link automatisch mitkippen, ohne die Bilder zu beeinflussen.
 
 ### Paket 7 — Newsletter-Section
 **Status:** offen
