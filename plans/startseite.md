@@ -1,6 +1,6 @@
 # Umsetzungsplan: Startseite
 
-**Status:** offen
+**Status:** erledigt (alle 8 Pakete umgesetzt, Reihenfolge im Theme-Editor vom Nutzer bestätigt)
 **Mockup:** [assets/homepage-mockup.webp](assets/homepage-mockup.webp)
 **Basis-Theme:** Dawn-Fork (`onlysendgoodemails/dawn`)
 
@@ -64,7 +64,7 @@ Pakete können scheme-6 gezielt für einzelne Buttons/Hover-Effekte nutzen, wo e
 passt.
 
 ### Paket 2 — Header + Hero
-**Status:** in Arbeit (ein offener Punkt, siehe unten)
+**Status:** erledigt
 **Ziel:** Kopfbereich + erster Bildschirm.
 
 **Abweichung vom ursprünglichen Mockup (auf Wunsch des Nutzers):**
@@ -174,9 +174,13 @@ das Git-Repo selbst (git bleibt korrekt).
 4. Danach gegenchecken, ob Footer/Trustbar (der ursprüngliche Auslöser dieses offenen Punkts) jetzt
    die richtigen Farben zeigen.
 
+**Gelöst (2026-09-23):** Nutzer hat die Farbschemata manuell im Theme-Editor nachgetragen (statt
+den Editor-Sync-Bug weiter zu verfolgen) — Footer/Trustbar zeigen jetzt die korrekten
+Northern-Forest-Farben. Damit ist Paket 2 abgeschlossen; die Root-Cause-Analyse oben bleibt als
+Referenz stehen, falls der Sync-Bug bei einem künftigen Dawn-Update erneut auftritt.
+
 ### Paket 3 — Intro-Text + Produktgrid (wiederverwendbar)
-**Status:** erledigt (eine Instanz der Produktgrid-Section im Template; zweite Instanz "The
-Essentials" folgt, siehe Hinweis unten)
+**Status:** erledigt
 **Ziel:** Zwei Vorkommen im Mockup: "Featured" und "The Essentials".
 - Zentrierte Intro-Text-Section (Eyebrow, Headline, Fließtext)
 - Produktgrid-Section: Heading + "Shop All/View All"-Link, 5 Produkte mit Bild, Titel, Preis,
@@ -211,13 +215,9 @@ Essentials" folgt, siehe Hinweis unten)
   ersetzt durch `intro_text` (custom-intro-text) + `featured_grid` (custom-product-grid,
   Heading "Featured", Collection "all", Link "Shop All").
 
-**Offener Punkt / nächster Schritt:** Die zweite Instanz "The Essentials" (gleiche Section,
-anderes Heading/"View All"-Label/andere Collection) ist bewusst noch nicht in `templates/index.json`
-platziert, weil ihre richtige Position im Layout von den noch fehlenden Paketen 4–6 abhängt
-("Our Story", Icon-Row, Details-Triptychon liegen im Mockup dazwischen). Sobald diese Sections
-existieren: im Theme-Editor einfach ein zweites Mal "Custom Product Grid" hinzufügen, Heading auf
-"The Essentials" und Link-Label auf "View All" setzen, passende Collection wählen — kein weiterer
-Code nötig, das ist der Zweck der wiederverwendbaren Section.
+**Erledigt:** Die zweite Instanz "The Essentials" ist inzwischen vom Nutzer selbst im Theme-Editor
+ergänzt (zweite "Custom Product Grid"-Instanz, Heading "The Essentials", Link-Label "View All",
+eigene Collection) — genau wie hier vorgesehen, ohne weiteren Code.
 
 **Hinweis zur Prüfung:** Intro-Text und "Featured"-Grid sind über die Shopify-Vorschau direkt
 sichtbar (Platzhalter-Produkte, falls noch keine Collection "all" mit Produkten existiert).
@@ -226,8 +226,7 @@ Farbvarianten-Punkte erscheinen nur bei Produkten, die Shopifys native Varianten
 haben — ohne das bleibt die Punktreihe leer, das ist erwartet.
 
 ### Paket 4 — Bild+Text-Section (wiederverwendbar, hell & dunkel)
-**Status:** erledigt (eine Instanz "Our Story" im Template; zweite Instanz Promo-Banner folgt,
-siehe Hinweis unten)
+**Status:** erledigt
 **Ziel:** Zwei Vorkommen im Mockup: "Our Story" (hell) und Promo-Banner (dunkel).
 - Bild links/rechts, Textblock mit Eyebrow, Headline, Fließtext, Button
 - Farbschema (hell/dunkel) als Einstellung, damit eine Section beide Fälle abdeckt
@@ -262,15 +261,9 @@ siehe Hinweis unten)
   Texte/Button-Label passend zum Mockup ("Our Story"). Bild und finaler Button-Link sind im
   Theme-Editor noch zu ergänzen (aktuell Platzhalter-SVG, Link leer).
 
-**Offener Punkt / nächster Schritt:** Die zweite Instanz "Promo-Banner" (dunkles Farbschema, z.B.
-scheme-4 Fjord Navy oder scheme-3 Forest Green, nur Headline + Button, kein Eyebrow/Text) ist
-bewusst noch nicht in `templates/index.json` platziert — ihre Position im Layout liegt laut
-Mockup erst nach "The Essentials"-Grid, kurz vor der Newsletter-Section, und hängt damit von den
-noch fehlenden Paketen 5–6 ab. Sobald diese Sections existieren: im Theme-Editor einfach ein
-zweites Mal "Custom Image + Text" hinzufügen, dunkles Farbschema wählen, Bild hochladen, nur
-Headline ("Lorem ipsum dolor sit amet, consectetur.") + Button-Label ("Learn More") setzen,
-Eyebrow/Text-Feld leer lassen — kein weiterer Code nötig, das ist der Zweck der wiederverwendbaren
-Section.
+**Erledigt:** Die zweite Instanz "Promo-Banner" ist inzwischen vom Nutzer selbst im Theme-Editor
+ergänzt (zweite "Custom Image + Text"-Instanz, dunkles Farbschema, nur Headline + "Learn
+More"-Button, kurz vor der Newsletter-Section) — genau wie hier vorgesehen, ohne weiteren Code.
 
 **Hinweis zur Prüfung:** "Our Story"-Section ist über die Shopify-Vorschau direkt nach dem
 "Featured"-Grid sichtbar (Platzhalter-Bild, da `templates/index.json` noch kein Bild referenziert;
@@ -656,5 +649,8 @@ in anderer Reihenfolge oder parallel in verschiedenen Chats bearbeitet werden.)
 ## Nach Fertigstellung aller Pakete
 
 - Sections in `templates/index.json` in der Reihenfolge des Mockups zusammenstellen (das machst
-  du selbst im Theme-Editor, sobald die Sections existieren)
-- Kurzer visueller Abgleich gegen [assets/homepage-mockup.webp](assets/homepage-mockup.webp)
+  du selbst im Theme-Editor, sobald die Sections existieren) — **erledigt** (2026-09-23, vom
+  Nutzer im Theme-Editor bestätigt, inkl. der beiden Zweitinstanzen aus Paket 3 & 4).
+- Kurzer visueller Abgleich gegen [assets/homepage-mockup.webp](assets/homepage-mockup.webp) —
+  **erledigt**, Desktop-Reihenfolge stimmt mit dem Mockup überein (vom Nutzer per Screenshot
+  bestätigt).
