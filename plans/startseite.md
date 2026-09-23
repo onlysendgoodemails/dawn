@@ -417,11 +417,79 @@ die eigene Formularfelder unterstützt (kein Liquid-Fix möglich, da rein server
 Shopify-Verhalten).
 
 ### Paket 8 — Footer
-**Status:** offen
+**Status:** erledigt
 **Ziel:** Logo + Beschreibung, Social-Icons, 3 Link-Spalten (Shop/About/Help), Copyright +
 Legal-Links unten.
 **Abhängigkeit:** Paket 1
-**Entstehende/geänderte Dateien:** _wird beim Umsetzen ergänzt_
+
+**Umsetzung:**
+- Eigene, blockbasierte Section (`custom-footer`) statt Dawns Standard-`footer.liquid`: Dawns
+  Footer kann zwar inhaltlich fast alles (Brand-Info-Block, `link_list`-Blöcke, automatische
+  Copyright-/Policy-Zeile), aber sein Grid legt alle Spalten gleich breit an. Laut
+  Pixelvermessung des Mockups (`plans/assets/homepage-mockup.webp`) ist die Logo-Spalte exakt
+  doppelt so breit wie die drei Link-Spalten (`grid-template-columns: 2fr 1fr 1fr 1fr`) — dafür
+  war eine eigene Section nötig, passend zum Projekt-Ansatz aus Paket 1 (kleine, zweckgebundene
+  Sections statt große Sammel-Module anhand vieler Einstellungen zurechtzubiegen).
+- Newsletter-Formular, "Follow on Shop"-Button, Länder-/Sprachauswahl und Zahlungsarten-Icons
+  aus Dawns Original-Footer sind bewusst nicht übernommen — keines davon kommt im Mockup vor
+  (Newsletter-Anmeldung gibt es bereits als eigene Section, Paket 7).
+- Logo/Markenname: gleiche Fallback-Logik wie im Header aus Paket 2 (`settings.logo` aus den
+  Theme-Einstellungen, sonst Textwortmarke aus `shop.name`) — kein separates Section-Setting
+  fürs Logo, damit Header und Footer immer synchron bleiben, sobald ein Bild-Logo hochgeladen
+  wird. Die Textwortmarke ist per `assets/custom-footer.css` bold/großgeschrieben/letter-spaced
+  gestylt (`.custom-footer__brand-name`), passend zur "NORTHERN LINKS"-Optik im Mockup.
+- Beschreibungstext unter dem Logo: eigenes Section-Setting `text` (Richtext, Platzhalter wie in
+  den anderen Paketen).
+- Social-Icons: Dawns vorhandenes Snippet `snippets/social-icons.liquid` (liest die globalen
+  Theme-Einstellungen `settings.social_*_link`) unverändert wiederverwendet, wie schon in Paket 1
+  für die Markenakzent-Entscheidung erwähnt — kein neuer Icon-Kram gebaut.
+- 3 Link-Spalten: Block-Typ `link_list` (Heading-Text + Shopify-Menü-Picker), `max_blocks: 3` —
+  gleiches Baukasten-Prinzip wie die Icon-Blöcke aus Paket 5. Jede Spalte zeigt die Links des im
+  Theme-Editor ausgewählten Menüs (`block.settings.menu.links`), analog zu Dawns eigenem
+  `link_list`-Blocktyp.
+- Copyright-/Legal-Zeile: eigener, schlanker Nachbau von Dawns `footer__content-bottom`
+  (Copyright-Text + `shop.policies`-Schleife für die rechtlichen Links Imprint/Privacy/Terms —
+  diese kommen automatisch aus den in Shopify hinterlegten Richtlinien, kein neuer Inhalt nötig).
+  Bewusst ohne die "·"-Trennpunkte aus Dawns `.policies`-Klasse, da das Mockup die Links nur mit
+  Abstand zeigt, keine Bullets; ohne "Powered by Shopify"-Link (im Mockup nicht vorhanden), dafür
+  fester Zusatztext "All rights reserved." (kein passender Dawn-Übersetzungsschlüssel vorhanden,
+  daher wie schon andernorts im Theme hartkodierter Platzhaltertext auf Englisch statt einer
+  Änderung an den Original-Locale-Dateien).
+- Farbschema: `scheme-1` (Arctic White, hell) statt des bisherigen Platzhalterwerts `scheme-3`
+  in `footer-group.json` — Pixelvermessung des Mockup-Hintergrunds an mehreren Stellen im
+  Footer ergab `#F4F2F0`–`#F8F7F3`, das liegt sehr nah an scheme-1s definiertem Hintergrund
+  `#F4F8F8` (siehe Paket 1). Der Footer im Mockup ist damit hell, nicht dunkelgrün wie zuvor in
+  `footer-group.json` hinterlegt.
+
+**Entstehende/geänderte Dateien:**
+- `sections/custom-footer.liquid` (neu): Footer-Section (Settings: `color_scheme`, `text`,
+  `padding_top`, `padding_bottom`; Block-Typ `link_list` mit `heading` + `menu`, `max_blocks: 3`).
+  Per `enabled_on.groups: ["footer"]` bewusst nur in der Footer-Gruppe wählbar.
+- `assets/custom-footer.css` (neu): Grid-Layout (1 Spalte Mobile, `2fr 1fr 1fr 1fr` ab 750px),
+  Wortmarken-Typografie, Link-/Copyright-/Legal-Styling.
+- `sections/footer-group.json` (geändert): `footer`-Block nutzt jetzt `"type": "custom-footer"`,
+  3 `link_list`-Blöcke vorbelegt (Heading "Shop"/"About"/"Help", Menü noch leer), Farbschema auf
+  `scheme-1`, Paddings auf 64/48 gesetzt. Alte, nicht mehr zutreffende Settings
+  (`newsletter_enable`, `enable_follow_on_shop`, `enable_country_selector`,
+  `enable_language_selector`, `payment_enable`, `show_policy`, `show_social`, `margin_top`)
+  entfernt, da sie im neuen Section-Schema nicht mehr existieren.
+
+**Offener Punkt:** Für das vierte Social-Icon im Mockup (sieht nach Spotify/Musik aus) gibt es in
+Dawns Icon-Set kein passendes Icon — `snippets/social-icons.liquid` unterstützt nur Facebook,
+Instagram, YouTube, TikTok, Twitter/X, Pinterest, Snapchat, Tumblr, Vimeo. Analog zum
+Globus/Plane-Workaround aus Paket 5: einfach den am ehesten passenden der 9 vorhandenen Kanäle in
+den Theme-Einstellungen unter "Social media" hinterlegen; ein echtes Spotify-Icon wäre nur über
+ein neues, selbst gebautes SVG-Snippet möglich (bislang nicht umgesetzt).
+
+**Hinweis zur Prüfung:** Footer ist am unteren Ende jeder Seite in der Shopify-Vorschau sichtbar
+(Logo-Textwortmarke, Platzhaltertext, Social-Icons je nach hinterlegten Links, 3 leere
+Link-Spalten "Shop"/"About"/"Help", Copyright-Zeile + rechtliche Links). Damit die 3 Spalten
+Inhalte zeigen: im Shopify-Admin unter Navigation drei Menüs anlegen (z.B. "Footer – Shop",
+"Footer – About", "Footer – Help") und im Theme-Editor je Block unter "Menu" zuweisen. Damit die
+Legal-Links (Imprint/Privacy/Terms) erscheinen, müssen unter Shopify-Admin → Einstellungen →
+Richtlinien die entsprechenden Seiten hinterlegt sein — ohne das bleibt die Zeile leer (Dawns
+übliches Verhalten, kein Bug). Logo im Theme-Editor unter Theme-Einstellungen → Logo hochladen,
+falls ein Bildlogo statt der Textwortmarke gewünscht ist.
 
 ## Empfohlene Reihenfolge
 

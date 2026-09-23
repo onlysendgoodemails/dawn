@@ -3,22 +3,36 @@
   "type": "footer",
   "sections": {
     "footer": {
-      "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "type": "custom-footer",
+      "blocks": {
+        "footer-link-shop": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Shop"
+          }
+        },
+        "footer-link-about": {
+          "type": "link_list",
+          "settings": {
+            "heading": "About"
+          }
+        },
+        "footer-link-help": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Help"
+          }
+        }
+      },
+      "block_order": [
+        "footer-link-shop",
+        "footer-link-about",
+        "footer-link-help"
+      ],
       "settings": {
-        "color_scheme": "scheme-3",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "color_scheme": "scheme-1",
+        "padding_top": 64,
+        "padding_bottom": 48
       }
     }
   },

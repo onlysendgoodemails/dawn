@@ -1,0 +1,185 @@
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+{{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign has_social_icons = true
+  if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank
+    assign has_social_icons = false
+  endif
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<footer class="custom-footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width custom-footer__top">
+    <div class="custom-footer__brand">
+      {%- if settings.logo != blank -%}
+        {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+        <a href="{{ routes.root_url }}" class="custom-footer__logo-link link link--text">
+          {{
+            settings.logo
+            | image_url: width: 300
+            | image_tag: class: 'custom-footer__logo', height: logo_height, width: settings.logo_width, alt: shop.name
+          }}
+        </a>
+      {%- else -%}
+        <a href="{{ routes.root_url }}" class="custom-footer__brand-name link link--text">{{ shop.name }}</a>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="custom-footer__brand-text rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if has_social_icons -%}
+        {%- render 'social-icons', class: 'custom-footer__social' -%}
+      {%- endif -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      <div class="custom-footer__column" {{ block.shopify_attributes }}>
+        {%- if block.settings.heading != blank -%}
+          <h2 class="custom-footer__column-heading">{{ block.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if block.settings.menu != blank -%}
+          <ul class="custom-footer__links list-unstyled">
+            {%- for link in block.settings.menu.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="link link--text custom-footer__link{% if link.active %} custom-footer__link--active{% endif %}"
+                >
+                  {{ link.title | escape }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="page-width custom-footer__bottom">
+    <small class="custom-footer__copyright"
+      >&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. All rights reserved.</small
+    >
+    <ul class="custom-footer__legal list-unstyled">
+      {%- for policy in shop.policies -%}
+        {%- if policy != blank -%}
+          <li><a href="{{ policy.url }}" class="link link--text">{{ policy.title | escape }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Custom Footer",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>",
+      "label": "Description",
+      "info": "Logo/name comes from Theme settings → Logo (falls back to the shop name). Social icons come from Theme settings → Social media."
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Column"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Custom Footer",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "heading": "Shop"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "heading": "About"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "heading": "Help"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
