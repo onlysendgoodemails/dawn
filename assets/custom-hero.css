@@ -4,3 +4,12 @@
   --color-button: 14, 43, 56;
   --color-button-text: 244, 248, 248;
 }
+
+/* Dawn's stock mobile hero height is a fixed 39rem, which reads almost square on a phone
+   and crops portrait shots awkwardly. Tie it to viewport width instead (~4:5 portrait) so it
+   stays tall and proportional across phone sizes, closer to the mockup's taller mobile crop. */
+@media screen and (max-width: 749px) {
+  .custom-hero.banner--large:not(.banner--mobile-bottom):not(.banner--adapt) .banner__content {
+    min-height: 125vw;
+  }
+}
