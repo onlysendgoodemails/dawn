@@ -642,6 +642,11 @@ final ausgewählt.
 Spalten-Reihe darüber. Eigenes Bild lässt sich weiterhin im Theme-Editor unter "Giant wordmark"
 → "Texture image" hochladen, um den Default zu ersetzen.
 
+**Korrektur — Bildausschnitt:** `preserveAspectRatio` des `<image>`-Elements von `xMidYMid slice`
+(mittig zugeschnitten) auf `xMidYMin slice` geändert, damit der obere Bildbereich (Meer/Dünen)
+sichtbar bleibt statt vom mittigen Zuschnitt weggeschnitten zu werden — Crop wird jetzt komplett
+von unten weggenommen, nicht mehr zu gleichen Teilen von oben und unten.
+
 ## Empfohlene Reihenfolge
 
 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
