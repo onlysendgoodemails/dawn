@@ -532,14 +532,56 @@ falls ein Bildlogo statt der Textwortmarke gewünscht ist.
   `.custom-footer__wordmark-text` (fluid Typografie, `background-clip: text`, `@supports`-Fallback
   für ältere Browser ohne `background-clip: text`).
 
-**Korrektur nach erstem Test:** Schriftzug lief über die volle Breite hinaus (Overflow). Ursache:
-`clamp(4.5rem, 13vw, 18rem)` war an "DRYLL" (5 Zeichen) angelehnt und damit für "Northern Links"
-(14 Zeichen inkl. Leerzeichen) deutlich zu groß dimensioniert — bei größeren Viewports hätte der
-Text weit über 100% der verfügbaren Breite gebraucht. Auf `clamp(2.5rem, 9vw, 10rem)`
-herunterskaliert (Faustrechnung: ~0.62em Zeichenbreite bei fettem Uppercase-Grotesk × 14 Zeichen,
-Zielbreite ~75–90% der Viewport-Breite je Breakpoint). Zusätzlich: Schriftzug nutzt jetzt das neue
-Setting `wordmark_text` (Default "Northern Links") statt `shop.name` — dynamischer Shop-Name im
-Shopify-Admin ändert den Schriftzug damit nicht mehr, nur der Wert im Theme-Editor.
+**Korrektur nach erstem Test (1):** Schriftzug lief über die volle Breite hinaus (Overflow).
+Ursache: `clamp(4.5rem, 13vw, 18rem)` war an "DRYLL" (5 Zeichen) angelehnt und damit für "Northern
+Links" (14 Zeichen inkl. Leerzeichen) deutlich zu groß dimensioniert. Zusätzlich: Schriftzug nutzt
+seither das neue Setting `wordmark_text` (Default "Northern Links") statt `shop.name` —
+dynamischer Shop-Name im Shopify-Admin ändert den Schriftzug damit nicht mehr, nur der Wert im
+Theme-Editor.
+
+**Korrektur nach zweitem Test (2) — Umbau auf SVG:** Der CSS-`clamp()`-Ansatz (feste Höhe,
+variable Breite mit Overflow-Risiko) durch inline-SVG ersetzt (Nutzerwunsch: "Höhe passt sich der
+Breite an"). Technik: `<svg viewBox="0 0 1000 160">` mit `<text x="0" y="50%" textLength="1000"
+lengthAdjust="spacing">` — `lengthAdjust="spacing"` (bewusst *nicht* `spacingAndGlyphs`) streckt
+nur die Laufweite zwischen den Buchstaben auf exakt 1000 Einheiten (= volle viewBox-Breite),
+verzerrt aber nicht die Buchstabenform selbst wie es `spacingAndGlyphs` bei einem langen
+Markennamen tun würde. Das SVG selbst bekommt in `assets/custom-footer.css` nur `width: 100%;
+height: auto;` — dadurch skaliert der komplette Schriftzug (inkl. Höhe) proportional zur
+viewBox-Seitenverhältnis mit der Breite, exakt wie gewünscht, ohne dass Breite je über den
+Container hinauslaufen kann (SVG clippt per Spezifikation automatisch an der viewBox-Grenze,
+falls die Schätzung doch mal knapp daneben liegt — sicherer Fallback statt hartem Overflow-Bug wie
+zuvor). Bild-Textur-Effekt (`wordmark_image`) weiterhin möglich, jetzt über `<clipPath>` +
+`<image clip-path="...">` statt `background-clip: text`.
+
+**Nachtrag — kuratierte Legal-Zeile + Ghost-Button (statt automatischer `shop.policies`):**
+Die vorherige automatische `shop.policies`-Schleife (zeigte Shopifys volle Richtlinien-Titel wie
+"Datenschutzerklärung", "Kontaktinformationen") durch 4 fest beschriftete, einzeln verlinkbare
+Einträge ersetzt — "Datenschutz", "Cookies", "AGB", "Impressum" (exakte Wortwahl auf Wunsch, daher
+als fester Text im Code statt als Setting; nur die Ziel-URLs sind Settings:
+`privacy_link_url`/`cookies_link_url`/`terms_link_url`/`imprint_link_url`). "Datenschutz" und
+"AGB" fallen ohne eigene URL automatisch auf `shop.privacy_policy.url`/`shop.terms_of_service.url`
+zurück (Shopifys native Richtlinien-Objekte) — "Cookies" und "Impressum" haben kein Shopify-natives
+Pendant und bleiben rein Custom-URL, ausgeblendet bis eine URL hinterlegt ist. Zusätzlich der
+Widerrufs-Link aus dem vorherigen Nachtrag von einem reinen Text-Link zu einem echten
+**Ghost-Button** gemacht (`custom-footer__cancel-button`: eckige Outline, transparenter
+Hintergrund, dezenter Hover-Fill) — Label-Default zu "Bestellung widerrufen" geändert (Setting
+`cancellation_link_label` bleibt editierbar, `cancellation_link_url` weiterhin leer bis eine
+Ziel-URL gesetzt wird).
+
+**Geänderte Dateien (Korrekturen):**
+- `sections/custom-footer.liquid`: Schriftzug-Markup komplett auf `<svg>` umgestellt; Legal-Zeile
+  von `shop.policies`-Loop auf 4 feste Links + Ghost-Button umgebaut; neue Settings
+  `privacy_link_url`, `cookies_link_url`, `terms_link_url`, `imprint_link_url`; Default von
+  `cancellation_link_label` auf "Bestellung widerrufen" geändert.
+- `assets/custom-footer.css`: `.custom-footer__wordmark-text` (CSS-Text-Ansatz) entfernt, ersetzt
+  durch `.custom-footer__wordmark-svg`; neue Klassen `.custom-footer__legal-group` (Flex-Wrapper
+  für Links + Button) und `.custom-footer__cancel-button` (Ghost-Button-Styling).
+
+**Hinweis zur Prüfung (Korrekturen):** Schriftzug sollte jetzt bei jeder Fensterbreite exakt
+innerhalb der vollen Breite bleiben (kein horizontales Scrollen mehr). Damit Datenschutz/Cookies/
+AGB/Impressum erscheinen: entweder Shopify-Richtlinien unter Einstellungen → Richtlinien pflegen
+(deckt Datenschutz/AGB automatisch ab) oder im Theme-Editor unter "Legal" die jeweilige URL direkt
+setzen. Ghost-Button erscheint erst mit gesetzter "Ghost-Button URL".
 
 **Hinweis zur Prüfung (Nachtrag):** Schriftzug ist sofort sichtbar (Platzhalter: einfarbiger
 "NORTHERN LINKS"-Schriftzug in Textfarbe des Farbschemas). Für den Bild-Effekt im Theme-Editor
