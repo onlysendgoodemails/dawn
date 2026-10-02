@@ -1,6 +1,6 @@
 # Umsetzungsplan: Startseite v2 (Kategorie-Aufbau)
 
-**Status:** in Arbeit (Paket A erledigt)
+**Status:** in Arbeit (Paket A + B erledigt; Badges/Unterzeile am Schluss)
 **Referenz:** Desktop-PDF + Mobile-PNG vom 2026-10-02 (Prototyp, enthält ein paar Darstellungsfehler:
 Hamburger-Icon direkt neben dem Logo, Shirts-Textfläche vom Sticky-Balken verdeckt, im PDF
 doppelte Abschnitte — nicht übernehmen).
@@ -44,8 +44,13 @@ eintragen (funktioniert auch von anderen Seiten aus). Im Theme-Editor prüfen, d
 "Sticky: Immer" zeigt (Editor-Stand kann den JSON-Wert überschreiben).
 
 ### Paket B — Kategorie-Block (neue Section)
-**Status:** offen
+**Status:** erledigt (ohne Badge/Unterzeile — Badges bewusst als letzter Punkt vertagt)
 **Neu:** `sections/custom-category-block.liquid` + `assets/custom-category-block.css`
+**Umsetzung:** Karte = bestehendes `snippets/custom-product-card.liquid` (unverändert), Layout
+im Block per CSS überschrieben (Titel + Preis in einer Zeile, Farbpunkte als Zeile darunter).
+Karten-Basis-CSS kommt aus `custom-product-grid.css`. Desktop 4 Spalten fest (weniger Produkte
+füllen linksbündig), mobil 2. Anker-ID über Setting `anchor_id`, Trennlinie per Checkbox.
+Noch nicht in `templates/index.json` eingebaut (Paket D).
 - Eine Section pro Kategorie: Anker-ID (z.B. `shirts`), Überschrift, Kurztext, Bild, Collection,
   Anzahl Produkte, Farbschema der Textfläche.
 - Oben Split: Textfläche links (Überschrift Serif + Kurztext, vertikal mittig, linksbündig),

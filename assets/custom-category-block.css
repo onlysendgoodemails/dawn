@@ -1,0 +1,93 @@
+/* Category block for the "Startseite v2" (Paket B, see plans/startseite-v2.md): split of text
+   panel + image on top, product list below. Used by sections/custom-category-block.liquid
+   together with snippets/custom-product-card.liquid; product card base styles come from
+   custom-product-grid.css, only the card layout inside this block is overridden here. */
+
+/* ---- Split: mobile = image on top, text below; desktop = text left, image right ---- */
+
+.custom-category-block__split {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.custom-category-block__media {
+  min-height: 24rem;
+}
+
+.custom-category-block__content {
+  display: flex;
+  align-items: center;
+}
+
+.custom-category-block__content-inner {
+  width: 100%;
+  padding: 4rem 2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-category-block__split {
+    grid-template-columns: 2fr 3fr;
+    align-items: stretch;
+  }
+
+  .custom-category-block__media {
+    order: 2;
+    min-height: 40rem;
+  }
+
+  .custom-category-block__content {
+    order: 1;
+  }
+
+  .custom-category-block__content-inner {
+    max-width: 48rem;
+    padding: 4rem 6rem;
+  }
+}
+
+/* ---- Product list: 2 columns mobile, 4 desktop (fixed column width, left-aligned fill) ---- */
+
+.custom-category-block__products {
+  padding-top: 3.2rem;
+  padding-bottom: 4.8rem;
+}
+
+.custom-category-block__products--divider {
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.15);
+  margin-bottom: 0;
+}
+
+.custom-category-block__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3rem 1.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media screen and (min-width: 990px) {
+  .custom-category-block__products {
+    padding-top: 4rem;
+    padding-bottom: 6.4rem;
+  }
+
+  .custom-category-block__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3.2rem 2rem;
+  }
+}
+
+/* ---- Card inside this block: title + price on one line, swatches (sub-line) below ---- */
+
+.custom-category-block .custom-product-card__info {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 1.2rem;
+}
+
+.custom-category-block .custom-product-card__swatches {
+  flex-basis: 100%;
+}
