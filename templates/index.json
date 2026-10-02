@@ -106,17 +106,16 @@
         "show_divider": true
       }
     },
-    "featured_grid": {
-      "type": "custom-product-grid",
-      "disabled": true,
+    "brand_teaser": {
+      "type": "custom-image-text",
       "settings": {
-        "heading": "Featured",
-        "collection": "all",
-        "products_to_show": 5,
-        "view_all_label": "Shop All",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 56
+        "image_position": "left",
+        "color_scheme": "scheme-2",
+        "eyebrow": "Northern Links",
+        "heading": "Lorem ipsum dolor sit amet.",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "button_label": "Discover Our Story",
+        "button_link": "shopify://collections/all"
       }
     },
     "icon_row": {
@@ -163,29 +162,6 @@
         "padding_bottom": 48
       }
     },
-    "details_triptych": {
-      "type": "custom-triptych",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "eyebrow": "Details",
-        "heading": "Details make the difference.",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
-        "link_label": "Discover Our Products",
-        "link_url": "shopify://collections/all"
-      }
-    },
-    "essentials_grid": {
-      "type": "custom-product-grid",
-      "settings": {
-        "heading": "The Essentials",
-        "collection": "",
-        "products_to_show": 5,
-        "view_all_label": "View All",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 56
-      }
-    },
     "newsletter": {
       "type": "custom-newsletter",
       "settings": {
@@ -204,10 +180,8 @@
     "custom_category_block_BQEKXU",
     "custom_category_block_WVJzUh",
     "custom_category_block_VUGKPQ",
-    "featured_grid",
+    "brand_teaser",
     "icon_row",
-    "details_triptych",
-    "essentials_grid",
     "newsletter"
   ]
 }

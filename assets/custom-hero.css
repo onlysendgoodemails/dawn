@@ -25,3 +25,13 @@
     justify-content: flex-start;
   }
 }
+
+/* Desktop: same full-screen idea as on mobile — hero fills the viewport below the trust bar +
+   header (Dawn's stock value is a fixed 72rem). The 36rem floor keeps it from collapsing on
+   very short windows (e.g. landscape laptops with browser chrome). */
+@media screen and (min-width: 750px) {
+  .custom-hero.banner--large:not(.banner--adapt) {
+    min-height: max(36rem, calc(100vh - var(--header-group-height, 160px)));
+    min-height: max(36rem, calc(100svh - var(--header-group-height, 160px)));
+  }
+}

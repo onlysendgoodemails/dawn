@@ -1,6 +1,6 @@
 # Umsetzungsplan: Startseite v2 (Kategorie-Aufbau)
 
-**Status:** in Arbeit (Paket A + B erledigt; Badges/Unterzeile am Schluss)
+**Status:** in Arbeit (Paket A–D erledigt; Badges/Unterzeile am Schluss, Test im Vorschau-Theme steht aus)
 **Referenz:** Desktop-PDF + Mobile-PNG vom 2026-10-02 (Prototyp, enthält ein paar Darstellungsfehler:
 Hamburger-Icon direkt neben dem Logo, Shirts-Textfläche vom Sticky-Balken verdeckt, im PDF
 doppelte Abschnitte — nicht übernehmen).
@@ -87,9 +87,12 @@ passend zu den Anker-IDs). Anker-IDs der Tabs müssen mit `anchor_id` der Katego
 übereinstimmen; bei neuen Kategorien Tab im Editor ergänzen. Entfernen: Section im Editor löschen.
 
 ### Paket D — Startseite zusammensetzen
-**Status:** offen
-- `templates/index.json`: Reihenfolge Hero → Intro-Text → Kategorie-Blöcke → Brand-Teaser
-  (`custom-image-text`) → Icon-Row → Newsletter; `featured_grid`, `details_triptych`,
-  `essentials_grid` entfallen (Sections bleiben als Dateien erhalten).
-- Hero Desktop auf Vollbild ziehen (`assets/custom-hero.css`, analog zur Mobil-Regel).
-- Inhalte (Texte, Bilder, Collections) im Theme-Editor pflegen.
+**Status:** erledigt (Test im Shopify-Vorschau-Theme steht aus)
+- `templates/index.json`: Reihenfolge Hero → Intro-Text → Tab-Leiste → 3 Kategorie-Blöcke →
+  Brand-Teaser (`custom-image-text`, Bild links / Text rechts, neu eingebaut als `brand_teaser`) →
+  Icon-Row → Newsletter. `featured_grid`, `details_triptych`, `essentials_grid` sind aus dem
+  Template entfernt (Section-Dateien bleiben erhalten).
+- Hero Desktop (≥750px) auf Vollbild: `assets/custom-hero.css`, `min-height` =
+  `100svh − --header-group-height` (Untergrenze 36rem), analog zur Mobil-Regel.
+- **Im Theme-Editor (Nutzer):** Collections der drei Kategorie-Blöcke setzen (aktuell leer), Bilder
+  für Kategorie-Blöcke, Hero und Brand-Teaser wählen, Platzhaltertexte ersetzen.
