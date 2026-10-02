@@ -77,6 +77,11 @@ Noch nicht in `templates/index.json` eingebaut (Paket D).
 dem Header); Leistenhöhe wird als `--category-nav-height` veröffentlicht und im `scroll-padding-top`
 (< 990px) mitgerechnet, damit Anker-Sprünge unter Header + Leiste landen. Optik wie das
 Desktop-Menü (11px, Versalien, gesperrt), aktiver Tab dunkel + Unterstrich. Farbschema per Setting.
+**Desktop:** keine zweite Leiste (Header-Links sind bereits sticky + Anker). Stattdessen aktive
+Markierung im Header-Menü: `assets/custom-header-menu.js` setzt `aria-current="true"` auf den
+Header-Link, dessen Anker-Section gerade unter dem Header liegt (Style in
+`assets/custom-header-menu.css`, Script-Einbindung in `sections/custom-header.liquid`). Wirkt nur
+auf Links, deren Ziel auf der aktuellen Seite existiert.
 **Eingebaut** in `templates/index.json` zwischen `intro_text` und erstem Kategorie-Block (3 Tabs
 passend zu den Anker-IDs). Anker-IDs der Tabs müssen mit `anchor_id` der Kategorie-Blöcke
 übereinstimmen; bei neuen Kategorien Tab im Editor ergänzen. Entfernen: Section im Editor löschen.

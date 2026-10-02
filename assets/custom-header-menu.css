@@ -19,11 +19,15 @@
 }
 
 .custom-header-menu .header__menu-item:hover,
-.custom-header-menu .header__menu-item[aria-current='page'] {
+.custom-header-menu .header__menu-item[aria-current='page'],
+.custom-header-menu .header__menu-item[aria-current='true'] {
   color: rgb(var(--color-foreground));
 }
 
+/* aria-current='true' is set by assets/custom-header-menu.js for the anchor link whose section is
+   currently in view (e.g. /#shirts). */
 .custom-header-menu .header__menu-item:hover span,
+.custom-header-menu .header__menu-item[aria-current='true'] span,
 .custom-header-menu .header__active-menu-item {
   text-decoration: underline;
   text-decoration-thickness: 0.1rem;
