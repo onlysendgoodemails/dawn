@@ -1,5 +1,10 @@
-.custom-footer {
-  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+/* Dark footer: background comes from the color scheme (scheme-4, #0e2b38); the text uses the warm
+   beige of the page background (#f7f6f2) instead of the scheme's cool white. Everything in this
+   file reads --color-foreground, so overriding it here recolours text, links, icons and lines.
+   The element selector keeps this above the .color-scheme-* rule regardless of load order. */
+footer.custom-footer {
+  --color-foreground: 247, 246, 242;
+  --color-link: 247, 246, 242;
 }
 
 .custom-footer__top {
@@ -100,7 +105,7 @@
   align-items: center;
   gap: 1.5rem;
   padding-top: 3rem;
-  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
 }
 
 .custom-footer__copyright {
