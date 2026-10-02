@@ -1,0 +1,135 @@
+{{ 'custom-image-band.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    --band-ratio-mobile: {{ section.settings.mobile_ratio }};
+    --band-ratio-desktop: {{ section.settings.desktop_ratio }};
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="custom-image-band section-{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div
+      class="custom-image-band__inner{% unless section.settings.full_width %} custom-image-band__inner--contained{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+    >
+      <div
+        class="custom-image-band__media media"
+        {% if section.settings.image != blank %}
+          style="--image-focal: {{ section.settings.image.presentation.focal_point }}"
+        {% endif %}
+      >
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 2400
+            | image_tag:
+              loading: 'lazy',
+              sizes: '100vw',
+              widths: '375, 550, 750, 1100, 1500, 1800, 2400'
+          }}
+        {%- else -%}
+          {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Image Band",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A single image without text, as a visual pause between text modules."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Without an image, a placeholder is shown. Set the focal point so the subject stays in view."
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width (edge to edge)",
+      "info": "Off: aligned with the category images.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_ratio",
+      "label": "Image ratio on mobile",
+      "options": [
+        { "value": "4 / 5", "label": "4:5 portrait" },
+        { "value": "1 / 1", "label": "1:1 square" },
+        { "value": "4 / 3", "label": "4:3 landscape" }
+      ],
+      "default": "4 / 5"
+    },
+    {
+      "type": "select",
+      "id": "desktop_ratio",
+      "label": "Image ratio on desktop",
+      "options": [
+        { "value": "21 / 9", "label": "21:9 panorama" },
+        { "value": "16 / 9", "label": "16:9 landscape" },
+        { "value": "3 / 2", "label": "3:2 landscape" }
+      ],
+      "default": "21 / 9"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Image Band"
+    }
+  ]
+}
+{% endschema %}

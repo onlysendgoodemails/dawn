@@ -18,6 +18,13 @@
     --category-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
     --category-heading-style: {{ heading_font.style }};
     --category-heading-weight: {{ heading_font.weight }};
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+    }
   }
 {%- endstyle -%}
 
@@ -99,6 +106,17 @@
       "default": "shirts",
       "label": "Anchor ID",
       "info": "Target for menu links, e.g. /#shirts. Lowercase letters, numbers and hyphens only."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Top padding",
+      "info": "Space above the image. Use it on the first block to separate it from the trust bar.",
+      "default": 0
     },
     {
       "type": "header",
