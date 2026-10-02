@@ -32,6 +32,41 @@
         "padding_bottom": 24
       }
     },
+    "category_nav": {
+      "type": "custom-category-nav",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "label": "Shirts",
+            "anchor": "shirts"
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "label": "Sweatshirts & Hoodies",
+            "anchor": "sweatshirts-hoodies"
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "label": "Caps & Beanies",
+            "anchor": "caps-beanies"
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "aria_label": "Categories"
+      }
+    },
     "custom_category_block_BQEKXU": {
       "type": "custom-category-block",
       "name": "Custom Category Block",
@@ -165,6 +200,7 @@
   "order": [
     "hero",
     "intro_text",
+    "category_nav",
     "custom_category_block_BQEKXU",
     "custom_category_block_WVJzUh",
     "custom_category_block_VUGKPQ",

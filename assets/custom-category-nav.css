@@ -1,0 +1,83 @@
+/* Mobile category tab bar for the "Startseite v2" (Paket C, see plans/startseite-v2.md):
+   horizontally scrollable, sticky below the header, hidden from 990px up where the header
+   menu is visible. Used by sections/custom-category-nav.liquid + assets/custom-category-nav.js.
+   The section wrapper is the sticky element (its parent is <main>, so it stays pinned while the
+   category blocks scroll by); --header-height is set by sections/custom-header.liquid. */
+
+.shopify-section.custom-category-nav-section {
+  position: sticky;
+  top: var(--header-height, 0px);
+  z-index: 2; /* below the header (3), above page content */
+}
+
+.custom-category-nav {
+  display: block;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.12);
+}
+
+.custom-category-nav__scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.custom-category-nav__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-category-nav__list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2.8rem;
+  margin: 0;
+  padding: 0 max(1.5rem, env(safe-area-inset-left));
+  list-style: none;
+  /* centred while it fits, left-aligned and scrollable once it overflows */
+  width: max-content;
+  min-width: 100%;
+  box-sizing: border-box;
+  justify-content: safe center;
+}
+
+.custom-category-nav__item {
+  flex: 0 0 auto;
+}
+
+/* Same look as the desktop header menu (assets/custom-header-menu.css). */
+.custom-category-nav__link {
+  display: block;
+  padding: 1.4rem 0 1.2rem;
+  border-bottom: 0.2rem solid transparent;
+  white-space: nowrap;
+  font-family: var(--font-body-family);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.custom-category-nav__link:hover,
+.custom-category-nav__link[aria-current='true'] {
+  color: rgb(var(--color-foreground));
+}
+
+.custom-category-nav__link[aria-current='true'] {
+  border-bottom-color: rgb(var(--color-foreground));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .custom-category-nav__link {
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .shopify-section.custom-category-nav-section {
+    display: none;
+  }
+}

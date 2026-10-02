@@ -1,0 +1,92 @@
+{{ 'custom-category-nav.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Keep anchor jumps below header + tab bar on mobile (header section sets the header part). */
+  @media screen and (max-width: 989px) {
+    html {
+      scroll-padding-top: calc(var(--header-height, 7rem) + var(--category-nav-height, 4.4rem) + 1.6rem);
+    }
+  }
+{%- endstyle -%}
+
+{%- if section.blocks.size > 0 -%}
+  <category-nav class="custom-category-nav color-{{ section.settings.color_scheme }} gradient">
+    <nav class="custom-category-nav__scroller" aria-label="{{ section.settings.aria_label | escape }}">
+      <ul class="custom-category-nav__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- assign target = block.settings.anchor | handleize -%}
+          {%- if target != blank and block.settings.label != blank -%}
+            <li class="custom-category-nav__item" {{ block.shopify_attributes }}>
+              <a href="#{{ target }}" class="custom-category-nav__link" data-target="{{ target }}">
+                {{- block.settings.label -}}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+  </category-nav>
+
+  <script src="{{ 'custom-category-nav.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Custom Category Nav",
+  "tag": "section",
+  "class": "custom-category-nav-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Sticky tab bar below the header, mobile only (< 990px). Each block links to the Anchor ID of a Custom Category Block."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Accessibility label",
+      "default": "Categories"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shirts"
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Anchor ID",
+          "default": "shirts",
+          "info": "Must match the Anchor ID of the category block, e.g. shirts."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Custom Category Nav",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Shirts", "anchor": "shirts" } },
+        { "type": "tab", "settings": { "label": "Sweatshirts & Hoodies", "anchor": "sweatshirts-hoodies" } },
+        { "type": "tab", "settings": { "label": "Caps & Beanies", "anchor": "caps-beanies" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

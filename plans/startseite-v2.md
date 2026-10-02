@@ -68,10 +68,18 @@ Noch nicht in `templates/index.json` eingebaut (Paket D).
 - Trennlinie zwischen den Kategorien, Abstand oben = `scroll-padding` des Headers beachten.
 
 ### Paket C — Mobile Tab-Leiste (optional)
-**Status:** offen
-**Neu:** `sections/custom-category-nav.liquid`: horizontal scrollbare, sticky Leiste unter dem
-Header (nur < 990px), Blöcke = Label + Anker, aktiver Punkt per IntersectionObserver.
-Nur bauen, wenn der Drawer allein mobil zu umständlich ist.
+**Status:** erledigt (Test im Shopify-Vorschau-Theme steht aus)
+**Neu:** `sections/custom-category-nav.liquid` + `assets/custom-category-nav.css` +
+`assets/custom-category-nav.js`: horizontal scrollbare, sticky Leiste unter dem Header (nur
+< 990px), Blöcke ("Tab") = Label + Anker-ID, aktiver Punkt per IntersectionObserver
+(`aria-current`, Leiste scrollt den aktiven Tab ins Bild).
+**Umsetzung:** Sticky-Element ist der Section-Wrapper (`top: var(--header-height)`, z-index 2 unter
+dem Header); Leistenhöhe wird als `--category-nav-height` veröffentlicht und im `scroll-padding-top`
+(< 990px) mitgerechnet, damit Anker-Sprünge unter Header + Leiste landen. Optik wie das
+Desktop-Menü (11px, Versalien, gesperrt), aktiver Tab dunkel + Unterstrich. Farbschema per Setting.
+**Eingebaut** in `templates/index.json` zwischen `intro_text` und erstem Kategorie-Block (3 Tabs
+passend zu den Anker-IDs). Anker-IDs der Tabs müssen mit `anchor_id` der Kategorie-Blöcke
+übereinstimmen; bei neuen Kategorien Tab im Editor ergänzen. Entfernen: Section im Editor löschen.
 
 ### Paket D — Startseite zusammensetzen
 **Status:** offen
