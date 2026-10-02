@@ -1,0 +1,24 @@
+/* Subtle flat desktop navigation (snippets/custom-header-menu.liquid): small uppercase labels
+   with wide tracking, no carets/dropdowns. Overrides Dawn's .header__menu-item defaults. */
+
+.custom-header-menu .header__menu-item {
+  padding: 1.2rem 1.4rem;
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.custom-header-menu .header__menu-item:hover,
+.custom-header-menu .header__menu-item[aria-current='page'] {
+  color: rgb(var(--color-foreground));
+}
+
+.custom-header-menu .header__menu-item:hover span,
+.custom-header-menu .header__active-menu-item {
+  text-decoration: underline;
+  text-decoration-thickness: 0.1rem;
+  text-underline-offset: 0.6rem;
+}

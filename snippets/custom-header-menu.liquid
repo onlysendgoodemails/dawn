@@ -1,0 +1,33 @@
+{% comment %}
+  Flat desktop navigation for sections/custom-header.liquid: only the top-level links of the
+  selected menu, no dropdown / mega menu (child links are intentionally ignored here; the mobile
+  drawer still shows them). Styling lives in assets/custom-header-menu.css.
+
+  Usage:
+  {% render 'custom-header-menu' %}
+{% endcomment %}
+
+<nav class="header__inline-menu custom-header-menu" aria-label="{{ section.settings.menu.title | escape }}">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      <li>
+        <a
+          id="HeaderMenu-{{ link.handle }}"
+          href="{{ link.url }}"
+          class="header__menu-item list-menu__item link link--text focus-inset"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          <span
+            {%- if link.current %}
+              class="header__active-menu-item"
+            {% endif %}
+          >
+            {{- link.title | escape -}}
+          </span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+{{ 'custom-header-menu.css' | asset_url | stylesheet_tag }}
 <link
   rel="stylesheet"
   href="{{ 'component-cart-notification.css' | asset_url }}"
@@ -111,6 +112,17 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Anchor links (e.g. /#shirts) must land below the sticky header, not behind it. */
+  html {
+    scroll-padding-top: calc(var(--header-height, 7rem) + 1.6rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
@@ -145,11 +157,9 @@
       {%- render 'header-drawer', show_country_selector: country_selector, show_language_selector: language_selector, show_social_links: false -%}
     {%- endif -%}
 
-    {%- liquid
-      if section.settings.menu != blank
-        render 'header-dropdown-menu'
-      endif
-    -%}
+    {%- if section.settings.menu != blank -%}
+      {%- render 'custom-header-menu' -%}
+    {%- endif -%}
 
     {%- if request.page_type == 'index' -%}
       <h1 class="header__heading">
