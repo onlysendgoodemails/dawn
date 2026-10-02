@@ -124,28 +124,28 @@
         "icon_1": {
           "type": "icon",
           "settings": {
-            "icon": "leaf",
+            "icon": "custom_sprout",
             "label": "Lorem Ipsum"
           }
         },
         "icon_2": {
           "type": "icon",
           "settings": {
-            "icon": "truck",
+            "icon": "custom_truck",
             "label": "Lorem Ipsum"
           }
         },
         "icon_3": {
           "type": "icon",
           "settings": {
-            "icon": "plane",
+            "icon": "custom_heart",
             "label": "Lorem Ipsum"
           }
         },
         "icon_4": {
           "type": "icon",
           "settings": {
-            "icon": "lock",
+            "icon": "custom_lock",
             "label": "Lorem Ipsum"
           }
         }

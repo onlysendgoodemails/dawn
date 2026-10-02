@@ -96,3 +96,15 @@ passend zu den Anker-IDs). Anker-IDs der Tabs müssen mit `anchor_id` der Katego
   `100svh − --header-group-height` (Untergrenze 36rem), analog zur Mobil-Regel.
 - **Im Theme-Editor (Nutzer):** Collections der drei Kategorie-Blöcke setzen (aktuell leer), Bilder
   für Kategorie-Blöcke, Hero und Brand-Teaser wählen, Platzhaltertexte ersetzen.
+
+### Nachtrag — Trust-Bar (Icon-Row) im ruhigen Stil
+**Status:** erledigt (Test im Shopify-Vorschau-Theme steht aus)
+- Neue Lucide-Icons (ISC-Lizenz, Strichstärke 1,5): `assets/custom-icon-sprout.svg`,
+  `custom-icon-truck.svg`, `custom-icon-heart.svg`, `custom-icon-lock.svg`. Weitere Icons nach
+  demselben Muster als `custom-icon-<name>.svg` anlegen und in `sections/custom-icon-row.liquid`
+  als Option `custom_<name>` ergänzen.
+- `sections/custom-icon-row.liquid`: Icon-Auswahl um die 4 Lucide-Icons erweitert (Dawn-Icons bleiben
+  wählbar), neues Setting „Show line below the bar“, Preset/Template auf sprout/truck/heart/lock.
+- `assets/custom-icon-row.css`: dünne senkrechte Trennlinien, Icon 24px, kleines graues Label,
+  feine Linie unter der Leiste.
+- `templates/index.json`: Icons der `icon_row` auf die neuen Icons umgestellt (Labels weiter Platzhalter).

@@ -14,14 +14,19 @@
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
+<div class="custom-icon-row-section color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_divider %} custom-icon-row-section--divider{% endif %}">
   <div class="page-width section-{{ section.id }}-padding">
     <ul class="custom-icon-row list-unstyled">
       {%- for block in section.blocks -%}
         <li class="custom-icon-row__item" {{ block.shopify_attributes }}>
           {%- if block.settings.icon != 'none' -%}
             <div class="custom-icon-row__icon">
-              {% render 'icon-accordion', icon: block.settings.icon %}
+              {%- if block.settings.icon contains 'custom_' -%}
+                {%- assign custom_icon_file = block.settings.icon | replace: 'custom_', 'custom-icon-' | append: '.svg' -%}
+                <span class="svg-wrapper">{{ custom_icon_file | inline_asset_content }}</span>
+              {%- else -%}
+                {% render 'icon-accordion', icon: block.settings.icon %}
+              {%- endif -%}
             </div>
           {%- endif -%}
           {%- if block.settings.label != blank -%}
@@ -47,6 +52,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show line below the bar",
+      "default": true
     },
     {
       "type": "header",
@@ -82,6 +93,22 @@
           "type": "select",
           "id": "icon",
           "options": [
+            {
+              "value": "custom_sprout",
+              "label": "Lucide: Sprout"
+            },
+            {
+              "value": "custom_truck",
+              "label": "Lucide: Truck"
+            },
+            {
+              "value": "custom_heart",
+              "label": "Lucide: Heart"
+            },
+            {
+              "value": "custom_lock",
+              "label": "Lucide: Lock"
+            },
             {
               "value": "none",
               "label": "t:sections.main-product.blocks.collapsible_tab.settings.icon.options__1.label"
@@ -259,7 +286,7 @@
               "label": "t:sections.main-product.blocks.collapsible_tab.settings.icon.options__44.label"
             }
           ],
-          "default": "leaf",
+          "default": "custom_sprout",
           "label": "Icon"
         },
         {
@@ -279,25 +306,25 @@
         {
           "type": "icon",
           "settings": {
-            "icon": "leaf"
+            "icon": "custom_sprout"
           }
         },
         {
           "type": "icon",
           "settings": {
-            "icon": "truck"
+            "icon": "custom_truck"
           }
         },
         {
           "type": "icon",
           "settings": {
-            "icon": "plane"
+            "icon": "custom_heart"
           }
         },
         {
           "type": "icon",
           "settings": {
-            "icon": "lock"
+            "icon": "custom_lock"
           }
         }
       ]

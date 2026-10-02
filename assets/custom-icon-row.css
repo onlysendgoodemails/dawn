@@ -1,10 +1,14 @@
-/* Styles for the 4-column icon/USP bar (Paket 5, see plans/startseite.md).
+/* Styles for the 4-column icon/USP bar (Paket 5, see plans/startseite.md; restyled as a quiet
+   trust bar with hairline dividers, see plans/startseite-v2.md).
    Used by sections/custom-icon-row.liquid. */
+
+.custom-icon-row-section--divider {
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
 
 .custom-icon-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 3.2rem 1.6rem;
   margin: 0;
   padding: 0;
 }
@@ -12,7 +16,6 @@
 @media screen and (min-width: 750px) {
   .custom-icon-row {
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.6rem;
   }
 }
 
@@ -20,22 +23,49 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 2.2rem 1.2rem;
   text-align: center;
 }
 
+/* Hairline dividers between the items (not before the first one in a row). */
+.custom-icon-row__item:nth-child(even) {
+  border-left: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+@media screen and (min-width: 750px) {
+  .custom-icon-row__item:nth-child(even) {
+    border-left: 0;
+  }
+
+  .custom-icon-row__item:not(:first-child) {
+    border-left: 0.1rem solid rgba(var(--color-foreground), 0.15);
+  }
+}
+
 .custom-icon-row__icon {
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .custom-icon-row__icon .svg-wrapper {
-  width: 2.8rem;
-  height: 2.8rem;
+  display: block;
+  width: 2.4rem;
+  height: 2.4rem;
+  color: rgb(var(--color-foreground));
   fill: rgb(var(--color-foreground));
+}
+
+/* Lucide icons are stroke-only: no fill, stroke comes from currentColor. */
+.custom-icon-row__icon .custom-icon {
+  width: 100%;
+  height: 100%;
+  fill: none;
 }
 
 .custom-icon-row__label {
   margin: 0;
   font-family: var(--font-body-family);
-  font-size: 1.3rem;
-  color: rgb(var(--color-foreground));
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  color: rgba(var(--color-foreground), 0.75);
 }
