@@ -1,18 +1,38 @@
 {% comment %}
   Flat desktop navigation for sections/custom-header.liquid: only the top-level links of the
   selected menu, no dropdown / mega menu (child links are intentionally ignored here; the mobile
-  drawer still shows them). Styling lives in assets/custom-header-menu.css.
+  drawer still shows the whole menu). The last `right_items` links (section setting) are shown on
+  the right next to the icons, all others on the left. Styling: assets/custom-header-menu.css.
+
+  Accepts:
+  - side: {String} 'left' (default) or 'right'
 
   Usage:
   {% render 'custom-header-menu' %}
+  {% render 'custom-header-menu', side: 'right' %}
 {% endcomment %}
+{%- liquid
+  assign side = side | default: 'left'
+  assign links = section.settings.menu.links
+  assign right_count = section.settings.right_items | at_most: links.size
+  assign left_count = links.size | minus: right_count
+-%}
 
-<nav class="header__inline-menu custom-header-menu" aria-label="{{ section.settings.menu.title | escape }}">
+{%- unless side == 'right' and right_count == 0 -%}
+<nav
+  class="custom-header-menu custom-header-menu--{{ side }}{% if side == 'left' %} header__inline-menu{% endif %}"
+  aria-label="{{ section.settings.menu.title | escape }}"
+>
   <ul class="list-menu list-menu--inline" role="list">
-    {%- for link in section.settings.menu.links -%}
+    {%- for link in links -%}
+      {%- if side == 'left' and forloop.index > left_count -%}
+        {%- break -%}
+      {%- elsif side == 'right' and forloop.index <= left_count -%}
+        {%- continue -%}
+      {%- endif -%}
       <li>
         <a
-          id="HeaderMenu-{{ link.handle }}"
+          id="HeaderMenu-{{ side }}-{{ link.handle }}"
           href="{{ link.url }}"
           class="header__menu-item list-menu__item link link--text focus-inset"
           {% if link.current %}
@@ -31,3 +51,4 @@
     {%- endfor -%}
   </ul>
 </nav>
+{%- endunless -%}

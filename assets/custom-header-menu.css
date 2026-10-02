@@ -1,30 +1,19 @@
 /* Subtle flat desktop navigation (snippets/custom-header-menu.liquid): small uppercase labels
-   with wide tracking, no carets/dropdowns. Overrides Dawn's .header__menu-item defaults. */
-
-.custom-header-menu {
-  margin-left: -1.4rem;
-}
+   with wide tracking, no carets/dropdowns. Overrides Dawn's .header__menu-item defaults.
+   Left and right menu share the same look so the header reads as one balanced row. */
 
 .custom-header-menu .list-menu--inline {
   flex-wrap: nowrap;
-}
-
-/* Dawn's side columns are 1fr next to the centered logo, which is too narrow for four labels
-   on ~1000px screens. Let the menu column grow to its content width; on wide screens both side
-   columns stay equal and the logo stays centered. */
-@media screen and (min-width: 990px) {
-  .header--middle-center:not(.drawer-menu) {
-    grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
-  }
+  column-gap: clamp(1.6rem, 1.6vw, 2.4rem);
 }
 
 .custom-header-menu .header__menu-item {
-  padding: 1.2rem 1.4rem;
+  padding: 1.2rem 0;
   white-space: nowrap;
   font-family: var(--font-body-family);
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(var(--color-foreground), 0.7);
 }
@@ -41,14 +30,35 @@
   text-underline-offset: 0.6rem;
 }
 
-@media screen and (min-width: 990px) and (max-width: 1199px) {
-  .custom-header-menu {
-    margin-left: -1rem;
-  }
+/* Dawn indents the left menu by -1.2rem to compensate its own link padding; ours has none. */
+.custom-header-menu.header__inline-menu {
+  margin-left: 0;
+}
 
+.custom-header-menu--right {
+  display: none;
+  align-self: center;
+  margin-right: clamp(1.6rem, 1.6vw, 2.4rem);
+}
+
+@media screen and (min-width: 990px) {
+  .custom-header-menu--right {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1280px) {
   .custom-header-menu .header__menu-item {
-    padding: 1.2rem 1rem;
     font-size: 1.1rem;
-    letter-spacing: 0.1em;
+  }
+}
+
+/* Full-width header on large screens: the 1200px page width left too little room for the menu
+   next to a larger logo, which pushed the logo off-center. */
+@media screen and (min-width: 1100px) {
+  .header.page-width {
+    max-width: none;
+    padding-left: clamp(2rem, 2.5vw, 4rem);
+    padding-right: clamp(2rem, 2.5vw, 4rem);
   }
 }
