@@ -85,13 +85,24 @@
     align-items: stretch;
   }
 
+  /* Height is fixed by the row (not by the image ratio), so the image can't grow with the
+     container width; it is cropped (object-fit: cover, focal point) and the text panel
+     simply stretches along. */
+  .custom-category-block__split {
+    height: clamp(36rem, 36vw, 62rem);
+  }
+
   .custom-category-block__content {
     order: 1;
   }
 
   .custom-category-block__media {
     order: 2;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: auto;
+  }
+
+  .custom-category-block__media img {
+    object-position: var(--image-focal, 50% 50%);
   }
 
   .custom-category-block__content-inner {
@@ -100,6 +111,21 @@
 
   .custom-category-block__heading {
     font-size: 3.2rem;
+  }
+}
+
+/* Same width logic as the full-width header (see custom-header-menu.css): container reaches
+   the header's side padding on large screens, capped so images/cards don't get oversized. */
+@media screen and (min-width: 750px) {
+  .custom-category-block__inner.page-width {
+    max-width: 180rem;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .custom-category-block__inner.page-width {
+    padding-left: clamp(2rem, 2.5vw, 4rem);
+    padding-right: clamp(2rem, 2.5vw, 4rem);
   }
 }
 

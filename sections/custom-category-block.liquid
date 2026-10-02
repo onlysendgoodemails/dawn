@@ -41,14 +41,19 @@
           {%- endif -%}
         </div>
       </div>
-      <div class="custom-category-block__media media">
+      <div
+        class="custom-category-block__media media"
+        {% if section.settings.image != blank %}
+          style="--image-focal: {{ section.settings.image.presentation.focal_point }}"
+        {% endif %}
+      >
         {%- if section.settings.image != blank -%}
           {{
             section.settings.image
             | image_url: width: 1400
             | image_tag:
               loading: 'lazy',
-              sizes: '(min-width: 1200px) 600px, (min-width: 750px) 45vw, 100vw',
+              sizes: '(min-width: 750px) 50vw, 100vw',
               widths: '375, 550, 750, 1100, 1400'
           }}
         {%- else -%}
@@ -137,7 +142,7 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image",
-      "info": "Portrait format (4:5) works best."
+      "info": "Desktop shows a landscape crop. Set the focal point so the subject stays in view."
     },
     {
       "type": "header",
@@ -163,7 +168,7 @@
           "label": "4"
         }
       ],
-      "default": "3"
+      "default": "4"
     },
     {
       "type": "range",
@@ -171,7 +176,7 @@
       "min": 1,
       "max": 12,
       "step": 1,
-      "default": 3,
+      "default": 4,
       "label": "Products to show"
     }
   ],

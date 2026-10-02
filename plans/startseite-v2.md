@@ -49,8 +49,10 @@ eintragen (funktioniert auch von anderen Seiten aus). Im Theme-Editor prüfen, d
 **Umsetzung:** Karte = bestehendes `snippets/custom-product-card.liquid` (unverändert), Layout
 im Block per CSS überschrieben (Titel + Preis in einer Zeile, Farbpunkte als Zeile darunter).
 Karten-Basis-CSS kommt aus `custom-product-grid.css`. Split 50/50 und Produktliste liegen im
-selben `page-width`-Container (gleiche Breite). Desktop 3 Spalten (Setting `columns_desktop`:
-3 oder 4), mobil 2; Karten-Bild 4:5 Hochformat (zugeschnitten, `object-fit: cover`). Keine
+selben Container, der ab 1100px wie der Header randbündig läuft (gleiches Seiten-Padding,
+Deckel 1800px). Split-Höhe auf Desktop fix `clamp(36rem, 36vw, 62rem)`: Bild wird zugeschnitten
+(Fokuspunkt im Editor setzen), Textfläche streckt sich mit. Desktop 4 Spalten (Setting
+`columns_desktop`: 3 oder 4), mobil 2; Karten-Bild 4:5 Hochformat (zugeschnitten). Keine
 Trennlinie, stattdessen viel Abstand (7rem mobil / 12rem Desktop). Hintergrund `#f7f6f2` und
 Textfläche `#e5e8e5` als Farb-Settings der Section (kein Theme-Farbschema), Überschrift per
 `font_picker` (Default Lora, Regular). Anker-ID über Setting `anchor_id`.
