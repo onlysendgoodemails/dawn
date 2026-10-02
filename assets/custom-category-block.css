@@ -1,9 +1,22 @@
-/* Category block for the "Startseite v2" (Paket B, see plans/startseite-v2.md): split of text
-   panel + image on top, product list below. Used by sections/custom-category-block.liquid
-   together with snippets/custom-product-card.liquid; product card base styles come from
-   custom-product-grid.css, only the card layout inside this block is overridden here. */
+/* Category block for the "Startseite v2" (Paket B, see plans/startseite-v2.md): 50/50 split of
+   text panel + image on top, product list below — both inside the same page-width container.
+   Used by sections/custom-category-block.liquid together with snippets/custom-product-card.liquid;
+   product card base styles come from custom-product-grid.css, only the card look inside this
+   block is overridden here. Colors/heading font come from CSS variables set by the section. */
 
-/* ---- Split: mobile = image on top, text below; desktop = text left, image right ---- */
+.custom-category-block {
+  padding-bottom: 7rem;
+  background-color: var(--category-bg, #f7f6f2);
+  color: rgb(var(--color-foreground));
+}
+
+.custom-category-block__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
+
+/* ---- Split: mobile = image on top, text below; desktop = text left, image right (50/50) ---- */
 
 .custom-category-block__split {
   display: grid;
@@ -11,74 +24,115 @@
 }
 
 .custom-category-block__media {
-  min-height: 24rem;
+  order: 1;
+  aspect-ratio: 1 / 1;
 }
 
 .custom-category-block__content {
+  order: 2;
   display: flex;
   align-items: center;
+  background-color: var(--category-panel-bg, #e5e8e5);
 }
 
 .custom-category-block__content-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
   width: 100%;
-  padding: 4rem 2rem;
+  padding: 3.2rem 2.4rem;
+}
+
+.custom-category-block__heading {
+  margin: 0;
+  font-family: var(--category-heading-family, var(--font-heading-family));
+  font-style: var(--category-heading-style, normal);
+  font-weight: var(--category-heading-weight, 400);
+  font-size: 2.6rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: rgb(var(--color-foreground));
+}
+
+.custom-category-block__text {
+  max-width: 34rem;
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.custom-category-block__text > :first-child {
+  margin-top: 0;
+}
+
+.custom-category-block__text > :last-child {
+  margin-bottom: 0;
 }
 
 @media screen and (min-width: 750px) {
-  .custom-category-block__split {
-    grid-template-columns: 2fr 3fr;
-    align-items: stretch;
+  .custom-category-block {
+    padding-bottom: 12rem;
   }
 
-  .custom-category-block__media {
-    order: 2;
-    min-height: 40rem;
+  .custom-category-block__inner {
+    gap: 4rem;
+  }
+
+  .custom-category-block__split {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
   }
 
   .custom-category-block__content {
     order: 1;
   }
 
+  .custom-category-block__media {
+    order: 2;
+    aspect-ratio: 4 / 5;
+  }
+
   .custom-category-block__content-inner {
-    max-width: 48rem;
     padding: 4rem 6rem;
+  }
+
+  .custom-category-block__heading {
+    font-size: 3.2rem;
   }
 }
 
-/* ---- Product list: 2 columns mobile, 4 desktop (fixed column width, left-aligned fill) ---- */
-
-.custom-category-block__products {
-  padding-top: 3.2rem;
-  padding-bottom: 4.8rem;
-}
-
-.custom-category-block__products--divider {
-  border-bottom: 1px solid rgba(var(--color-foreground), 0.15);
-  margin-bottom: 0;
-}
+/* ---- Product list: 2 columns mobile, 3 (default) or 4 on desktop ---- */
 
 .custom-category-block__list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 3rem 1.6rem;
+  gap: 3.2rem 1.6rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-@media screen and (min-width: 990px) {
-  .custom-category-block__products {
-    padding-top: 4rem;
-    padding-bottom: 6.4rem;
-  }
-
+@media screen and (min-width: 750px) {
   .custom-category-block__list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 3.2rem 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4rem 2rem;
   }
 }
 
-/* ---- Card inside this block: title + price on one line, swatches (sub-line) below ---- */
+@media screen and (min-width: 990px) {
+  .custom-category-block--columns-4 .custom-category-block__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---- Card inside this block: portrait image, light type, title + price on one line ---- */
+
+.custom-category-block .custom-product-card__media {
+  aspect-ratio: 4 / 5;
+  background: rgba(var(--color-foreground), 0.05);
+}
 
 .custom-category-block .custom-product-card__info {
   flex-direction: row;
@@ -86,6 +140,13 @@
   align-items: baseline;
   justify-content: space-between;
   column-gap: 1.2rem;
+}
+
+.custom-category-block .custom-product-card__title,
+.custom-category-block .custom-product-card__price {
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 .custom-category-block .custom-product-card__swatches {

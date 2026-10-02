@@ -1,6 +1,5 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
-{{ 'custom-section-heading.css' | asset_url | stylesheet_tag }}
 {{ 'custom-product-grid.css' | asset_url | stylesheet_tag }}
 {{ 'custom-category-block.css' | asset_url | stylesheet_tag }}
 
@@ -8,45 +7,56 @@
   assign collection = section.settings.collection
   assign products_to_show = section.settings.products_to_show
   assign anchor_id = section.settings.anchor_id | handleize
+  assign heading_font = section.settings.heading_font
 -%}
+
+{%- style -%}
+  {{ heading_font | font_face: font_display: 'swap' }}
+  .section-{{ section.id }} {
+    --category-bg: {{ section.settings.background_color }};
+    --category-panel-bg: {{ section.settings.panel_color }};
+    --category-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --category-heading-style: {{ heading_font.style }};
+    --category-heading-weight: {{ heading_font.weight }};
+  }
+{%- endstyle -%}
 
 <div
   {% if anchor_id != blank %}
     id="{{ anchor_id }}"
   {% endif %}
-  class="custom-category-block"
+  class="custom-category-block section-{{ section.id }} custom-category-block--columns-{{ section.settings.columns_desktop }}"
 >
-  <div
-    class="custom-category-block__split{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
-  >
-    <div class="custom-category-block__media media">
-      {%- if section.settings.image != blank -%}
-        {{
-          section.settings.image
-          | image_url: width: 1600
-          | image_tag:
-            loading: 'lazy',
-            sizes: '(min-width: 750px) 60vw, 100vw',
-            widths: '375, 550, 750, 1100, 1500, 1600'
-        }}
-      {%- else -%}
-        {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
-      {%- endif -%}
-    </div>
-    <div class="custom-category-block__content color-{{ section.settings.color_scheme }} gradient">
-      <div class="custom-category-block__content-inner">
-        {% render 'custom-section-heading',
-          heading: section.settings.heading,
-          text: section.settings.text,
-          alignment: 'left'
-        %}
+  <div class="custom-category-block__inner page-width">
+    <div
+      class="custom-category-block__split{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+    >
+      <div class="custom-category-block__content">
+        <div class="custom-category-block__content-inner">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="custom-category-block__heading">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <div class="custom-category-block__text">{{ section.settings.text }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="custom-category-block__media media">
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'lazy',
+              sizes: '(min-width: 1200px) 600px, (min-width: 750px) 45vw, 100vw',
+              widths: '375, 550, 750, 1100, 1400'
+          }}
+        {%- else -%}
+          {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
       </div>
     </div>
-  </div>
 
-  <div
-    class="custom-category-block__products page-width{% if section.settings.show_divider %} custom-category-block__products--divider{% endif %}"
-  >
     <ul class="custom-category-block__list" role="list">
       {%- if collection != blank and collection.products.size > 0 -%}
         {%- for product in collection.products limit: products_to_show -%}
@@ -87,6 +97,28 @@
     },
     {
       "type": "header",
+      "content": "Colors & font"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f7f6f2"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Text panel",
+      "default": "#e5e8e5"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "lora_n4"
+    },
+    {
+      "type": "header",
       "content": "Split (text + image)"
     },
     {
@@ -98,19 +130,14 @@
     {
       "type": "richtext",
       "id": "text",
-      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>",
       "label": "Text"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Text panel color scheme",
-      "default": "scheme-2"
+      "label": "Image",
+      "info": "Portrait format (4:5) works best."
     },
     {
       "type": "header",
@@ -123,20 +150,29 @@
       "info": "Without a collection, placeholder cards are shown."
     },
     {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 4,
-      "max": 12,
-      "step": 4,
-      "default": 8,
-      "label": "Products to show",
-      "info": "Multiples of 4 fill the desktop rows evenly."
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
     },
     {
-      "type": "checkbox",
-      "id": "show_divider",
-      "default": true,
-      "label": "Show divider line below"
+      "type": "range",
+      "id": "products_to_show",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 3,
+      "label": "Products to show"
     }
   ],
   "presets": [

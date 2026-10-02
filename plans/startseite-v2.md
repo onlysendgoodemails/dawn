@@ -48,8 +48,12 @@ eintragen (funktioniert auch von anderen Seiten aus). Im Theme-Editor prüfen, d
 **Neu:** `sections/custom-category-block.liquid` + `assets/custom-category-block.css`
 **Umsetzung:** Karte = bestehendes `snippets/custom-product-card.liquid` (unverändert), Layout
 im Block per CSS überschrieben (Titel + Preis in einer Zeile, Farbpunkte als Zeile darunter).
-Karten-Basis-CSS kommt aus `custom-product-grid.css`. Desktop 4 Spalten fest (weniger Produkte
-füllen linksbündig), mobil 2. Anker-ID über Setting `anchor_id`, Trennlinie per Checkbox.
+Karten-Basis-CSS kommt aus `custom-product-grid.css`. Split 50/50 und Produktliste liegen im
+selben `page-width`-Container (gleiche Breite). Desktop 3 Spalten (Setting `columns_desktop`:
+3 oder 4), mobil 2; Karten-Bild 4:5 Hochformat (zugeschnitten, `object-fit: cover`). Keine
+Trennlinie, stattdessen viel Abstand (7rem mobil / 12rem Desktop). Hintergrund `#f7f6f2` und
+Textfläche `#e5e8e5` als Farb-Settings der Section (kein Theme-Farbschema), Überschrift per
+`font_picker` (Default Lora, Regular). Anker-ID über Setting `anchor_id`.
 Noch nicht in `templates/index.json` eingebaut (Paket D).
 - Eine Section pro Kategorie: Anker-ID (z.B. `shirts`), Überschrift, Kurztext, Bild, Collection,
   Anzahl Produkte, Farbschema der Textfläche.
