@@ -1,6 +1,9 @@
 /* Reusable image+text section (Paket 4, see plans/startseite.md). Used for both the light
    "Our Story" occurrence and the dark promo-banner occurrence on the homepage — layout/spacing
-   is fixed here so both stay visually consistent; only image, color scheme and copy vary. */
+   is fixed here so both stay visually consistent; only image, ratio, color scheme and copy vary.
+
+   Fashion-first: the image defines the height via --image-ratio (default portrait 4:5), the
+   text panel stretches to the same height and centers its content vertically. */
 
 .custom-image-text {
   display: grid;
@@ -8,7 +11,11 @@
 }
 
 .custom-image-text__media {
-  min-height: 24rem;
+  aspect-ratio: var(--image-ratio, 0.8);
+}
+
+.custom-image-text__media > img {
+  object-position: var(--image-focus, 50% 30%);
 }
 
 .custom-image-text__content {
@@ -29,10 +36,26 @@
   flex-shrink: 0;
 }
 
+/* Larger, tighter headline than the default section-heading scale */
+.custom-image-text .custom-section-heading__title {
+  font-size: 3.6rem;
+  line-height: 1.08;
+}
+
+/* Contained layout: same side margins as the category blocks, so the card lines up with the
+   product grids around it. */
+.custom-image-text__wrapper--contained {
+  max-width: 180rem;
+}
+
 @media screen and (min-width: 750px) {
   .custom-image-text {
     grid-template-columns: 3fr 2fr;
     align-items: stretch;
+  }
+
+  .custom-image-text--image-right {
+    grid-template-columns: 2fr 3fr;
   }
 
   .custom-image-text--image-right .custom-image-text__media {
@@ -43,12 +66,25 @@
     order: 1;
   }
 
+  /* Image drives the height (via its ratio); the content column follows. The cap keeps a
+     portrait card from growing taller than the viewport on very wide screens. */
   .custom-image-text__media {
-    min-height: 36rem;
+    max-height: max(56rem, 92vh);
   }
 
   .custom-image-text__content-inner {
-    max-width: 44rem;
+    max-width: 48rem;
     padding: 4rem 6rem;
+  }
+
+  .custom-image-text .custom-section-heading__title {
+    font-size: clamp(3.6rem, 3.6vw, 5.6rem);
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .custom-image-text__wrapper--contained.page-width {
+    padding-left: clamp(2rem, 2.5vw, 4rem);
+    padding-right: clamp(2rem, 2.5vw, 4rem);
   }
 }

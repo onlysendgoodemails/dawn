@@ -1,8 +1,25 @@
 {{ 'custom-section-heading.css' | asset_url | stylesheet_tag }}
 {{ 'custom-image-text.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign image = section.settings.image
+  assign ratio = section.settings.image_ratio
+  if ratio == 'adapt' and image != blank
+    assign ratio_value = image.aspect_ratio
+  elsif ratio == 'square'
+    assign ratio_value = 1.0
+  elsif ratio == 'landscape'
+    assign ratio_value = 1.5
+  else
+    assign ratio_value = 0.8
+  endif
+-%}
+<div
+  class="custom-image-text__wrapper{% if section.settings.layout == 'contained' %} page-width custom-image-text__wrapper--contained{% endif %}"
+>
 <div
   class="custom-image-text color-{{ section.settings.color_scheme }} gradient{% if section.settings.image_position == 'right' %} custom-image-text--image-right{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  style="--image-ratio: {{ ratio_value }}; --image-focus: {{ section.settings.image_focus }};"
 >
   <div class="custom-image-text__media media">
     {%- if section.settings.image != blank -%}
@@ -41,6 +58,7 @@
     </div>
   </div>
 </div>
+</div>
 
 {% schema %}
 {
@@ -55,6 +73,42 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "info": "Portrait (4:5) suits most fashion shots, square works for detail angles. \"Adapt to image\" never crops.",
+      "options": [
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "landscape", "label": "Landscape (3:2)" },
+        { "value": "adapt", "label": "Adapt to image" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "image_focus",
+      "label": "Image focus",
+      "info": "Which part of the image stays visible if it gets cropped on a different screen size.",
+      "options": [
+        { "value": "50% 0%", "label": "Top" },
+        { "value": "50% 30%", "label": "Upper middle" },
+        { "value": "50% 50%", "label": "Center" },
+        { "value": "50% 100%", "label": "Bottom" }
+      ],
+      "default": "50% 30%"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "contained", "label": "Contained (with side margins)" },
+        { "value": "full", "label": "Full width (edge to edge)" }
+      ],
+      "default": "contained"
     },
     {
       "type": "select",
