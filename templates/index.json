@@ -32,8 +32,48 @@
         "padding_bottom": 24
       }
     },
+    "custom_category_block_BQEKXU": {
+      "type": "custom-category-block",
+      "name": "Custom Category Block",
+      "settings": {
+        "anchor_id": "shirts",
+        "heading": "Shirts",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "color_scheme": "scheme-5",
+        "collection": "",
+        "products_to_show": 8,
+        "show_divider": true
+      }
+    },
+    "custom_category_block_WVJzUh": {
+      "type": "custom-category-block",
+      "name": "Custom Category Block",
+      "settings": {
+        "anchor_id": "sweatshirts-hoodies",
+        "heading": "SWEATSHIRTS & HOODIES",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "color_scheme": "scheme-5",
+        "collection": "",
+        "products_to_show": 8,
+        "show_divider": true
+      }
+    },
+    "custom_category_block_VUGKPQ": {
+      "type": "custom-category-block",
+      "name": "Custom Category Block",
+      "settings": {
+        "anchor_id": "caps-beanies",
+        "heading": "CAPS & BEANIES",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "color_scheme": "scheme-5",
+        "collection": "",
+        "products_to_show": 8,
+        "show_divider": true
+      }
+    },
     "featured_grid": {
       "type": "custom-product-grid",
+      "disabled": true,
       "settings": {
         "heading": "Featured",
         "collection": "all",
@@ -42,17 +82,6 @@
         "color_scheme": "scheme-1",
         "padding_top": 36,
         "padding_bottom": 56
-      }
-    },
-    "our_story": {
-      "type": "custom-image-text",
-      "settings": {
-        "image_position": "left",
-        "color_scheme": "scheme-2",
-        "eyebrow": "Lorem Ipsum",
-        "heading": "Lorem ipsum dolor sit amet.",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
-        "button_label": "Our Story"
       }
     },
     "icon_row": {
@@ -87,7 +116,12 @@
           }
         }
       },
-      "block_order": ["icon_1", "icon_2", "icon_3", "icon_4"],
+      "block_order": [
+        "icon_1",
+        "icon_2",
+        "icon_3",
+        "icon_4"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "padding_top": 48,
@@ -109,6 +143,7 @@
       "type": "custom-product-grid",
       "settings": {
         "heading": "The Essentials",
+        "collection": "",
         "products_to_show": 5,
         "view_all_label": "View All",
         "color_scheme": "scheme-1",
@@ -130,8 +165,10 @@
   "order": [
     "hero",
     "intro_text",
+    "custom_category_block_BQEKXU",
+    "custom_category_block_WVJzUh",
+    "custom_category_block_VUGKPQ",
     "featured_grid",
-    "our_story",
     "icon_row",
     "details_triptych",
     "essentials_grid",
