@@ -66,3 +66,45 @@
     padding-right: clamp(2rem, 2.5vw, 4rem);
   }
 }
+
+/* Mobile/tablet header (below the 990px desktop menu): logo on the left, then account and cart,
+   burger on the far right. Dawn puts the burger on the left, so the grid areas are redone here;
+   --mobile-left (set in the header group) already left-aligns the logo text. The .header-wrapper
+   prefix keeps these above Dawn's .header--mobile-* rules regardless of stylesheet load order. */
+@media screen and (max-width: 989px) {
+  .header-wrapper .header {
+    grid-template-areas: 'heading icons drawer';
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .header-wrapper .header .header__heading,
+  .header-wrapper .header .header__heading-link {
+    justify-self: start;
+    text-align: left;
+  }
+
+  /* The link has 0.75rem of padding; pull it back so the logo lines up with the page content. */
+  .header-wrapper .header .header__heading-link {
+    margin-left: -0.75rem;
+  }
+
+  .header-wrapper .header header-drawer {
+    grid-area: drawer;
+    justify-self: end;
+    margin-left: 0;
+    margin-right: -1.2rem;
+  }
+
+  .header-wrapper .header .header__icons {
+    padding-right: 0;
+  }
+}
+
+/* Phones: same side gutter as the page sections (1.5rem), so the logo and the burger line up
+   with the images below instead of sitting 3rem from the edge. */
+@media screen and (max-width: 749px) {
+  .header-wrapper .header.page-width {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}

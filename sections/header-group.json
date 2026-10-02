@@ -38,7 +38,7 @@
     "header": {
       "type": "custom-header",
       "settings": {
-        "mobile_logo_position": "center",
+        "mobile_logo_position": "left",
         "menu": "main-menu",
         "sticky_header_type": "always",
         "show_line_separator": false,

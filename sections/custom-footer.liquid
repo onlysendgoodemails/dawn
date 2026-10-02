@@ -1,14 +1,6 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
-{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 {{ 'custom-footer.css' | asset_url | stylesheet_tag }}
 {{ 'https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap' | stylesheet_tag }}
-
-{%- liquid
-  assign has_social_icons = true
-  if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank
-    assign has_social_icons = false
-  endif
--%}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -26,29 +18,6 @@
 
 <footer class="custom-footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
   <div class="page-width custom-footer__top">
-    <div class="custom-footer__brand">
-      {%- if settings.logo != blank -%}
-        {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-        <a href="{{ routes.root_url }}" class="custom-footer__logo-link link link--text">
-          {{
-            settings.logo
-            | image_url: width: 300
-            | image_tag: class: 'custom-footer__logo', height: logo_height, width: settings.logo_width, alt: shop.name
-          }}
-        </a>
-      {%- else -%}
-        <a href="{{ routes.root_url }}" class="custom-footer__brand-name link link--text">{{ shop.name }}</a>
-      {%- endif -%}
-
-      {%- if section.settings.text != blank -%}
-        <div class="custom-footer__brand-text rte">{{ section.settings.text }}</div>
-      {%- endif -%}
-
-      {%- if has_social_icons -%}
-        {%- render 'social-icons', class: 'custom-footer__social' -%}
-      {%- endif -%}
-    </div>
-
     {%- for block in section.blocks -%}
       <div class="custom-footer__column" {{ block.shopify_attributes }}>
         {%- if block.settings.heading != blank -%}
@@ -156,17 +125,6 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "Brand"
-    },
-    {
-      "type": "richtext",
-      "id": "text",
-      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>",
-      "label": "Description",
-      "info": "Logo/name comes from Theme settings → Logo (falls back to the shop name). Social icons come from Theme settings → Social media."
     },
     {
       "type": "header",
