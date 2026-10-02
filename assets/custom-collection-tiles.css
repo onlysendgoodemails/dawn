@@ -1,0 +1,138 @@
+/* Image tiles with a button for the "Startseite v2" (see plans/startseite-v2.md): 2–4 tiles at
+   the end of the page. Mobile = swipeable row (scroll-snap) with the next tile peeking in;
+   desktop = all tiles side by side. Text sits on the image, bottom left, like the category
+   blocks. Used by sections/custom-collection-tiles.liquid; colors/heading font come from CSS
+   variables set by the section. */
+
+.custom-collection-tiles__heading {
+  margin-bottom: 2.4rem;
+}
+
+/* Same container logic as the category blocks / header: edge padding, capped on huge screens. */
+.custom-collection-tiles__inner {
+  max-width: 180rem;
+  margin: 0 auto;
+}
+
+.custom-collection-tiles__list {
+  display: flex;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0 1.5rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 1.5rem;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.custom-collection-tiles__list::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-collection-tiles__item {
+  position: relative;
+  flex: 0 0 78%;
+  scroll-snap-align: start;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.custom-collection-tiles__media {
+  position: absolute;
+  inset: 0;
+}
+
+/* Scrim only darkens the lower part so the image keeps carrying the mood. */
+.custom-collection-tiles__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 55%);
+  pointer-events: none;
+}
+
+.custom-collection-tiles__content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6rem;
+  padding: 2.4rem;
+}
+
+.custom-collection-tiles__title {
+  margin: 0;
+  font-family: var(--tile-heading-family, var(--font-heading-family));
+  font-style: var(--tile-heading-style, normal);
+  font-weight: var(--tile-heading-weight, 400);
+  font-size: 2.6rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #fff;
+}
+
+.custom-collection-tiles__button {
+  display: inline-block;
+  padding: 1.1rem 3rem;
+  background-color: #fff;
+  color: #1c1c1c;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+/* The button's link covers the whole tile, so the entire tile is clickable. */
+.custom-collection-tiles__button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.custom-collection-tiles__button:hover {
+  opacity: 0.85;
+}
+
+.custom-collection-tiles__button:focus-visible {
+  outline: 0.2rem solid #fff;
+  outline-offset: 0.3rem;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-collection-tiles__list {
+    display: grid;
+    grid-template-columns: repeat(var(--tiles-count, 3), minmax(0, 1fr));
+    gap: 2rem;
+    padding: 0 5rem;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .custom-collection-tiles__item {
+    flex: none;
+    aspect-ratio: var(--tile-ratio-desktop, 4 / 5);
+  }
+
+  .custom-collection-tiles__content {
+    padding: 3.2rem;
+  }
+
+  .custom-collection-tiles__title {
+    font-size: 3.2rem;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .custom-collection-tiles__list {
+    padding-left: clamp(2rem, 2.5vw, 4rem);
+    padding-right: clamp(2rem, 2.5vw, 4rem);
+  }
+}

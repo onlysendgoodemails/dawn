@@ -106,16 +106,44 @@
         "show_divider": true
       }
     },
-    "brand_teaser": {
-      "type": "custom-image-text",
+    "collection_tiles": {
+      "type": "custom-collection-tiles",
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "heading": "Story",
+            "button_label": "Discover",
+            "link": "shopify://collections/all"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "heading": "Lookbook",
+            "button_label": "View",
+            "link": "shopify://collections/all"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "heading": "Details",
+            "button_label": "Shop",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3"
+      ],
       "settings": {
-        "image_position": "left",
-        "color_scheme": "scheme-2",
-        "eyebrow": "Northern Links",
-        "heading": "Lorem ipsum dolor sit amet.",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
-        "button_label": "Discover Our Story",
-        "button_link": "shopify://collections/all"
+        "color_scheme": "scheme-1",
+        "desktop_ratio": "4 / 5",
+        "padding_top": 0,
+        "padding_bottom": 120
       }
     },
     "icon_row": {
@@ -180,7 +208,7 @@
     "custom_category_block_BQEKXU",
     "custom_category_block_WVJzUh",
     "custom_category_block_VUGKPQ",
-    "brand_teaser",
+    "collection_tiles",
     "icon_row",
     "newsletter"
   ]

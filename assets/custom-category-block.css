@@ -1,5 +1,6 @@
 /* Category block for the "Startseite v2" (Paket B, see plans/startseite-v2.md): 50/50 split of
-   text panel + image on top, product list below — both inside the same page-width container.
+   text panel + image on top (desktop) or a 4:5 image with the text laid over it, bottom left
+   (mobile), product list below — both inside the same page-width container.
    Used by sections/custom-category-block.liquid together with snippets/custom-product-card.liquid;
    product card base styles come from custom-product-grid.css, only the card look inside this
    block is overridden here. Colors/heading font come from CSS variables set by the section. */
@@ -16,16 +17,17 @@
   gap: 3.2rem;
 }
 
-/* ---- Split: mobile = image on top, text below; desktop = text left, image right (50/50) ---- */
+/* ---- Split: mobile = 4:5 image with text laid over it; desktop = text left, image right (50/50) ---- */
 
 .custom-category-block__split {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
 }
 
 .custom-category-block__media {
   order: 1;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
 }
 
 .custom-category-block__content {
@@ -69,6 +71,40 @@
 
 .custom-category-block__text > :last-child {
   margin-bottom: 0;
+}
+
+/* Mobile: text sits on the image, bottom left. The scrim only darkens the lower part so the
+   image still carries the mood; white text on top of it. */
+@media screen and (max-width: 749px) {
+  .custom-category-block__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 55%);
+    pointer-events: none;
+  }
+
+  .custom-category-block__content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: none;
+    align-items: flex-end;
+  }
+
+  .custom-category-block__content-inner {
+    padding: 2.4rem;
+  }
+
+  .custom-category-block__heading {
+    color: #fff;
+  }
+
+  .custom-category-block__text {
+    color: rgba(255, 255, 255, 0.85);
+  }
 }
 
 @media screen and (min-width: 750px) {
