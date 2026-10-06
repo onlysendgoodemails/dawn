@@ -5,6 +5,16 @@
   --color-button-text: 244, 248, 248;
 }
 
+/* With a mobile image the <img> sits inside a <picture>, so Dawn's `.media > img` rule (direct
+   child) no longer applies: give the nested image the same cover behavior. */
+.custom-hero .banner__media picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
 /* Dawn's stock mobile hero height is a fixed 39rem, which reads almost square on a phone.
    Instead, fill the screen together with the trust bar + header above it: --header-group-height
    is measured in custom-header.liquid's JS (trust bar + header offsetHeight, summed directly

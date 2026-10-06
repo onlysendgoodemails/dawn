@@ -97,6 +97,18 @@ passend zu den Anker-IDs). Anker-IDs der Tabs müssen mit `anchor_id` der Katego
 - **Im Theme-Editor (Nutzer):** Collections der drei Kategorie-Blöcke setzen (aktuell leer), Bilder
   für Kategorie-Blöcke, Hero und Brand-Teaser wählen, Platzhaltertexte ersetzen.
 
+### Nachtrag — Mobil-Bild im Hero + Bildschärfe Kategorie-Bilder
+**Status:** erledigt (Test im Shopify-Vorschau-Theme steht aus)
+- Hero: optionales Feld „Mobile image“ (`image_mobile`, Portrait 9:16, 2240 × 1260 px). Unter 750px
+  lädt der Browser nur dieses Bild (`<picture>`), sonst das Desktop-Bild; ohne Mobil-Bild unverändert.
+  Grund: das 16:9-Bild wurde mobil auf die Höhe hochskaliert (ca. 2,6-fach, unscharf, zu groß).
+- Kategorie-Block: `sizes` mobil von `100vw` auf `165vw` (sichtbare Bildfläche ist mobil breiter als
+  der Viewport), damit die passende Auflösung geladen wird.
+- Bildmaße aller Startseiten-Bilder: `../../bilder-spezifikation.md` (außerhalb des Repos).
+
+**Dateien:** `sections/custom-hero.liquid` (geändert), `assets/custom-hero.css` (geändert),
+`sections/custom-category-block.liquid` (geändert: eine Zeile)
+
 ### Nachtrag — Trust-Bar (Icon-Row) im ruhigen Stil
 **Status:** erledigt (Test im Shopify-Vorschau-Theme steht aus)
 - Neue Lucide-Icons (ISC-Lizenz, Strichstärke 1,5): `assets/custom-icon-sprout.svg`,
