@@ -126,6 +126,34 @@
     },
     "custom_category_block_BQEKXU": {
       "type": "custom-category-block",
+      "blocks": {
+        "image_tile_mqWycP": {
+          "type": "image_tile",
+          "settings": {
+            "image": "shopify://shop_images/sommer-outfit-damen-weisses-t-shirt-dj-kachel-story-1536x1024-02.png",
+            "link": "",
+            "label": "",
+            "position": 0,
+            "columns": "1",
+            "rows": "1"
+          }
+        },
+        "image_tile_GtJPnY": {
+          "type": "image_tile",
+          "settings": {
+            "image": "shopify://shop_images/golf-outfit-duo-weisse-t-shirts-kachel-story-1536x1024-01.png",
+            "link": "",
+            "label": "",
+            "position": 0,
+            "columns": "2",
+            "rows": "1"
+          }
+        }
+      },
+      "block_order": [
+        "image_tile_mqWycP",
+        "image_tile_GtJPnY"
+      ],
       "name": "Custom Category Block",
       "settings": {
         "anchor_id": "shirts",
@@ -143,6 +171,34 @@
     },
     "custom_category_block_WVJzUh": {
       "type": "custom-category-block",
+      "blocks": {
+        "image_tile_fwrEXf": {
+          "type": "image_tile",
+          "settings": {
+            "image": "shopify://shop_images/golf-streetwear-damen-hoodie-urban-kachel-story-1536x1024-01.png",
+            "link": "",
+            "label": "",
+            "position": 0,
+            "columns": "1",
+            "rows": "1"
+          }
+        },
+        "image_tile_Y66cw4": {
+          "type": "image_tile",
+          "settings": {
+            "image": "shopify://shop_images/golf-streetwear-duo-hoodie-sweatshirt-kachel-lookbook-1536x1024.png",
+            "link": "",
+            "label": "",
+            "position": 0,
+            "columns": "1",
+            "rows": "1"
+          }
+        }
+      },
+      "block_order": [
+        "image_tile_fwrEXf",
+        "image_tile_Y66cw4"
+      ],
       "name": "Custom Category Block",
       "settings": {
         "anchor_id": "sweatshirts-hoodies",
@@ -160,6 +216,22 @@
     },
     "custom_category_block_VUGKPQ": {
       "type": "custom-category-block",
+      "blocks": {
+        "image_tile_E4t9rd": {
+          "type": "image_tile",
+          "settings": {
+            "image": "shopify://shop_images/golf-streetwear-herren-sweatshirt-t-shirt-cafe-kachel-lookbook-1536x1024.png",
+            "link": "",
+            "label": "",
+            "position": 0,
+            "columns": "2",
+            "rows": "1"
+          }
+        }
+      },
+      "block_order": [
+        "image_tile_E4t9rd"
+      ],
       "name": "Custom Category Block",
       "settings": {
         "anchor_id": "caps-beanies",
