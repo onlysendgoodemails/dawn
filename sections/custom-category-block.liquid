@@ -69,24 +69,77 @@
       </div>
     </div>
 
+    {%- liquid
+      comment
+        Tiles are placed by product number. product_total is the number of cards actually
+        rendered, so a tile can never end up behind a product that does not exist.
+      endcomment
+      if collection != blank and collection.products.size > 0
+        assign product_total = collection.products.size
+        if product_total > products_to_show
+          assign product_total = products_to_show
+        endif
+      else
+        assign product_total = products_to_show
+      endif
+      assign tile_slots = section.blocks.size | plus: 1.0
+    -%}
     <ul class="custom-category-block__list" role="list">
-      {%- if collection != blank and collection.products.size > 0 -%}
-        {%- for product in collection.products limit: products_to_show -%}
-          <li class="custom-product-grid__item">
-            {% render 'custom-product-card', product: product %}
-          </li>
-        {%- endfor -%}
-      {%- else -%}
-        {%- for i in (1..products_to_show) -%}
-          {%- liquid
-            assign ridx = i | modulo: 4 | plus: 1
-            assign placeholder_image = 'product-apparel-' | append: ridx
-          -%}
-          <li class="custom-product-grid__item">
+      {%- for i in (1..product_total) -%}
+        <li class="custom-product-grid__item">
+          {%- if collection != blank and collection.products.size > 0 -%}
+            {% render 'custom-product-card', product: collection.products[forloop.index0] %}
+          {%- else -%}
+            {%- assign ridx = i | modulo: 4 | plus: 1 -%}
+            {%- assign placeholder_image = 'product-apparel-' | append: ridx -%}
             {% render 'custom-product-card', placeholder_image: placeholder_image %}
-          </li>
+          {%- endif -%}
+        </li>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign target = block.settings.position
+            if target == 0
+              assign target = forloop.index | times: product_total | divided_by: tile_slots | round
+            endif
+            if target < 1
+              assign target = 1
+            endif
+            if target > product_total
+              assign target = product_total
+            endif
+          -%}
+          {%- if target == i -%}
+            {%- liquid
+              assign tile_label = block.settings.label | default: block.settings.image.alt
+              assign tile_image = block.settings.image
+            -%}
+            <li
+              class="custom-category-block__tile custom-category-block__tile--cols-{{ block.settings.columns }} custom-category-block__tile--rows-{{ block.settings.rows }}"
+              {{ block.shopify_attributes }}
+            >
+              <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %}
+                class="custom-category-block__tile-link media"
+                {% if tile_label != blank %}aria-label="{{ tile_label | escape }}"{% endif %}
+                {% if tile_image != blank %}style="--image-focal: {{ tile_image.presentation.focal_point }}"{% endif %}
+              >
+                {%- if tile_image != blank -%}
+                  {{
+                    tile_image
+                    | image_url: width: 1500
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: '(min-width: 990px) 50vw, 100vw',
+                      widths: '375, 550, 750, 1100, 1500',
+                      alt: tile_label
+                  }}
+                {%- else -%}
+                  {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </{% if block.settings.link != blank %}a{% else %}div{% endif %}>
+            </li>
+          {%- endif -%}
         {%- endfor -%}
-      {%- endif -%}
+      {%- endfor -%}
     </ul>
   </div>
 </div>
@@ -196,6 +249,64 @@
       "step": 1,
       "default": 4,
       "label": "Products to show"
+    }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "image_tile",
+      "name": "Image tile",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Portrait or square. Set the focal point so the subject stays in view when the tile is cropped."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional. Without a link the tile is just an image."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link label (accessibility)",
+          "info": "Read out by screen readers, e.g. \"Shop the new polos\". Falls back to the image's alt text."
+        },
+        {
+          "type": "range",
+          "id": "position",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "label": "After product no.",
+          "info": "0 = automatic: tiles are spread evenly between the products, in block order. A number places the tile right after that product (capped at the last product).",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "columns",
+          "label": "Width",
+          "options": [
+            { "value": "1", "label": "1 column (same width as a product)" },
+            { "value": "2", "label": "2 columns" }
+          ],
+          "default": "1"
+        },
+        {
+          "type": "select",
+          "id": "rows",
+          "label": "Height",
+          "options": [
+            { "value": "1", "label": "1 row (same height as a product)" },
+            { "value": "2", "label": "2 rows (tall portrait)" }
+          ],
+          "default": "1"
+        }
+      ]
     }
   ],
   "presets": [

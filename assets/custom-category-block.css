@@ -214,3 +214,61 @@
 .custom-category-block .custom-product-card__swatches {
   flex-basis: 100%;
 }
+
+/* ---- Image tiles between the products (blocks of type "image_tile") ----
+   A tile is a grid cell like a product card. It stretches to the height of the row it sits in,
+   so it lines up with the neighbouring cards; "2 rows" makes it a tall portrait. Dense flow
+   lets the products fill any gap a 2-column tile leaves behind. */
+
+.custom-category-block__list {
+  grid-auto-flow: row dense;
+}
+
+.custom-category-block__tile {
+  display: flex;
+  min-height: 24rem;
+}
+
+.custom-category-block__tile--cols-2 {
+  grid-column: span 2;
+}
+
+.custom-category-block__tile--rows-2 {
+  grid-row: span 2;
+  min-height: 48rem;
+}
+
+.custom-category-block__tile-link {
+  flex: 1;
+  display: block;
+  color: inherit;
+}
+
+.custom-category-block__tile-link > img {
+  object-position: var(--image-focal, 50% 50%);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+a.custom-category-block__tile-link:hover > img {
+  transform: scale(1.03);
+}
+
+@media screen and (min-width: 750px) {
+  .custom-category-block__tile {
+    min-height: 30rem;
+  }
+
+  .custom-category-block__tile--rows-2 {
+    min-height: 60rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-category-block__tile-link > img {
+    transition: none;
+  }
+
+  a.custom-category-block__tile-link:hover > img {
+    transform: none;
+  }
+}
