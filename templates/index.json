@@ -12,7 +12,7 @@
     "hero": {
       "type": "custom-hero",
       "settings": {
-        "image": "shopify://shop_images/northernlinks-brand_12.png",
+        "image": "shopify://shop_images/northern-links-hero-desktop-v4-3840x2160.png",
         "image_overlay_opacity": 0,
         "color_scheme": "scheme-4",
         "heading": "Lorem ipsum dolor sit amet.",
@@ -35,117 +35,13 @@
     "image_band": {
       "type": "custom-image-band",
       "settings": {
+        "image": "shopify://shop_images/golf-outfit-gruppe-golfplatz-image-band-1536x1024-03.png",
+        "full_width": false,
         "mobile_ratio": "4 / 5",
-        "desktop_ratio": "21 / 9",
+        "desktop_ratio": "16 / 9",
         "color_scheme": "scheme-1",
         "padding_top": 40,
         "padding_bottom": 80
-      }
-    },
-    "category_nav": {
-      "type": "custom-category-nav",
-      "blocks": {
-        "tab_1": {
-          "type": "tab",
-          "settings": {
-            "label": "Shirts",
-            "anchor": "shirts"
-          }
-        },
-        "tab_2": {
-          "type": "tab",
-          "settings": {
-            "label": "Sweatshirts & Hoodies",
-            "anchor": "sweatshirts-hoodies"
-          }
-        },
-        "tab_3": {
-          "type": "tab",
-          "settings": {
-            "label": "Caps & Beanies",
-            "anchor": "caps-beanies"
-          }
-        }
-      },
-      "block_order": [
-        "tab_1",
-        "tab_2",
-        "tab_3"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "aria_label": "Categories"
-      }
-    },
-    "custom_category_block_BQEKXU": {
-      "type": "custom-category-block",
-      "name": "Custom Category Block",
-      "settings": {
-        "anchor_id": "shirts",
-        "heading": "Shirts",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
-        "color_scheme": "scheme-5",
-        "collection": "",
-        "products_to_show": 8,
-        "show_divider": true,
-        "padding_top": 48
-      }
-    },
-    "custom_category_block_WVJzUh": {
-      "type": "custom-category-block",
-      "name": "Custom Category Block",
-      "settings": {
-        "anchor_id": "sweatshirts-hoodies",
-        "heading": "SWEATSHIRTS & HOODIES",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
-        "color_scheme": "scheme-5",
-        "collection": "",
-        "products_to_show": 8,
-        "show_divider": true
-      }
-    },
-    "custom_category_block_VUGKPQ": {
-      "type": "custom-category-block",
-      "name": "Custom Category Block",
-      "settings": {
-        "anchor_id": "caps-beanies",
-        "heading": "CAPS & BEANIES",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
-        "color_scheme": "scheme-5",
-        "collection": "",
-        "products_to_show": 8,
-        "show_divider": true
-      }
-    },
-    "collection_tiles": {
-      "type": "custom-collection-tiles",
-      "blocks": {
-        "tile_1": {
-          "type": "tile",
-          "settings": {
-            "heading": "Story",
-            "button_label": "Discover",
-            "link": "shopify://collections/all"
-          }
-        },
-        "tile_2": {
-          "type": "tile",
-          "settings": {
-            "heading": "Lookbook",
-            "button_label": "View",
-            "link": "shopify://collections/all"
-          }
-        }
-      },
-      "block_order": [
-        "tile_1",
-        "tile_2"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "desktop_ratio": "5 / 4",
-        "padding_top": 0,
-        "padding_bottom": 120
       }
     },
     "icon_row": {
@@ -188,14 +84,136 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
+        "show_divider": false,
         "padding_top": 16,
-        "padding_bottom": 16,
-        "show_divider": false
+        "padding_bottom": 16
+      }
+    },
+    "category_nav": {
+      "type": "custom-category-nav",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "label": "Shirts",
+            "anchor": "shirts"
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "label": "Sweatshirts & Hoodies",
+            "anchor": "sweatshirts-hoodies"
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "label": "Caps & Beanies",
+            "anchor": "caps-beanies"
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "aria_label": "Categories"
+      }
+    },
+    "custom_category_block_BQEKXU": {
+      "type": "custom-category-block",
+      "name": "Custom Category Block",
+      "settings": {
+        "anchor_id": "shirts",
+        "padding_top": 48,
+        "background_color": "#f7f6f2",
+        "panel_color": "#e5e8e5",
+        "heading_font": "lora_n4",
+        "heading": "Shirts",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "image": "shopify://shop_images/golf-outfit-herren-weisses-t-shirt-kat-shirts-1400x1010-01.jpg",
+        "collection": "men-tees",
+        "columns_desktop": "4",
+        "products_to_show": 8
+      }
+    },
+    "custom_category_block_WVJzUh": {
+      "type": "custom-category-block",
+      "name": "Custom Category Block",
+      "settings": {
+        "anchor_id": "sweatshirts-hoodies",
+        "padding_top": 0,
+        "background_color": "#f7f6f2",
+        "panel_color": "#e5e8e5",
+        "heading_font": "lora_n4",
+        "heading": "SWEATSHIRTS & HOODIES",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "image": "shopify://shop_images/golf-streetwear-damen-hoodie-cap-kat-hoodies-1400x1010-01.jpg",
+        "collection": "",
+        "columns_desktop": "4",
+        "products_to_show": 8
+      }
+    },
+    "custom_category_block_VUGKPQ": {
+      "type": "custom-category-block",
+      "name": "Custom Category Block",
+      "settings": {
+        "anchor_id": "caps-beanies",
+        "padding_top": 0,
+        "background_color": "#f7f6f2",
+        "panel_color": "#e5e8e5",
+        "heading_font": "lora_n4",
+        "heading": "CAPS & BEANIES",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "image": "shopify://shop_images/golf-cap-herren-navy-kat-caps-1400x1010.jpg",
+        "collection": "",
+        "columns_desktop": "4",
+        "products_to_show": 8
+      }
+    },
+    "collection_tiles": {
+      "type": "custom-collection-tiles",
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/golf-streetwear-gruppe-studio-image-band-1536x1024-02.png",
+            "heading": "Story",
+            "button_label": "Discover",
+            "link": "shopify://collections/all"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/golfplatz-im-wald-fairway-newsletter-1536x1024.png",
+            "heading": "Lookbook",
+            "button_label": "View",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "",
+        "heading_font": "lora_n4",
+        "desktop_ratio": "5 / 4",
+        "padding_top": 0,
+        "padding_bottom": 120
       }
     },
     "newsletter": {
       "type": "custom-newsletter",
       "settings": {
+        "image": "shopify://shop_images/golfplatz-am-meer-duenen-newsletter-1536x1024-02.png",
         "image_overlay_opacity": 0,
         "color_scheme": "scheme-4",
         "eyebrow": "Stay in Touch",
