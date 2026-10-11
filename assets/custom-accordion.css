@@ -1,0 +1,128 @@
+/* Gemeinsame Aufklapp-Zeilen (Akkordeon) für FAQ-Seite und Produktseite.
+   Aufbau: <div class="custom-accordion"><details><summary>Frage<span class="custom-accordion__icon"></span></summary>
+   <div class="custom-accordion__content">Antwort</div></details></div>
+   Optik: Frage links, dünnes Plus rechts (wird beim Öffnen zum Minus), feine Linien zwischen den Zeilen.
+   Schrift und Farben kommen aus dem Theme. Modifier --compact für die schmale Kaufbox. */
+
+.custom-accordion {
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-accordion__row {
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-accordion__row > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2.6rem 0;
+  font-size: 1.8rem;
+  line-height: 1.4;
+  cursor: pointer;
+  list-style: none;
+}
+
+.custom-accordion__row > summary::-webkit-details-marker {
+  display: none;
+}
+
+.custom-accordion__row > summary:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.2rem;
+}
+
+.custom-accordion__title {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Plus aus zwei dünnen Balken, der senkrechte klappt beim Öffnen weg */
+.custom-accordion__icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.custom-accordion__icon::before,
+.custom-accordion__icon::after {
+  content: '';
+  position: absolute;
+  background: rgb(var(--color-foreground));
+  transition: transform 0.2s ease;
+}
+
+.custom-accordion__icon::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 0.1rem;
+  transform: translateY(-50%);
+}
+
+.custom-accordion__icon::after {
+  top: 0;
+  left: 50%;
+  width: 0.1rem;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.custom-accordion__row[open] > summary .custom-accordion__icon::after {
+  transform: translateX(-50%) scaleY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-accordion__icon::before,
+  .custom-accordion__icon::after {
+    transition: none;
+  }
+}
+
+.custom-accordion__content {
+  padding: 0 4rem 2.6rem 0;
+  color: rgba(var(--color-foreground), 0.85);
+  word-break: break-word;
+}
+
+.custom-accordion__content > :first-child {
+  margin-top: 0;
+}
+
+.custom-accordion__content > :last-child {
+  margin-bottom: 0;
+}
+
+/* Schmale Variante für die Kaufbox der Produktseite */
+.custom-accordion--compact {
+  margin-top: 2.4rem;
+}
+
+.custom-accordion--compact + .custom-accordion--compact {
+  margin-top: 0;
+  border-top: 0;
+}
+
+.custom-accordion--compact .custom-accordion__row > summary {
+  padding: 1.8rem 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+}
+
+.custom-accordion--compact .custom-accordion__content {
+  padding-bottom: 2rem;
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+.custom-accordion__line + .custom-accordion__line {
+  margin-top: 0.8rem;
+}
+
+.custom-accordion__label {
+  color: rgba(var(--color-foreground), 0.75);
+}

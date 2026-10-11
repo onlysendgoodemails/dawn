@@ -19,6 +19,7 @@
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
   {{ 'custom-product.css' | asset_url | stylesheet_tag }}
+  {{ 'custom-accordion.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'custom-product-gallery.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'custom-size-guide.js' | asset_url }}" defer="defer"></script>
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
@@ -267,6 +268,130 @@
                       </div>
                     </details>
                   </div>
+                {%- when 'custom_accordion' -%}
+                  {%- comment -%}
+                    AP5: Aufklapp-Zeilen der Kaufbox (Optik: assets/custom-accordion.css, gleiche wie FAQ).
+                    Art (kind) bestimmt den Inhalt: details, fit, material, shipping, manufacturer.
+                    Ohne Inhalt erscheint die Zeile nicht.
+                  {%- endcomment -%}
+                  {%- liquid
+                    assign acc_facts = shop.metaobjects.shop_facts.values.first
+                    assign acc_kind = block.settings.kind
+                    assign acc_title = block.settings.heading
+                    if acc_title == blank
+                      case acc_kind
+                        when 'details'
+                          assign acc_title = 'Produktdetails'
+                        when 'fit'
+                          assign acc_title = 'Größe & Passform'
+                        when 'material'
+                          assign acc_title = 'Material & Pflege'
+                        when 'shipping'
+                          assign acc_title = 'Versand & Rückgabe'
+                        when 'manufacturer'
+                          assign acc_title = 'Herstellerangaben'
+                      endcase
+                    endif
+
+                    assign acc_fit = product.metafields.custom.fit_note.value
+                    assign acc_guide = product.metafields.custom.size_guide.value
+                    assign acc_fiber = product.metafields.custom.fiber_composition.value
+                    assign acc_material = product.metafields.custom.material.value
+                    assign acc_care = product.metafields.custom.care_text
+                    assign acc_origin = product.metafields.custom.ursprungsland.value
+                    assign acc_standards = product.metafields.custom.standards.value
+
+                    assign acc_has_content = false
+                    case acc_kind
+                      when 'details'
+                        if product.description != blank
+                          assign acc_has_content = true
+                        endif
+                      when 'fit'
+                        if acc_fit != blank or acc_guide != blank
+                          assign acc_has_content = true
+                        endif
+                      when 'material'
+                        if acc_fiber != blank or acc_material != blank or acc_care != blank or acc_origin != blank or acc_standards != blank
+                          assign acc_has_content = true
+                        endif
+                      when 'shipping'
+                        if acc_facts != blank
+                          assign acc_has_content = true
+                        endif
+                      when 'manufacturer'
+                        if acc_facts != blank and acc_facts.manufacturer.value != blank
+                          assign acc_has_content = true
+                        endif
+                    endcase
+                  -%}
+                  {%- if acc_has_content -%}
+                    <div class="custom-accordion custom-accordion--compact quick-add-hidden" {{ block.shopify_attributes }}>
+                      <details class="custom-accordion__row" id="Details-{{ block.id }}-{{ section.id }}"{% if block.settings.open %} open{% endif %}>
+                        <summary>
+                          <h2 class="custom-accordion__title">{{ acc_title | escape }}</h2>
+                          <span class="custom-accordion__icon" aria-hidden="true"></span>
+                        </summary>
+                        <div class="custom-accordion__content rte">
+                          {%- case acc_kind -%}
+                            {%- when 'details' -%}
+                              {{ product.description }}
+                            {%- when 'fit' -%}
+                              {%- if acc_fit != blank -%}
+                                <p class="custom-accordion__line">{{ acc_fit | escape }}</p>
+                              {%- endif -%}
+                              {%- if acc_guide != blank -%}
+                                <p class="custom-accordion__line">
+                                  <button type="button" class="custom-size-guide__open" data-size-guide-open="SizeGuide-{{ section.id }}" aria-haspopup="dialog">Größentabelle öffnen</button>
+                                </p>
+                              {%- endif -%}
+                            {%- when 'material' -%}
+                              {%- if acc_fiber != blank -%}
+                                <p class="custom-accordion__line"><span class="custom-accordion__label">Faserzusammensetzung:</span> {{ acc_fiber | escape }}</p>
+                              {%- endif -%}
+                              {%- if acc_material != blank -%}
+                                <p class="custom-accordion__line"><span class="custom-accordion__label">Material:</span> {{ acc_material | escape }}</p>
+                              {%- endif -%}
+                              {%- if acc_standards != blank -%}
+                                <p class="custom-accordion__line"><span class="custom-accordion__label">Zertifizierung:</span> {{ acc_standards | join: ', ' | escape }}</p>
+                              {%- endif -%}
+                              {%- if acc_origin != blank -%}
+                                <p class="custom-accordion__line"><span class="custom-accordion__label">Herkunft:</span> {{ acc_origin | escape }}</p>
+                              {%- endif -%}
+                              {%- if acc_care != blank -%}
+                                <div class="custom-accordion__line"><span class="custom-accordion__label">Pflege:</span> {{ acc_care | metafield_tag }}</div>
+                              {%- endif -%}
+                            {%- when 'shipping' -%}
+                              <p class="custom-accordion__line">
+                                {%- if acc_facts.shipping_de.value != blank -%}
+                                  Deutschland: {{ acc_facts.shipping_de.value | escape }}{% if acc_facts.free_shipping_de.value != blank %}, kostenlos ab {{ acc_facts.free_shipping_de.value | escape }}{% endif %}.
+                                {%- endif -%}
+                                {%- if acc_facts.shipping_eu.value != blank %}
+                                  EU: {{ acc_facts.shipping_eu.value | escape }}{% if acc_facts.free_shipping_eu.value != blank %}, kostenlos ab {{ acc_facts.free_shipping_eu.value | escape }}{% endif %}.
+                                {%- endif -%}
+                              </p>
+                              {%- if acc_facts.lead_time_de.value != blank -%}
+                                <p class="custom-accordion__line">
+                                  Lieferzeit: {{ acc_facts.lead_time_de.value | escape }} (Deutschland){% if acc_facts.lead_time_eu.value != blank %}, {{ acc_facts.lead_time_eu.value | escape }} (EU){% endif %}.
+                                </p>
+                              {%- endif -%}
+                              {%- if acc_facts.withdrawal_days.value != blank -%}
+                                <p class="custom-accordion__line">Du kannst den Vertrag innerhalb von {{ acc_facts.withdrawal_days.value | escape }} Tagen widerrufen.</p>
+                              {%- endif -%}
+                              <p class="custom-accordion__line">
+                                <a href="/pages/faq#versand">Mehr zu Versand</a> · <a href="/pages/faq#widerruf">Mehr zu Rückgabe und Widerruf</a>
+                              </p>
+                            {%- when 'manufacturer' -%}
+                              <p class="custom-accordion__line">{{ acc_facts.manufacturer.value | escape | newline_to_br }}</p>
+                              {%- if product.type != blank -%}
+                                <p class="custom-accordion__line"><span class="custom-accordion__label">Produktart:</span> {{ product.type | escape }}</p>
+                              {%- endif -%}
+                              <p class="custom-accordion__line"><span class="custom-accordion__label">Produkt:</span> {{ product.title | escape }}</p>
+                          {%- endcase -%}
+                        </div>
+                      </details>
+                    </div>
+                  {%- endif -%}
                 {%- when 'quantity_selector' -%}
                   <div
                     id="Quantity-Form-{{ section.id }}"
@@ -1077,6 +1202,37 @@
           "type": "checkbox",
           "id": "open_by_default",
           "label": "t:sections.disclosures.settings.open_by_default.label",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "custom_accordion",
+      "name": "Aufklapp-Zeile (Custom)",
+      "settings": [
+        {
+          "type": "select",
+          "id": "kind",
+          "label": "Inhalt",
+          "options": [
+            { "value": "details", "label": "Produktdetails (Beschreibung)" },
+            { "value": "fit", "label": "Größe & Passform" },
+            { "value": "material", "label": "Material & Pflege" },
+            { "value": "shipping", "label": "Versand & Rückgabe" },
+            { "value": "manufacturer", "label": "Herstellerangaben" }
+          ],
+          "default": "details"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Überschrift",
+          "info": "Leer lassen für die Standardüberschrift."
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Beim Laden aufgeklappt",
           "default": false
         }
       ]

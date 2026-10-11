@@ -7,6 +7,7 @@
   Fehlt shop_facts, bleiben die Platzhalter sichtbar, damit der Fehler auffällt.
 {%- endcomment -%}
 
+{{ 'custom-accordion.css' | asset_url | stylesheet_tag }}
 {{ 'custom-faq.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
@@ -93,7 +94,7 @@
       -%}
       <section class="custom-faq__section" id="{{ key }}">
         <h2 class="custom-faq__heading">{{ section_titles[forloop.index0] | escape }}</h2>
-        <div class="custom-faq__items">
+        <div class="custom-faq__items custom-accordion">
           {%- for sorted_key in sorted_keys -%}
             {%- liquid
               assign item_handle = sorted_key | split: '|' | last
@@ -114,10 +115,13 @@
                   assign answer_html = answer_html | replace: '[[widerrufsfrist]]', tok_widerrufsfrist
                 -%}
               {%- endif -%}
-              <div class="custom-faq__item">
-                <h3 class="custom-faq__question">{{ faq.question.value | escape }}</h3>
-                <div class="custom-faq__answer rte">{{ answer_html }}</div>
-              </div>
+              <details class="custom-faq__item custom-accordion__row">
+                <summary>
+                  <h3 class="custom-faq__question custom-accordion__title">{{ faq.question.value | escape }}</h3>
+                  <span class="custom-accordion__icon" aria-hidden="true"></span>
+                </summary>
+                <div class="custom-faq__answer custom-accordion__content rte">{{ answer_html }}</div>
+              </details>
             {%- endif -%}
           {%- endfor -%}
         </div>

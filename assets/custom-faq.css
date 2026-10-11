@@ -59,47 +59,15 @@ html:has(.custom-faq__nav) {
   text-underline-offset: 0.4rem;
 }
 
-/* Abschnitt */
+/* Abschnitt: links die Überschrift, rechts die Aufklapp-Zeilen (Optik in custom-accordion.css) */
 .custom-faq__section {
   padding: 3.5rem 0;
-  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
-}
-
-.custom-faq__nav + .custom-faq__section {
-  border-top: 0;
-}
-
-.custom-faq__section:last-child {
-  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
 }
 
 .custom-faq__heading {
-  margin: 0 0 2.5rem;
+  margin: 0 0 2rem;
   font-size: 2.2rem;
   line-height: 1.25;
-}
-
-.custom-faq__question {
-  margin: 0 0 0.8rem;
-  font-size: 1.6rem;
-  line-height: 1.4;
-  font-weight: 600;
-}
-
-.custom-faq__item + .custom-faq__item {
-  margin-top: 3rem;
-}
-
-.custom-faq__answer {
-  color: rgba(var(--color-foreground), 0.85);
-}
-
-.custom-faq__answer > *:first-child {
-  margin-top: 0;
-}
-
-.custom-faq__answer > *:last-child {
-  margin-bottom: 0;
 }
 
 @media screen and (min-width: 990px) {
@@ -115,6 +83,6 @@ html:has(.custom-faq__nav) {
   }
 
   .custom-faq__items {
-    max-width: 72rem;
+    max-width: 80rem;
   }
 }

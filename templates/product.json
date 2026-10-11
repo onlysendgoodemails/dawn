@@ -26,8 +26,36 @@
             "show_gift_card_recipient": true
           }
         },
-        "description": {
-          "type": "description"
+        "acc_details": {
+          "type": "custom_accordion",
+          "settings": {
+            "kind": "details",
+            "open": true
+          }
+        },
+        "acc_fit": {
+          "type": "custom_accordion",
+          "settings": {
+            "kind": "fit"
+          }
+        },
+        "acc_material": {
+          "type": "custom_accordion",
+          "settings": {
+            "kind": "material"
+          }
+        },
+        "acc_shipping": {
+          "type": "custom_accordion",
+          "settings": {
+            "kind": "shipping"
+          }
+        },
+        "acc_manufacturer": {
+          "type": "custom_accordion",
+          "settings": {
+            "kind": "manufacturer"
+          }
         },
         "share": {
           "type": "share",
@@ -42,7 +70,11 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "description",
+        "acc_details",
+        "acc_fit",
+        "acc_material",
+        "acc_shipping",
+        "acc_manufacturer",
         "share"
       ],
       "settings": {
