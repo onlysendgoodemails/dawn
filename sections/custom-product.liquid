@@ -536,10 +536,23 @@
                     show_pickup_availability: true
                   -%}
                   {%- comment -%}
-                    AP3: Lieferzeit unter dem Button. Metafeld custom.lead_time hat Vorrang, sonst der Standardtext
-                    aus den Abschnittseinstellungen.
+                    AP3/AP13c: Lieferzeit unter dem Button. Reihenfolge: Metafeld custom.lead_time am Produkt, dann die Werte
+                    aus dem Metaobjekt shop_facts (lead_time_de, lead_time_eu), zuletzt der Standardtext aus den
+                    Abschnittseinstellungen.
                   {%- endcomment -%}
-                  {%- assign nl_lead_time = product.metafields.custom.lead_time.value | default: section.settings.lead_time_default -%}
+                  {%- liquid
+                    assign nl_facts = shop.metaobjects.shop_facts.values.first
+                    assign nl_lead_time = product.metafields.custom.lead_time.value
+                    if nl_lead_time == blank and nl_facts != blank and nl_facts.lead_time_de.value != blank
+                      assign nl_lead_time = 'Lieferzeit ' | append: nl_facts.lead_time_de.value | append: ' (Deutschland)'
+                      if nl_facts.lead_time_eu.value != blank
+                        assign nl_lead_time = nl_lead_time | append: ', ' | append: nl_facts.lead_time_eu.value | append: ' (EU)'
+                      endif
+                    endif
+                    if nl_lead_time == blank
+                      assign nl_lead_time = section.settings.lead_time_default
+                    endif
+                  -%}
                   {%- if nl_lead_time != blank -%}
                     <p class="product__lead-time caption">
                       <span class="svg-wrapper">{{- 'custom-icon-truck.svg' | inline_asset_content -}}</span>

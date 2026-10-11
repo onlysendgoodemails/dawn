@@ -1,0 +1,171 @@
+{%- comment -%}
+  custom-faq.liquid (AP13b, siehe webpage/00_relaunch/arbeitspaket-pdp.md und fakten-register.md)
+  FAQ-Seite aus Metaobjekten:
+  - faq_item: Fragen und Antworten (Felder question, answer, section, sort_order)
+  - shop_facts: zentrale Werte (Versandkosten, Lieferzeiten, E-Mail, Adressen), ein Eintrag
+  In den Antworten ersetzt dieser Abschnitt Platzhalter wie [[versand_de]] durch die Werte aus shop_facts.
+  Fehlt shop_facts, bleiben die Platzhalter sichtbar, damit der Fehler auffällt.
+{%- endcomment -%}
+
+{{ 'custom-faq.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign facts = shop.metaobjects.shop_facts.values.first
+  assign all_items = shop.metaobjects.faq_item.values
+  assign section_keys = 'versand|bestellung|widerruf|produkt|kontakt' | split: '|'
+  assign section_titles = 'Versand & Lieferung|Bestellung & Zahlung|Rücksendung & Widerruf|Produkt & Pflege|Kontakt' | split: '|'
+
+  if facts != blank
+    assign tok_versand_de = facts.shipping_de.value | escape
+    assign tok_gratis_de = facts.free_shipping_de.value | escape
+    assign tok_versand_eu = facts.shipping_eu.value | escape
+    assign tok_gratis_eu = facts.free_shipping_eu.value | escape
+    assign tok_lieferzeit_de = facts.lead_time_de.value | escape
+    assign tok_lieferzeit_eu = facts.lead_time_eu.value | escape
+    assign tok_email = facts.email.value | escape
+    assign tok_ruecksendeadresse = facts.return_address.value | escape | newline_to_br
+    assign tok_widerrufsfrist = facts.withdrawal_days.value | escape
+  endif
+
+  comment
+    Erster Durchlauf: welche Abschnitte haben Einträge? Für die Sprungleiste oben.
+  endcomment
+  assign present_keys = ''
+  for key in section_keys
+    assign has_items = false
+    for item in all_items
+      if item.section.value == key
+        assign has_items = true
+        break
+      endif
+    endfor
+    if has_items
+      assign present_keys = present_keys | append: key | append: ','
+    endif
+  endfor
+  assign present_list = present_keys | split: ','
+-%}
+
+<div class="custom-faq page-width section-{{ section.id }}-padding">
+  <h1 class="custom-faq__title page-title h0">{{ page.title | escape }}</h1>
+
+  {%- if page.content != blank -%}
+    <div class="custom-faq__intro rte">{{ page.content }}</div>
+  {%- endif -%}
+
+  {%- if section.settings.show_nav and present_list.size > 1 -%}
+    <nav class="custom-faq__nav" aria-label="{{ page.title | escape }}">
+      <ul class="custom-faq__nav-list list-unstyled">
+        {%- for key in section_keys -%}
+          {%- if present_list contains key -%}
+            <li><a class="custom-faq__nav-link link" href="#{{ key }}">{{ section_titles[forloop.index0] | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  {%- for key in section_keys -%}
+    {%- if present_list contains key -%}
+      {%- liquid
+        assign keys_str = ''
+        for item in all_items
+          if item.section.value == key
+            assign padded = item.sort_order.value | default: 0 | plus: 1000
+            assign keys_str = keys_str | append: padded | append: '|' | append: item.system.handle | append: ','
+          endif
+        endfor
+        assign sorted_keys = keys_str | split: ',' | sort
+      -%}
+      <section class="custom-faq__section" id="{{ key }}">
+        <h2 class="custom-faq__heading">{{ section_titles[forloop.index0] | escape }}</h2>
+        <div class="custom-faq__items">
+          {%- for sorted_key in sorted_keys -%}
+            {%- liquid
+              assign item_handle = sorted_key | split: '|' | last
+              assign faq = shop.metaobjects.faq_item[item_handle]
+            -%}
+            {%- if faq != blank -%}
+              {%- capture answer_html -%}{{ faq.answer | metafield_tag }}{%- endcapture -%}
+              {%- if facts != blank -%}
+                {%- liquid
+                  assign answer_html = answer_html | replace: '[[versand_de]]', tok_versand_de
+                  assign answer_html = answer_html | replace: '[[gratis_de]]', tok_gratis_de
+                  assign answer_html = answer_html | replace: '[[versand_eu]]', tok_versand_eu
+                  assign answer_html = answer_html | replace: '[[gratis_eu]]', tok_gratis_eu
+                  assign answer_html = answer_html | replace: '[[lieferzeit_de]]', tok_lieferzeit_de
+                  assign answer_html = answer_html | replace: '[[lieferzeit_eu]]', tok_lieferzeit_eu
+                  assign answer_html = answer_html | replace: '[[email]]', tok_email
+                  assign answer_html = answer_html | replace: '[[ruecksendeadresse]]', tok_ruecksendeadresse
+                  assign answer_html = answer_html | replace: '[[widerrufsfrist]]', tok_widerrufsfrist
+                -%}
+              {%- endif -%}
+              <div class="custom-faq__item">
+                <h3 class="custom-faq__question">{{ faq.question.value | escape }}</h3>
+                <div class="custom-faq__answer rte">{{ answer_html }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "FAQ (Custom)",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_nav",
+      "default": true,
+      "label": "Sprungleiste oben anzeigen",
+      "info": "Zeigt Links zu den Abschnitten (Versand, Widerruf usw.), sobald mindestens zwei Abschnitte Einträge haben."
+    },
+    {
+      "type": "header",
+      "content": "Abstand"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Abstand oben",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Abstand unten",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

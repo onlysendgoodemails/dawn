@@ -1,5 +1,9 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
 {{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Lesebreite für Richtlinien und Textseiten. Der Footer steht auf jeder Seite, deshalb wird das Stylesheet hier geladen.
+{%- endcomment -%}
+{{ 'custom-text-pages.css' | asset_url | stylesheet_tag }}
 {{ 'https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap' | stylesheet_tag }}
 
 {%- style -%}

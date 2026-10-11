@@ -1,0 +1,97 @@
+/* FAQ-Seite (sections/custom-faq.liquid). Schrift und Farben kommen aus dem Theme.
+   Aufbau: Titel, Sprungleiste, danach je Abschnitt links die Überschrift, rechts die Fragen.
+   Mobil stehen Überschrift und Fragen untereinander. */
+
+.custom-faq__title {
+  margin: 0 0 2rem;
+}
+
+.custom-faq__intro {
+  max-width: var(--custom-text-width, 96rem);
+  margin-bottom: 3rem;
+}
+
+/* Sprungleiste */
+.custom-faq__nav {
+  margin: 3rem 0 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-faq__nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 3rem;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-faq__nav-link {
+  font-size: 1.3rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.custom-faq__nav-link:hover {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+/* Abschnitt */
+.custom-faq__section {
+  padding: 3.5rem 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-faq__section:last-child {
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-faq__heading {
+  margin: 0 0 2.5rem;
+  font-size: 2.2rem;
+  line-height: 1.25;
+}
+
+.custom-faq__question {
+  margin: 0 0 0.8rem;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.custom-faq__item + .custom-faq__item {
+  margin-top: 3rem;
+}
+
+.custom-faq__answer {
+  color: rgba(var(--color-foreground), 0.85);
+}
+
+.custom-faq__answer > *:first-child {
+  margin-top: 0;
+}
+
+.custom-faq__answer > *:last-child {
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 990px) {
+  .custom-faq__section {
+    display: grid;
+    grid-template-columns: 28rem 1fr;
+    column-gap: 6rem;
+    padding: 5rem 0;
+  }
+
+  .custom-faq__heading {
+    margin: 0;
+  }
+
+  .custom-faq__items {
+    max-width: 72rem;
+  }
+}

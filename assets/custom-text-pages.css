@@ -1,0 +1,62 @@
+/* Lesebreite für Textseiten: Shopify-Richtlinien (AGB, Widerruf, Impressum, Datenschutz, Kontakt)
+   und Seiten mit Dawn-Standardbreite (sections/main-page.liquid, sections/page.liquid, sections/contact-form.liquid).
+   Wird von sections/custom-footer.liquid geladen und gilt damit auf jeder Seite, auch auf den Richtlinien.
+
+   Ausgangslage: Shopify setzt für Richtlinien max-width: 65ch und zentriert den Titel,
+   Dawn begrenzt .page-width--narrow auf 72,6rem. Beides wirkt sehr schmal.
+   Die Breite lässt sich an einer Stelle ändern: --custom-text-width. */
+
+:root {
+  --custom-text-width: 96rem;
+}
+
+/* Richtlinien: gleiche Seitenränder wie .page-width, Text linksbündig in einer lesbaren Spalte */
+.shopify-policy__container {
+  max-width: calc(var(--custom-text-width) + 3rem);
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+  box-sizing: border-box;
+}
+
+.shopify-policy__title {
+  text-align: left;
+}
+
+.shopify-policy__title h1 {
+  margin: 0 0 3rem;
+}
+
+.shopify-policy__body {
+  max-width: var(--custom-text-width);
+}
+
+.shopify-policy__body h2,
+.shopify-policy__body h3 {
+  margin-top: 3rem;
+}
+
+.shopify-policy__body p,
+.shopify-policy__body li {
+  line-height: calc(1 + 0.8 / var(--font-body-scale));
+}
+
+@media screen and (min-width: 750px) {
+  .shopify-policy__container {
+    padding: 5rem 5rem 8rem;
+    max-width: calc(var(--custom-text-width) + 10rem);
+  }
+}
+
+/* Seiten mit Dawn-Standardbreite (Kontakt, Textseiten, Blogartikel) */
+@media screen and (min-width: 750px) {
+  .page-width--narrow {
+    padding: 0 5rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .page-width--narrow {
+    max-width: calc(var(--custom-text-width) + 10rem);
+    padding: 0 5rem;
+  }
+}
