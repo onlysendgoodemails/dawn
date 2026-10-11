@@ -31,6 +31,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-4",
+        "cancellation_link_url": "/pages/vertrag-widerrufen",
         "padding_top": 64,
         "padding_bottom": 48
       }

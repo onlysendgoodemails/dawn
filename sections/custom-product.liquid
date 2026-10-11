@@ -108,16 +108,16 @@
                   </p>
                 {%- when 'title' -%}
                   {%- comment -%}
-                    AP3: Eyebrow (DROP 01 · Linie), Kurztitel und Subline kommen aus Metafeldern (Namespace custom).
-                    Ohne Metafelder fällt alles auf Produkttitel und Hersteller zurück.
+                    AP3: Eyebrow (Linie · NORTHERN LINKS), Kurztitel und Subline kommen aus Metafeldern (Namespace custom).
+                    Ohne Metafeld custom.line steht nur NORTHERN LINKS, ohne custom.short_title der volle Produkttitel.
                   {%- endcomment -%}
                   {%- liquid
                     assign nl_display_title = product.metafields.custom.short_title.value | default: product.title
-                    assign nl_line = product.metafields.custom.line.value | default: product.vendor
+                    assign nl_line = product.metafields.custom.line.value
                     assign nl_subline = product.metafields.custom.subline.value
-                    assign nl_eyebrow = nl_line
-                    if product.tags contains 'DROP01'
-                      assign nl_eyebrow = 'DROP 01 · ' | append: nl_line
+                    assign nl_eyebrow = 'NORTHERN LINKS'
+                    if nl_line != blank
+                      assign nl_eyebrow = nl_line | append: ' · NORTHERN LINKS'
                     endif
                   -%}
                   {%- if nl_eyebrow != blank -%}
@@ -149,16 +149,16 @@
                     </div>
                   {%- endif -%}
                   {%- comment -%}
-                    AP3: Preishinweis für den deutschen Markt: "Inkl. MwSt. · zzgl. Versand", Versand verlinkt auf
-                    die Versandrichtlinie von Shopify oder, falls diese leer ist, auf die Seite mit dem Handle
-                    versand-lieferung. Gibt es keines von beiden, steht der Hinweis ohne Link da.
+                    AP3: Preishinweis für den deutschen Markt: "Inkl. MwSt. · zzgl. Versand". Der Link "Versand" springt
+                    zum Abschnitt #versand der FAQ-Seite (Handle faq). Gibt es die Seite nicht, nimmt er die
+                    Versandrichtlinie von Shopify. Gibt es keines von beiden, steht der Hinweis ohne Link da.
                   {%- endcomment -%}
                   {%- liquid
                     assign nl_ship_url = ''
-                    if shop.shipping_policy.body != blank
+                    if pages['faq'].title != blank
+                      assign nl_ship_url = pages['faq'].url | append: '#versand'
+                    elsif shop.shipping_policy.body != blank
                       assign nl_ship_url = shop.shipping_policy.url
-                    elsif pages['versand-lieferung'].title != blank
-                      assign nl_ship_url = pages['versand-lieferung'].url
                     endif
                   -%}
                   <div class="product__tax caption rte">
