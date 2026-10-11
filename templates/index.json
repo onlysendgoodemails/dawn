@@ -133,7 +133,7 @@
             "image": "shopify://shop_images/sommer-outfit-damen-weisses-t-shirt-dj-kachel-story-1536x1024-02.png",
             "link": "",
             "label": "",
-            "position": 0,
+            "position": 2,
             "columns": "1",
             "rows": "1"
           }
@@ -144,7 +144,7 @@
             "image": "shopify://shop_images/golf-outfit-duo-weisse-t-shirts-kachel-story-1536x1024-01.png",
             "link": "",
             "label": "",
-            "position": 0,
+            "position": 3,
             "columns": "2",
             "rows": "1"
           }
@@ -178,8 +178,8 @@
             "image": "shopify://shop_images/golf-streetwear-damen-hoodie-urban-kachel-story-1536x1024-01.png",
             "link": "",
             "label": "",
-            "position": 0,
-            "columns": "1",
+            "position": 1,
+            "columns": "2",
             "rows": "1"
           }
         },
@@ -189,7 +189,7 @@
             "image": "shopify://shop_images/golf-streetwear-duo-hoodie-sweatshirt-kachel-lookbook-1536x1024.png",
             "link": "",
             "label": "",
-            "position": 0,
+            "position": 2,
             "columns": "1",
             "rows": "1"
           }
@@ -223,7 +223,7 @@
             "image": "shopify://shop_images/golf-streetwear-herren-sweatshirt-t-shirt-cafe-kachel-lookbook-1536x1024.png",
             "link": "",
             "label": "",
-            "position": 0,
+            "position": 1,
             "columns": "2",
             "rows": "1"
           }
