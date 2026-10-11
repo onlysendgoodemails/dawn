@@ -1,0 +1,87 @@
+{%- comment -%}
+  custom-size-guide.liquid (AP5a, siehe webpage/00_relaunch/arbeitspaket-pdp.md)
+  Link "Größentabelle" mit Dialogfenster. Die Tabelle kommt aus dem Metaobjekt size_guide, das am Produkt über das
+  Metafeld custom.size_guide hängt. Hat das Produkt keins, rendert das Snippet nichts.
+
+  Metaobjekt size_guide (Felder):
+  - name: interner Name, wird im Fenster als Zeile unter der Überschrift gezeigt
+  - table: mehrzeiliger Text, eine Zeile je Tabellenzeile, Zellen mit Semikolon getrennt, erste Zeile = Kopfzeile
+           Beispiel: Maß in cm;XS;S;M
+                     Halbe Brustweite;49,5;51,5;55,5
+  - note: optionaler Hinweis unter der Tabelle (mehrzeiliger Text)
+
+  Accepts:
+  - product: {Object} Product liquid object
+  - section_id: {String} id der Section, für eindeutige Element-IDs
+{%- endcomment -%}
+
+{%- liquid
+  assign nl_guide = product.metafields.custom.size_guide.value
+-%}
+
+{%- if nl_guide != blank and nl_guide.table.value != blank -%}
+  {%- liquid
+    assign nl_rows = nl_guide.table.value | strip | newline_to_br | split: '<br />'
+    assign nl_dialog_id = 'SizeGuide-' | append: section_id
+  -%}
+  <div class="custom-size-guide__trigger">
+    <button
+      type="button"
+      class="custom-size-guide__open"
+      data-size-guide-open="{{ nl_dialog_id }}"
+      aria-haspopup="dialog"
+    >
+      Größentabelle
+    </button>
+  </div>
+
+  <dialog id="{{ nl_dialog_id }}" class="custom-size-guide" aria-labelledby="{{ nl_dialog_id }}-title">
+    <div class="custom-size-guide__inner">
+      <button
+        type="button"
+        class="custom-size-guide__close"
+        data-size-guide-close
+        aria-label="Fenster schließen"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h2 class="custom-size-guide__title" id="{{ nl_dialog_id }}-title">Größentabelle</h2>
+      {%- if nl_guide.name.value != blank -%}
+        <p class="custom-size-guide__subtitle caption-with-letter-spacing">{{ nl_guide.name.value | escape }}</p>
+      {%- endif -%}
+      <div class="custom-size-guide__table-wrap">
+        <table class="custom-size-guide__table">
+          {%- for row in nl_rows -%}
+            {%- assign row_clean = row | strip -%}
+            {%- if row_clean == blank -%}{%- continue -%}{%- endif -%}
+            {%- assign cells = row_clean | split: ';' -%}
+            {%- if forloop.first -%}
+              <thead>
+                <tr>
+                  {%- for cell in cells -%}
+                    <th scope="col">{{ cell | strip | escape }}</th>
+                  {%- endfor -%}
+                </tr>
+              </thead>
+              <tbody>
+            {%- else -%}
+              <tr>
+                {%- for cell in cells -%}
+                  {%- if forloop.first -%}
+                    <th scope="row">{{ cell | strip | escape }}</th>
+                  {%- else -%}
+                    <td>{{ cell | strip | escape }}</td>
+                  {%- endif -%}
+                {%- endfor -%}
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+      {%- if nl_guide.note.value != blank -%}
+        <p class="custom-size-guide__note">{{ nl_guide.note.value | escape | newline_to_br }}</p>
+      {%- endif -%}
+    </div>
+  </dialog>
+{%- endif -%}

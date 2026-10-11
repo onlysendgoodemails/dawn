@@ -20,6 +20,7 @@
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
   {{ 'custom-product.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'custom-product-gallery.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-size-guide.js' | asset_url }}" defer="defer"></script>
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -529,6 +530,8 @@
                     block: block,
                     product_form_id: product_form_id
                   %}
+                  {%- comment -%} AP5a: Größentabelle als Dialog, wenn am Produkt ein size_guide hängt {%- endcomment -%}
+                  {% render 'custom-size-guide', product: product, section_id: section.id %}
                 {%- when 'buy_buttons' -%}
                   {%- render 'buy-buttons',
                     block: block,
