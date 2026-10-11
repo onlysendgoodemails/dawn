@@ -87,8 +87,15 @@
       {%- liquid
         assign privacy_url = section.settings.privacy_link_url | default: shop.privacy_policy.url
         assign terms_url = section.settings.terms_link_url | default: shop.terms_of_service.url
+        assign refund_url = section.settings.refund_link_url | default: shop.refund_policy.url
       -%}
+      {%- comment -%}
+        Reihenfolge (Henrik, 2026-10-11): Impressum, Datenschutz, Cookies, AGB, Widerrufsbelehrung.
+      {%- endcomment -%}
       <ul class="custom-footer__legal list-unstyled">
+        {%- if section.settings.imprint_link_url != blank -%}
+          <li><a href="{{ section.settings.imprint_link_url }}" class="link link--text">Impressum</a></li>
+        {%- endif -%}
         {%- if privacy_url != blank -%}
           <li><a href="{{ privacy_url }}" class="link link--text">Datenschutz</a></li>
         {%- endif -%}
@@ -98,8 +105,8 @@
         {%- if terms_url != blank -%}
           <li><a href="{{ terms_url }}" class="link link--text">AGB</a></li>
         {%- endif -%}
-        {%- if section.settings.imprint_link_url != blank -%}
-          <li><a href="{{ section.settings.imprint_link_url }}" class="link link--text">Impressum</a></li>
+        {%- if refund_url != blank -%}
+          <li><a href="{{ refund_url }}" class="link link--text">Widerrufsbelehrung</a></li>
         {%- endif -%}
       </ul>
       {%- if section.settings.cancellation_link_url != blank -%}
@@ -168,7 +175,14 @@
     {
       "type": "url",
       "id": "imprint_link_url",
-      "label": "Impressum – URL"
+      "label": "Impressum – URL",
+      "info": "Shopify-Richtlinie Impressum: /policies/legal-notice"
+    },
+    {
+      "type": "url",
+      "id": "refund_link_url",
+      "label": "Widerrufsbelehrung – URL",
+      "info": "Leer lassen, um automatisch shop.refund_policy (Rückerstattungsrichtlinie) zu verwenden."
     },
     {
       "type": "text",
