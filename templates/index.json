@@ -164,7 +164,7 @@
         "heading": "Shirts",
         "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
         "image": "shopify://shop_images/golf-outfit-herren-weisses-t-shirt-kat-shirts-1400x1010-01.jpg",
-        "collection": "men-tees",
+        "collection": "shirts",
         "columns_desktop": "4",
         "products_to_show": 8
       }
