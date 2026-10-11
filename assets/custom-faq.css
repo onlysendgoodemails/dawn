@@ -11,19 +11,38 @@
   margin-bottom: 3rem;
 }
 
-/* Sprungleiste */
+/* Sprungleiste: bleibt beim Scrollen unter dem Header stehen (--header-height setzt custom-header.liquid) */
 .custom-faq__nav {
-  margin: 3rem 0 4rem;
-  padding-bottom: 3rem;
+  position: sticky;
+  top: var(--header-height, 0px);
+  z-index: 2;
+  margin: 3rem 0 0;
+  padding: 1.4rem 0;
+  background: rgb(var(--color-background));
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
 }
 
 .custom-faq__nav-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 1rem 3rem;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.custom-faq__nav-list::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-faq__nav-list li {
+  flex: 0 0 auto;
+}
+
+/* Sprungziele landen unter Header und Sprungleiste */
+html:has(.custom-faq__nav) {
+  scroll-padding-top: calc(var(--header-height, 7rem) + 6rem);
 }
 
 .custom-faq__nav-link {
@@ -44,6 +63,10 @@
 .custom-faq__section {
   padding: 3.5rem 0;
   border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-faq__nav + .custom-faq__section {
+  border-top: 0;
 }
 
 .custom-faq__section:last-child {
