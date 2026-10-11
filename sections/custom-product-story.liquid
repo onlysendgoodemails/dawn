@@ -1,0 +1,230 @@
+{%- comment -%}
+  custom-product-story.liquid (AP8, siehe webpage/01_inhalte/story-module-metaobject.md)
+  Story-Bereich unter den Produktinfos aus Metaobjekten "Story Module" (Typ story_module).
+  Je Art (story, kollektion, marke, nachhaltigkeit) erscheint höchstens ein Modul, das spezifischste:
+    1. direkt am Produkt (Metafeld custom.story_modules)
+    2. über Tag (match_tags, Kleinbuchstaben) oder Kollektion (match_collections)
+    3. für alle Produkte (scope_all)
+  Innerhalb einer Stufe gewinnt die kleinere sort_order. Fehlt eine Art, entfällt der Block ohne Lücke.
+  Module der Art nachhaltigkeit erscheinen nur mit verified = true und gefülltem proof.
+{%- endcomment -%}
+
+{{ 'custom-product-story.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign modules = shop.metaobjects.story_module.values
+  assign kinds = 'story|kollektion|nachhaltigkeit|marke' | split: '|'
+  assign kind_labels = 'Story|Kollektion|Nachhaltigkeit|Marke' | split: '|'
+
+  comment
+    Direkt zugeordnete Module als Ids mit Begrenzer, Tags in Kleinbuchstaben, Kollektions-Handles.
+  endcomment
+  assign direct_ids = '|'
+  for direct in product.metafields.custom.story_modules.value
+    assign direct_ids = direct_ids | append: direct.system.id | append: '|'
+  endfor
+
+  assign product_tags = '|'
+  for tag in product.tags
+    assign tag_down = tag | downcase
+    assign product_tags = product_tags | append: tag_down | append: '|'
+  endfor
+
+  assign product_collections = '|'
+  for coll in product.collections
+    assign product_collections = product_collections | append: coll.handle | append: '|'
+  endfor
+
+  comment
+    Pro Art das beste Modul wählen. Bewertung: Stufe (1 bis 3) mal 100000 plus sort_order (Standard 100).
+  endcomment
+  assign sel_story = blank
+  assign sel_kollektion = blank
+  assign sel_nachhaltigkeit = blank
+  assign sel_marke = blank
+  assign order_keys = ''
+
+  for kind in kinds
+    assign best = blank
+    assign best_score = 999999999
+    for module in modules
+      if module.kind.value != kind
+        continue
+      endif
+      if kind == 'nachhaltigkeit'
+        if module.verified.value != true or module.proof.value == blank
+          continue
+        endif
+      endif
+
+      assign level = 0
+      assign id_token = '|' | append: module.system.id | append: '|'
+      if direct_ids contains id_token
+        assign level = 1
+      else
+        for mtag in module.match_tags.value
+          assign mtag_down = mtag | downcase | prepend: '|' | append: '|'
+          if product_tags contains mtag_down
+            assign level = 2
+          endif
+        endfor
+        if level == 0
+          for mcoll in module.match_collections.value
+            assign mcoll_token = '|' | append: mcoll.handle | append: '|'
+            if product_collections contains mcoll_token
+              assign level = 2
+            endif
+          endfor
+        endif
+        if level == 0 and module.scope_all.value == true
+          assign level = 3
+        endif
+      endif
+      if level == 0
+        continue
+      endif
+
+      assign sort_value = module.sort_order.value | default: 100
+      assign score = level | times: 100000 | plus: sort_value
+      if score < best_score
+        assign best_score = score
+        assign best = module
+      endif
+    endfor
+
+    if best != blank
+      case kind
+        when 'story'
+          assign sel_story = best
+        when 'kollektion'
+          assign sel_kollektion = best
+        when 'nachhaltigkeit'
+          assign sel_nachhaltigkeit = best
+        when 'marke'
+          assign sel_marke = best
+      endcase
+      assign sort_value = best.sort_order.value | default: 100 | plus: 10000
+      assign order_keys = order_keys | append: sort_value | append: '-' | append: forloop.index | append: '|' | append: kind | append: ','
+    endif
+  endfor
+
+  assign ordered = order_keys | split: ',' | sort
+-%}
+
+{%- if ordered.size > 0 -%}
+  <div class="custom-product-story color-{{ section.settings.color_scheme }} gradient">
+    <div class="page-width custom-product-story__inner section-{{ section.id }}-padding">
+      {%- assign position = 0 -%}
+      {%- for entry in ordered -%}
+        {%- liquid
+          assign entry_kind = entry | split: '|' | last
+          case entry_kind
+            when 'story'
+              assign module = sel_story
+            when 'kollektion'
+              assign module = sel_kollektion
+            when 'nachhaltigkeit'
+              assign module = sel_nachhaltigkeit
+            when 'marke'
+              assign module = sel_marke
+          endcase
+          assign kind_index = 0
+          for k in kinds
+            if k == entry_kind
+              assign kind_index = forloop.index0
+            endif
+          endfor
+          assign image = module.image.value
+          assign position = position | plus: 1
+          assign flipped = position | modulo: 2
+        -%}
+        <article
+          class="custom-product-story__module{% if image != blank %} custom-product-story__module--with-image{% if flipped == 0 %} custom-product-story__module--flipped{% endif %}{% endif %}"
+          id="story-{{ entry_kind }}"
+        >
+          {%- if image != blank -%}
+            <div class="custom-product-story__media media">
+              {{
+                image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 750px) 45vw, 100vw',
+                  widths: '375, 550, 750, 1100, 1200',
+                  alt: image.alt
+              }}
+            </div>
+          {%- endif -%}
+          <div class="custom-product-story__body">
+            <p class="custom-product-story__eyebrow">{{ kind_labels[kind_index] | escape }}</p>
+            <h2 class="custom-product-story__heading h2">{{ module.heading.value | escape }}</h2>
+            <div class="custom-product-story__text rte">{{ module.text | metafield_tag }}</div>
+            {%- if module.link_url.value != blank and module.link_label.value != blank -%}
+              <a href="{{ module.link_url.value }}" class="custom-product-story__link link">{{ module.link_label.value | escape }}</a>
+            {%- endif -%}
+            {%- if entry_kind == 'nachhaltigkeit' and module.proof.value != blank -%}
+              <div class="custom-product-story__proof rte">{{ module.proof | metafield_tag }}</div>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Produkt-Story (Custom)",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Abstand"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Abstand oben",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Abstand unten",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

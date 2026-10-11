@@ -1,0 +1,99 @@
+/* Story-Bereich der Produktseite (sections/custom-product-story.liquid, AP8).
+   Schrift und Farben kommen aus dem Theme. Module mit Bild: zwei Spalten, Bild und Text wechseln
+   die Seite. Module ohne Bild: schmale Textspalte (ca. 60 Zeichen) auf ruhigem Hintergrund.
+   Mobil: Bild oben, Text darunter. */
+
+.custom-product-story__module {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.4rem;
+  padding: 4rem 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-product-story__module:first-child {
+  border-top: 0;
+}
+
+.custom-product-story__media {
+  aspect-ratio: 4 / 5;
+}
+
+.custom-product-story__media > img {
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.custom-product-story__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6rem;
+  max-width: 60ch;
+}
+
+/* Ohne Bild: Text mittig in schmaler Spalte */
+.custom-product-story__module:not(.custom-product-story__module--with-image) .custom-product-story__body {
+  margin-inline: auto;
+}
+
+.custom-product-story__eyebrow {
+  margin: 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.13rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.custom-product-story__heading {
+  margin: 0;
+}
+
+.custom-product-story__text > :first-child {
+  margin-top: 0;
+}
+
+.custom-product-story__text > :last-child {
+  margin-bottom: 0;
+}
+
+.custom-product-story__link {
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+.custom-product-story__proof {
+  margin-top: 0.8rem;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.custom-product-story__proof > :first-child {
+  margin-top: 0;
+}
+
+.custom-product-story__proof > :last-child {
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-product-story__module {
+    padding: 6rem 0;
+  }
+
+  .custom-product-story__module--with-image {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 6rem;
+  }
+
+  .custom-product-story__module--flipped .custom-product-story__media {
+    order: 2;
+  }
+
+  .custom-product-story__module--with-image .custom-product-story__body {
+    max-width: none;
+  }
+}

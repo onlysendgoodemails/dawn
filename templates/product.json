@@ -68,6 +68,14 @@
         "padding_bottom": 0
       }
     },
+    "story": {
+      "type": "custom-product-story",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -90,6 +98,7 @@
   "order": [
     "main",
     "disclosures",
+    "story",
     "related-products"
   ]
 }
