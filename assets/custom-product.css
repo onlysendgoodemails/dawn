@@ -1,0 +1,49 @@
+/* AP3 Kaufbox der Produktseite (siehe webpage/00_relaunch/arbeitspaket-pdp.md).
+   Wird von sections/custom-product.liquid geladen, nach section-main-product.css.
+   Schrift und Farben kommen aus dem Theme, hier nur Abstände und Zusatzelemente. */
+
+/* Eyebrow über dem Titel: DROP 01 · Linie */
+.product__info-container .product__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.product__info-container .product__eyebrow + .product__title {
+  margin-top: 0.4rem;
+}
+
+/* Subline unter dem Titel */
+.product__info-container .product__subline {
+  margin: -0.5rem 0 0;
+  font-size: 1.5rem;
+  line-height: calc(1 + 0.6 / var(--font-body-scale));
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* Preishinweis: Inkl. MwSt. · zzgl. Versand */
+.product__tax a {
+  color: inherit;
+  text-underline-offset: 0.3rem;
+}
+
+/* Lieferzeit unter dem Button */
+.product__info-container .product__lead-time {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: -1rem 0 0;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.product__lead-time .svg-wrapper {
+  flex: none;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.product__lead-time .svg-wrapper svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

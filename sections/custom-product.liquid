@@ -1,7 +1,8 @@
 {%- comment -%}
   custom-product.liquid
   Kopie von sections/main-product.liquid (Dawn 16.0.0), Stand 2026-10-11.
-  Arbeitspaket AP2 (webpage/00_relaunch/arbeitspaket-pdp.md): Grundgerüst, bewusst noch ohne inhaltliche Änderung.
+  Arbeitspaket AP2 (webpage/00_relaunch/arbeitspaket-pdp.md): Grundgerüst, Kopie ohne inhaltliche Änderung.
+  Arbeitspaket AP3: Kaufbox (Eyebrow, Kurztitel, Subline, Preishinweis, Lieferzeit). Änderungen sind mit "AP3" kommentiert.
   Die Original-Datei bleibt unverändert (Update-Fähigkeit gegenüber Shopify/dawn).
   Die id "MainProduct-..." bleibt absichtlich, assets/product-info.js sucht danach.
 {%- endcomment -%}
@@ -17,6 +18,7 @@
   {% endif %}
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'custom-product.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -105,14 +107,33 @@
                     {{- block.settings.text -}}
                   </p>
                 {%- when 'title' -%}
+                  {%- comment -%}
+                    AP3: Eyebrow (DROP 01 · Linie), Kurztitel und Subline kommen aus Metafeldern (Namespace custom).
+                    Ohne Metafelder fällt alles auf Produkttitel und Hersteller zurück.
+                  {%- endcomment -%}
+                  {%- liquid
+                    assign nl_display_title = product.metafields.custom.short_title.value | default: product.title
+                    assign nl_line = product.metafields.custom.line.value | default: product.vendor
+                    assign nl_subline = product.metafields.custom.subline.value
+                    assign nl_eyebrow = nl_line
+                    if product.tags contains 'DROP01'
+                      assign nl_eyebrow = 'DROP 01 · ' | append: nl_line
+                    endif
+                  -%}
+                  {%- if nl_eyebrow != blank -%}
+                    <p class="product__eyebrow caption-with-letter-spacing">{{ nl_eyebrow | escape }}</p>
+                  {%- endif -%}
                   <div class="product__title" {{ block.shopify_attributes }}>
-                    <h1>{{ product.title | escape }}</h1>
+                    <h1>{{ nl_display_title | escape }}</h1>
                     <a href="{{ product.url }}" class="product__title">
                       <h2 class="h1">
-                        {{ product.title | escape }}
+                        {{ nl_display_title | escape }}
                       </h2>
                     </a>
                   </div>
+                  {%- if nl_subline != blank -%}
+                    <p class="product__subline">{{ nl_subline | escape }}</p>
+                  {%- endif -%}
                 {%- when 'price' -%}
                   <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                     {%- render 'price',
@@ -127,20 +148,28 @@
                       <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                     </div>
                   {%- endif -%}
-                  {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
-                    <div class="product__tax caption rte">
-                      {%- if cart.duties_included and cart.taxes_included -%}
-                        {{ 'products.product.duties_and_taxes_included' | t }}
-                      {%- elsif cart.taxes_included -%}
-                        {{ 'products.product.taxes_included' | t }}
-                      {%- elsif cart.duties_included -%}
-                        {{ 'products.product.duties_included' | t }}
-                      {%- endif -%}
-                      {%- if shop.shipping_policy.body != blank -%}
-                        {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
+                  {%- comment -%}
+                    AP3: Preishinweis für den deutschen Markt: "Inkl. MwSt. · zzgl. Versand", Versand verlinkt auf
+                    die Versandrichtlinie von Shopify oder, falls diese leer ist, auf die Seite mit dem Handle
+                    versand-lieferung. Gibt es keines von beiden, steht der Hinweis ohne Link da.
+                  {%- endcomment -%}
+                  {%- liquid
+                    assign nl_ship_url = ''
+                    if shop.shipping_policy.body != blank
+                      assign nl_ship_url = shop.shipping_policy.url
+                    elsif pages['versand-lieferung'].title != blank
+                      assign nl_ship_url = pages['versand-lieferung'].url
+                    endif
+                  -%}
+                  <div class="product__tax caption rte">
+                    {%- if cart.taxes_included -%}Inkl. MwSt. · {% endif -%}
+                    zzgl.
+                    {% if nl_ship_url != blank -%}
+                      <a href="{{ nl_ship_url }}">Versand</a>
+                    {%- else -%}
+                      Versand
+                    {%- endif -%}
+                  </div>
                   <div {{ block.shopify_attributes }}>
                     {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
                     {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
@@ -506,6 +535,17 @@
                     section_id: section.id,
                     show_pickup_availability: true
                   -%}
+                  {%- comment -%}
+                    AP3: Lieferzeit unter dem Button. Metafeld custom.lead_time hat Vorrang, sonst der Standardtext
+                    aus den Abschnittseinstellungen.
+                  {%- endcomment -%}
+                  {%- assign nl_lead_time = product.metafields.custom.lead_time.value | default: section.settings.lead_time_default -%}
+                  {%- if nl_lead_time != blank -%}
+                    <p class="product__lead-time caption">
+                      <span class="svg-wrapper">{{- 'custom-icon-truck.svg' | inline_asset_content -}}</span>
+                      <span>{{ nl_lead_time | escape }}</span>
+                    </p>
+                  {%- endif -%}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
@@ -2154,6 +2194,13 @@
     }
   ],
   "settings": [
+    {
+      "type": "text",
+      "id": "lead_time_default",
+      "default": "Lieferzeit ca. 3 bis 5 Werktage (Deutschland), ca. 4 bis 7 Werktage (EU)",
+      "label": "Lieferzeit (Standardtext unter dem Button)",
+      "info": "Wird durch das Produkt-Metafeld custom.lead_time überschrieben, wenn dieses gesetzt ist."
+    },
     {
       "type": "checkbox",
       "id": "enable_sticky_info",
