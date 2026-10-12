@@ -1,0 +1,53 @@
+{%- comment -%}
+  custom-404.liquid: Kopie von main-404.liquid.
+  Änderungen: eigener Text im Ton der Marke, Button führt auf die Shop-all-Seite.
+{%- endcomment -%}
+
+<style type="text/css">
+  .template-404 .title + * {
+    margin-top: 1rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .template-404 .title + * {
+      margin-top: 2rem;
+    }
+  }
+</style>
+
+<div class="template-404 page-width page-margin center">
+  <p>404</p>
+  <h1 class="title">
+    {{ section.settings.heading | escape }}
+  </h1>
+  <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="button">
+    {{ section.settings.button_label | escape }}
+  </a>
+</div>
+
+{% schema %}
+{
+  "name": "Custom 404",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Diese Seite hat sich verlaufen."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Zurück zum Shop"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ]
+}
+{% endschema %}

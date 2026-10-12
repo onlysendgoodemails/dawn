@@ -18,7 +18,7 @@
         "heading": "Lorem ipsum dolor sit amet.",
         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "button_label": "Shop the Collection",
-        "button_link": "shopify://collections/all"
+        "button_link": "shopify://collections/shop-all"
       }
     },
     "intro_text": {
@@ -51,28 +51,28 @@
           "type": "icon",
           "settings": {
             "icon": "custom_sprout",
-            "label": "Lorem Ipsum"
+            "label": "Organic cotton blanks"
           }
         },
         "icon_2": {
           "type": "icon",
           "settings": {
             "icon": "custom_truck",
-            "label": "Lorem Ipsum"
+            "label": "Free shipping in DE from €100"
           }
         },
         "icon_3": {
           "type": "icon",
           "settings": {
             "icon": "custom_heart",
-            "label": "Lorem Ipsum"
+            "label": "14-day returns"
           }
         },
         "icon_4": {
           "type": "icon",
           "settings": {
             "icon": "custom_lock",
-            "label": "Lorem Ipsum"
+            "label": "Secure checkout"
           }
         }
       },
@@ -207,7 +207,7 @@
         "panel_color": "#e5e8e5",
         "heading_font": "lora_n4",
         "heading": "SWEATSHIRTS & HOODIES",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "text": "<p>For early tee times and long afternoons. Soft, heavy enough to matter.</p>",
         "image": "shopify://shop_images/golf-streetwear-damen-hoodie-cap-kat-hoodies-1400x1010-01.jpg",
         "collection": "",
         "columns_desktop": "4",
@@ -240,7 +240,7 @@
         "panel_color": "#e5e8e5",
         "heading_font": "lora_n4",
         "heading": "CAPS & BEANIES",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "text": "<p>The finishing touch, kept simple on purpose.</p>",
         "image": "shopify://shop_images/golf-cap-herren-navy-kat-caps-1400x1010.jpg",
         "collection": "",
         "columns_desktop": "4",
@@ -289,8 +289,8 @@
         "image_overlay_opacity": 0,
         "color_scheme": "scheme-4",
         "eyebrow": "Stay in Touch",
-        "heading": "Lorem ipsum dolor sit amet.",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+        "heading": "Take the long way round.",
+        "text": "<p>New drops and the odd good story, straight to your inbox. Unsubscribe whenever you like.</p>"
       }
     }
   },

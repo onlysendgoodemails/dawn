@@ -1,7 +1,12 @@
 {
   "sections": {
     "main": {
-      "type": "main-404"
+      "type": "custom-404",
+      "settings": {
+        "heading": "Diese Seite hat sich verlaufen.",
+        "button_label": "Zurück zum Shop",
+        "button_link": "shopify://collections/shop-all"
+      }
     }
   },
   "order": [
