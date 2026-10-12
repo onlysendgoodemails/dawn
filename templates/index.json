@@ -263,9 +263,9 @@
           "type": "tile",
           "settings": {
             "image": "shopify://shop_images/golfplatz-im-wald-fairway-newsletter-1536x1024.png",
-            "heading": "Lookbook",
-            "button_label": "View",
-            "link": "shopify://collections/all"
+            "heading": "Shop the Collection",
+            "button_label": "Shop all",
+            "link": "shopify://collections/shop-all"
           }
         }
       },

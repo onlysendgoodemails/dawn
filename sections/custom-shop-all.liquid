@@ -1,0 +1,370 @@
+{%- comment -%}
+  custom-shop-all.liquid: "Shop all" page (collection template collection.shop-all.json).
+  All products of the collection it is used on, with a simple filter for the three categories
+  (client-side, no reload) and image tiles between the products (same blocks and look as
+  sections/custom-category-block.liquid). Tiles are only shown while the filter is on "All".
+  Uses snippets/custom-product-card.liquid; grid and tile styles come from custom-category-block.css.
+{%- endcomment -%}
+
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-swatch.css' | asset_url | stylesheet_tag }}
+{{ 'custom-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'custom-category-block.css' | asset_url | stylesheet_tag }}
+{{ 'custom-shop-all.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign heading_font = section.settings.heading_font
+  assign filter_1 = section.settings.filter_1
+  assign filter_2 = section.settings.filter_2
+  assign filter_3 = section.settings.filter_3
+  assign filter_count = 0
+  if filter_1 != blank
+    assign filter_count = filter_count | plus: 1
+  endif
+  if filter_2 != blank
+    assign filter_count = filter_count | plus: 1
+  endif
+  if filter_3 != blank
+    assign filter_count = filter_count | plus: 1
+  endif
+-%}
+
+{%- style -%}
+  {{ heading_font | font_face: font_display: 'swap' }}
+  .section-{{ section.id }} {
+    --category-bg: {{ section.settings.background_color }};
+    --category-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --category-heading-style: {{ heading_font.style }};
+    --category-heading-weight: {{ heading_font.weight }};
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- paginate collection.products by 48 -%}
+  {%- liquid
+    assign product_total = collection.products.size
+    assign tile_slots = section.blocks.size | plus: 1.0
+    assign shown = 0
+  -%}
+  <div
+    class="custom-category-block custom-shop-all section-{{ section.id }} custom-category-block--columns-{{ section.settings.columns_desktop }}"
+    data-shop-all
+  >
+    <div class="custom-category-block__inner page-width">
+      <div class="custom-shop-all__header">
+        {%- if section.settings.heading != blank -%}
+          <h1 class="custom-shop-all__heading">{{ section.settings.heading | escape }}</h1>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="custom-shop-all__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if filter_count > 0 -%}
+        <div class="custom-shop-all__filter" role="group" aria-label="{{ section.settings.filter_label | escape }}">
+          <button type="button" class="custom-shop-all__chip" data-filter="all" aria-pressed="true">
+            {{ section.settings.all_label | escape }}
+          </button>
+          {%- for filter in (1..3) -%}
+            {%- liquid
+              case filter
+                when 1
+                  assign chip = filter_1
+                when 2
+                  assign chip = filter_2
+                when 3
+                  assign chip = filter_3
+              endcase
+            -%}
+            {%- if chip != blank -%}
+              <button type="button" class="custom-shop-all__chip" data-filter="{{ chip.handle }}" aria-pressed="false">
+                {{ chip.title | escape }}
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if product_total == 0 -%}
+        <p class="custom-shop-all__empty">{{ section.settings.empty_text | escape }}</p>
+      {%- else -%}
+        <ul class="custom-category-block__list" role="list" data-shop-all-list>
+          {%- for product in collection.products -%}
+            {%- unless product.gift_card? -%}
+              {%- liquid
+                assign shown = shown | plus: 1
+                assign categories = ''
+                for product_collection in product.collections
+                  assign categories = categories | append: product_collection.handle | append: ' '
+                endfor
+              -%}
+              <li class="custom-product-grid__item" data-categories="{{ categories | strip }}">
+                {% render 'custom-product-card', product: product %}
+              </li>
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign target = block.settings.position
+                  if target == 0
+                    assign target = forloop.index | times: product_total | divided_by: tile_slots | round
+                  endif
+                  if target < 1
+                    assign target = 1
+                  endif
+                  if target > product_total
+                    assign target = product_total
+                  endif
+                -%}
+                {%- if target == shown -%}
+                  {%- liquid
+                    assign tile_label = block.settings.label | default: block.settings.image.alt
+                    assign tile_image = block.settings.image
+                  -%}
+                  <li
+                    class="custom-category-block__tile custom-category-block__tile--cols-{{ block.settings.columns }} custom-category-block__tile--rows-{{ block.settings.rows }}"
+                    data-tile
+                    {{ block.shopify_attributes }}
+                  >
+                    <{% if block.settings.link != blank %}a href="{{ block.settings.link }}"{% else %}div{% endif %}
+                      class="custom-category-block__tile-link media"
+                      {% if tile_label != blank %}aria-label="{{ tile_label | escape }}"{% endif %}
+                      {% if tile_image != blank %}style="--image-focal: {{ tile_image.presentation.focal_point }}"{% endif %}
+                    >
+                      {%- if tile_image != blank -%}
+                        {{
+                          tile_image
+                          | image_url: width: 1500
+                          | image_tag:
+                            loading: 'lazy',
+                            sizes: '(min-width: 990px) 50vw, 100vw',
+                            widths: '375, 550, 750, 1100, 1500',
+                            alt: tile_label
+                        }}
+                      {%- else -%}
+                        {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </{% if block.settings.link != blank %}a{% else %}div{% endif %}>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        </ul>
+        <p class="custom-shop-all__empty" data-shop-all-empty hidden>{{ section.settings.empty_text | escape }}</p>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endpaginate -%}
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-shop-all]');
+    if (!root) return;
+    var chips = root.querySelectorAll('[data-filter]');
+    var items = root.querySelectorAll('[data-categories]');
+    var tiles = root.querySelectorAll('[data-tile]');
+    var empty = root.querySelector('[data-shop-all-empty]');
+
+    function apply(filter) {
+      var visible = 0;
+      items.forEach(function (item) {
+        var match = filter === 'all' || item.getAttribute('data-categories').split(' ').indexOf(filter) !== -1;
+        item.hidden = !match;
+        if (match) visible += 1;
+      });
+      tiles.forEach(function (tile) {
+        tile.hidden = filter !== 'all';
+      });
+      chips.forEach(function (chip) {
+        chip.setAttribute('aria-pressed', chip.getAttribute('data-filter') === filter ? 'true' : 'false');
+      });
+      if (empty) empty.hidden = visible > 0;
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var filter = chip.getAttribute('data-filter');
+        apply(filter);
+        try {
+          history.replaceState(null, '', filter === 'all' ? location.pathname + location.search : '#' + filter);
+        } catch (e) {}
+      });
+    });
+
+    var start = location.hash.replace('#', '');
+    var known = Array.prototype.some.call(chips, function (chip) {
+      return chip.getAttribute('data-filter') === start;
+    });
+    apply(known ? start : 'all');
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Shop All",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop all"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Intro text",
+      "info": "Optional, one or two short sentences."
+    },
+    {
+      "type": "header",
+      "content": "Filter"
+    },
+    {
+      "type": "text",
+      "id": "filter_label",
+      "label": "Filter label (accessibility)",
+      "default": "Filter by category"
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "Label for \"all\"",
+      "default": "All"
+    },
+    {
+      "type": "collection",
+      "id": "filter_1",
+      "label": "Category 1"
+    },
+    {
+      "type": "collection",
+      "id": "filter_2",
+      "label": "Category 2"
+    },
+    {
+      "type": "collection",
+      "id": "filter_3",
+      "label": "Category 3"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Text when a category has no products",
+      "default": "Nothing here yet. More is on its way."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f7f6f2"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "lora_n4"
+    }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "image_tile",
+      "name": "Image tile",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Portrait or square. Set the focal point so the subject stays in view when the tile is cropped."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional. Without a link the tile is just an image."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link label (accessibility)",
+          "info": "Read out by screen readers. Falls back to the image's alt text."
+        },
+        {
+          "type": "range",
+          "id": "position",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "label": "After product no.",
+          "info": "0 = automatic: tiles are spread evenly between the products, in block order. A number places the tile right after that product (capped at the last product).",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "columns",
+          "label": "Width",
+          "options": [
+            { "value": "1", "label": "1 column (same width as a product)" },
+            { "value": "2", "label": "2 columns" }
+          ],
+          "default": "1"
+        },
+        {
+          "type": "select",
+          "id": "rows",
+          "label": "Height",
+          "options": [
+            { "value": "1", "label": "1 row (same height as a product)" },
+            { "value": "2", "label": "2 rows (tall portrait)" }
+          ],
+          "default": "1"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Shop All"
+    }
+  ]
+}
+{% endschema %}

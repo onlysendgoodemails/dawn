@@ -1,0 +1,98 @@
+/* "Shop all" page (sections/custom-shop-all.liquid): heading, category filter chips and the
+   empty message. The product grid and the image tiles use the classes from custom-category-block.css,
+   product cards come from custom-product-grid.css. */
+
+.custom-shop-all {
+  padding-bottom: 7rem;
+}
+
+.custom-shop-all__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.custom-shop-all__heading {
+  margin: 0;
+  font-family: var(--category-heading-family, var(--font-heading-family));
+  font-style: var(--category-heading-style, normal);
+  font-weight: var(--category-heading-weight, 400);
+  font-size: 3.2rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: rgb(var(--color-foreground));
+}
+
+.custom-shop-all__text {
+  max-width: 54rem;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.custom-shop-all__text > :first-child {
+  margin-top: 0;
+}
+
+.custom-shop-all__text > :last-child {
+  margin-bottom: 0;
+}
+
+.custom-shop-all__filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.custom-shop-all__chip {
+  padding: 0.9rem 1.8rem;
+  border: 1px solid rgba(var(--color-foreground), 0.35);
+  border-radius: 0;
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.custom-shop-all__chip:hover {
+  border-color: rgb(var(--color-foreground));
+}
+
+.custom-shop-all__chip[aria-pressed='true'] {
+  border-color: rgb(var(--color-foreground));
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.custom-shop-all__chip:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.custom-shop-all__empty {
+  margin: 0;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.custom-shop-all [hidden] {
+  display: none !important;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-shop-all {
+    padding-bottom: 12rem;
+  }
+
+  .custom-shop-all__heading {
+    font-size: 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-shop-all__chip {
+    transition: none;
+  }
+}

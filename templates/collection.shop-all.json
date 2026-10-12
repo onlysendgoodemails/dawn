@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "custom-shop-all",
+      "settings": {
+        "heading": "Shop all",
+        "filter_label": "Filter by category",
+        "all_label": "All",
+        "filter_1": "shirts",
+        "filter_2": "sweatshirts-hoodies",
+        "filter_3": "caps-beanies",
+        "empty_text": "Nothing here yet. More is on its way.",
+        "columns_desktop": "4",
+        "padding_top": 40,
+        "background_color": "#f7f6f2",
+        "heading_font": "lora_n4"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
