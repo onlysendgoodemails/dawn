@@ -14,10 +14,10 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "announcement_HiR7RV": {
+        "announcement_48pzhb": {
           "type": "announcement",
           "settings": {
-            "text": "This is Northern Links.",
+            "text": "Less polo collar, more fairway.",
             "link": ""
           }
         },
@@ -37,7 +37,7 @@
         }
       },
       "block_order": [
-        "announcement_HiR7RV",
+        "announcement_48pzhb",
         "announcement-bar-0",
         "announcement_BEfnhq"
       ],
