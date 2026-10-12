@@ -1,0 +1,39 @@
+/* Brand cart drawer (snippets/custom-cart-drawer.liquid). Loaded after component-cart-drawer.css,
+   so rules here win over Dawn's. Everything reads the colour scheme variables of the drawer. */
+
+/* Compact quantity: a small outlined box instead of Dawn's 14rem wide stepper, trash icon beside it. */
+.cart-drawer .quantity.cart-quantity {
+  width: 10rem;
+  min-height: 3.4rem;
+}
+
+.cart-drawer .quantity.cart-quantity:after {
+  box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.25);
+}
+
+.cart-drawer .quantity.cart-quantity .quantity__button {
+  width: 3.2rem;
+}
+
+.cart-drawer .quantity.cart-quantity .quantity__button .svg-wrapper {
+  width: 0.9rem;
+}
+
+.cart-drawer .quantity.cart-quantity .quantity__input {
+  font-size: 1.4rem;
+  padding: 0;
+}
+
+.cart-drawer .cart-item cart-remove-button {
+  margin-left: 0.4rem;
+}
+
+.cart-drawer cart-remove-button .button {
+  min-width: 3.4rem;
+  min-height: 3.4rem;
+}
+
+.cart-drawer cart-remove-button .icon-remove {
+  height: 1.4rem;
+  width: 1.4rem;
+}
