@@ -15,8 +15,8 @@
         "image": "shopify://shop_images/golf-outfit-herren-weisses-t-shirt-kueste-hero-desktop-3840x2160-02.jpg",
         "image_overlay_opacity": 0,
         "color_scheme": "scheme-4",
-        "heading": "Lorem ipsum dolor sit amet.",
-        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "heading": "Golf, the long way round.",
+        "text": "For golf without the dress code theatre.",
         "button_label": "Shop the Collection",
         "button_link": "shopify://collections/shop-all"
       }
@@ -25,8 +25,8 @@
       "type": "custom-intro-text",
       "settings": {
         "eyebrow": "Northern Links",
-        "heading": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "heading": "Out where the wind is.",
+        "text": "<p>Amidst the untamed majesty of the northern landscapes, where the wind whispers secrets through rugged dunes and the sea meets the sky in endless dialogue, golf becomes more than a sport - it is a meditation. Here, nature commands your focus, grounding you in its vastness while the rhythm of the game aligns with the pulse of the earth.</p>",
         "color_scheme": "scheme-1",
         "padding_top": 64,
         "padding_bottom": 24
@@ -162,7 +162,7 @@
         "panel_color": "#e5e8e5",
         "heading_font": "lora_n4",
         "heading": "Shirts",
-        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "text": "<p>Relaxed tees, for the course and everything after it.</p>",
         "image": "shopify://shop_images/golf-outfit-herren-weisses-t-shirt-kat-shirts-1400x1010-01.jpg",
         "collection": "shirts",
         "columns_desktop": "4",
