@@ -71,7 +71,7 @@
 
 .custom-hero .banner__heading {
   margin: 0;
-  font-size: clamp(2.6rem, 3.4vw, 5.2rem);
+  font-size: 2.6rem;
   line-height: 1.05;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -80,7 +80,7 @@
 .custom-hero .banner__text {
   max-width: 60rem;
   margin: 0.8rem 0 0;
-  font-size: clamp(1.3rem, 1.05vw, 1.6rem);
+  font-size: 1.3rem;
   line-height: 1.45;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
@@ -98,4 +98,21 @@
   min-width: 0;
   padding: 0 2.4rem;
   font-size: 1.3rem;
+}
+
+/* Desktop: keep the text block compact, the headline only slightly larger than on mobile. */
+@media screen and (min-width: 750px) {
+  .custom-hero .banner__heading {
+    font-size: clamp(2.6rem, 2.1vw, 3.4rem);
+  }
+
+  .custom-hero .banner__text {
+    font-size: 1.4rem;
+  }
+
+  .custom-hero .custom-hero__button {
+    min-height: 3.8rem;
+    padding: 0 2rem;
+    font-size: 1.2rem;
+  }
 }
