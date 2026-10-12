@@ -108,3 +108,31 @@
     padding-right: 1.5rem;
   }
 }
+
+/* Thin header icons (assets/custom-icon-account.svg, custom-icon-cart.svg): drawn on a 24px grid with a
+   1.1 stroke, shown at 2.2rem so the line weight reads as a fine hairline next to the small caps menu.
+   The cart count bubble moves to the top right corner of the bag. */
+.header-wrapper .header__icon .icon,
+.header-wrapper .header__icon--cart .icon {
+  height: 2.2rem;
+  width: 2.2rem;
+}
+
+.header-wrapper .cart-count-bubble {
+  bottom: 2.2rem;
+  left: 2.4rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  font-size: 0.8rem;
+}
+
+/* Narrow desktop (990px to 1199px): tighten the menu so it keeps clear of the larger logo. */
+@media screen and (min-width: 990px) and (max-width: 1199px) {
+  .custom-header-menu .list-menu--inline {
+    column-gap: 1.2rem;
+  }
+
+  .custom-header-menu .header__menu-item {
+    letter-spacing: 0.08em;
+  }
+}
