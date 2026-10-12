@@ -500,12 +500,33 @@ dialog.custom-size-guide::backdrop {
   padding: 2.2rem 0;
 }
 
+/* Feiner Rahmen um die Produktbilder (Theme-Einstellung "Medien") aus: er zeigt sich als heller Rand am Bild */
+.custom-gallery .product-media-container.global-media-settings {
+  border: 0;
+}
+
+/* Pfeile mit Zähler unter der Galerie braucht es nirgends mehr (Desktop: Bilder untereinander, Mobil: Linie) */
+.custom-gallery .slider-buttons {
+  display: none;
+}
+
 /* ===== Mobil: Bilder bis an beide Ränder, kein Vorschaubild des nächsten, Linie mit Schieber ===== */
 @media screen and (max-width: 749px) {
-  .custom-gallery .product__media-list {
+  /* Dawn gibt dem Slider unten Abstand (margin-bottom 1rem, Innenabstand der Slides) und hängt einen Leerraum ans
+     Ende (:after). Alles aus, damit die Linie direkt am Bild sitzt und der Schieber richtig rechnet. */
+  .custom-gallery .slider.slider--mobile.product__media-list {
     margin: 0;
     width: 100%;
     column-gap: 0;
+    scroll-padding-left: 0;
+  }
+
+  .custom-gallery .slider--mobile.product__media-list:after {
+    content: none;
+  }
+
+  .custom-gallery .slider.slider--mobile .slider__slide {
+    padding: 0;
   }
 
   .product__media-wrapper slider-component:not(.thumbnail-slider--no-slide) {
@@ -526,10 +547,6 @@ dialog.custom-size-guide::backdrop {
   }
 
   .custom-gallery .slider.product__media-list::-webkit-scrollbar {
-    display: none;
-  }
-
-  .custom-gallery .slider-buttons {
     display: none;
   }
 
@@ -575,8 +592,7 @@ dialog.custom-size-guide::backdrop {
     left: 0;
     z-index: 5;
     padding: 1.2rem 2rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
-    background: rgb(var(--color-background));
-    border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    background: #f1ede5; /* wärmeres Off-White als Trennung, bewusst ohne Linie und Rahmen */
     transform: translateY(100%);
     visibility: hidden;
     transition: transform 0.25s ease, visibility 0.25s;

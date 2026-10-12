@@ -719,10 +719,12 @@
                     assign nl_facts = shop.metaobjects.shop_facts.values.first
                     assign nl_lead_time = product.metafields.custom.lead_time.value
                     if nl_lead_time == blank and nl_facts != blank and nl_facts.lead_time_de.value != blank
-                      assign nl_lead_time = 'Lieferzeit ' | append: nl_facts.lead_time_de.value | append: ' (Deutschland)'
-                      if nl_facts.lead_time_eu.value != blank
-                        assign nl_lead_time = nl_lead_time | append: ', ' | append: nl_facts.lead_time_eu.value | append: ' (EU)'
-                      endif
+                      comment
+                        2026-10-12: nur Deutschland unter dem Button, kurz ("Lieferzeit 3 bis 5 Werktage (DE)"). Das "ca." aus dem
+                        Fakten-Register entfällt hier. Die EU-Lieferzeit steht im Akkordeon "Versand & Rückgabe" und in den FAQ.
+                      endcomment
+                      assign nl_lead_de = nl_facts.lead_time_de.value | remove: 'ca. ' | strip
+                      assign nl_lead_time = 'Lieferzeit ' | append: nl_lead_de | append: ' (DE)'
                     endif
                     if nl_lead_time == blank
                       assign nl_lead_time = section.settings.lead_time_default
