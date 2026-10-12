@@ -114,23 +114,23 @@
       {%- if form.posted_successfully? -%}
         <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
           {{- 'icon-success.svg' | inline_asset_content -}}
-          Danke, Ihr Widerruf ist bei uns eingegangen.
+          Danke, dein Widerruf ist bei uns eingegangen.
         </h2>
         <div class="custom-withdrawal__next">
           <p><strong>So geht es weiter:</strong></p>
           <ol>
             <li>
-              Senden Sie Ihre Retoure ausreichend frankiert an:
+              Schick deine Retoure ausreichend frankiert an:
               <strong>{{ section.settings.return_address | escape }}</strong>
             </li>
             <li>
-              Wir bestätigen den Eingang Ihres Widerrufs per E-Mail. Das kann ein bis zwei Werktage dauern, zum Beispiel wenn ein Wochenende dazwischenliegt.
+              Wir bestätigen dir den Eingang per E-Mail. Das kann ein bis zwei Werktage dauern, zum Beispiel wenn ein Wochenende dazwischenliegt.
             </li>
             <li>
-              Ist alles in Ordnung, erstatten wir den Betrag auf das Zahlungsmittel, mit dem Sie bezahlt haben, und informieren Sie per E-Mail.
+              Ist alles in Ordnung, erstatten wir dir den Betrag auf das Zahlungsmittel, mit dem du bezahlt hast, und melden uns per E-Mail bei dir.
             </li>
           </ol>
-          <p>Wir hoffen, Sie finden bald wieder etwas, das Ihnen gefällt.</p>
+          <p>Wir hoffen, du findest bald wieder etwas, das dir gefällt.</p>
         </div>
       {%- else -%}
         {%- if form.errors -%}
@@ -153,7 +153,7 @@
         <input type="hidden" name="contact[Betreff]" value="WIDERRUF">
 
         <fieldset class="custom-withdrawal__group">
-          <legend class="custom-withdrawal__legend">Ich widerrufe *</legend>
+          <legend class="custom-withdrawal__legend">Ich widerrufe meinen Vertrag und schicke zurück *</legend>
           <label class="custom-withdrawal__option">
             <input type="radio" name="contact[Umfang]" value="Gesamte Bestellung" required checked>
             <span>die gesamte Bestellung</span>
@@ -236,16 +236,16 @@
             id="WithdrawalForm-items"
             class="text-area field__input"
             name="contact[Artikel und Hinweise]"
-            placeholder="Bei Teil-Widerruf: Welche Artikel? (optional bei ganzer Bestellung)"
+            placeholder="Welche Artikel schickst du zurück? (nur bei Teilrücksendung nötig)"
           ></textarea>
           <label class="form__label field__label" for="WithdrawalForm-items">
-            Bei Teil-Widerruf: Welche Artikel? (optional bei ganzer Bestellung)
+            Welche Artikel schickst du zurück? (nur bei Teilrücksendung nötig)
           </label>
         </div>
 
         {%- if section.settings.return_address != blank -%}
           <p class="custom-withdrawal__return">
-            Bitte senden Sie die Ware ausreichend frankiert an:
+            Bitte schick die Ware ausreichend frankiert an:
             <strong>{{ section.settings.return_address | escape }}</strong>
           </p>
         {%- endif -%}
@@ -258,7 +258,7 @@
 
         {%- if shop.privacy_policy != blank -%}
           <p class="custom-withdrawal__privacy">
-            Wir verwenden Ihre Angaben, um Ihren Widerruf zu bearbeiten. Mehr dazu in unserer <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a>.
+            Wir verwenden deine Angaben, um deine Retoure zu bearbeiten. Mehr dazu in unserer <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a>.
           </p>
         {%- endif -%}
       {%- endif -%}
