@@ -49,6 +49,33 @@ footer.custom-footer {
   text-underline-offset: 0.3rem;
 }
 
+/* Payment icons: small and quiet (greyscale, slightly transparent), full colour on hover. */
+.custom-footer__payment {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  max-width: 24rem;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-footer__payment-item {
+  display: flex;
+}
+
+.custom-footer__payment-item .icon {
+  width: 3.8rem;
+  height: 2.4rem;
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.custom-footer__payment-item .icon:hover {
+  filter: none;
+  opacity: 1;
+}
+
 .custom-footer__wordmark {
   padding-bottom: 4.8rem;
 }

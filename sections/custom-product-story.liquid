@@ -160,7 +160,7 @@
             <h2 class="custom-product-story__heading h2">{{ module.heading.value | escape }}</h2>
             <div class="custom-product-story__text rte">{{ module.text | metafield_tag }}</div>
             {%- if module.link_url.value != blank and module.link_label.value != blank -%}
-              <a href="{{ module.link_url.value }}" class="custom-product-story__link link">{{ module.link_label.value | escape }}</a>
+              <a href="{{ module.link_url.value | remove: shop.url }}" class="custom-product-story__link link">{{ module.link_label.value | escape }}</a>
             {%- endif -%}
             {%- if entry_kind == 'nachhaltigkeit' and module.proof.value != blank -%}
               <div class="custom-product-story__proof rte">{{ module.proof | metafield_tag }}</div>

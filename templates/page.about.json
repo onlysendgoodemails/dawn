@@ -58,6 +58,7 @@
           "type": "text",
           "settings": {
             "eyebrow": "",
+            "alignment": "center",
             "heading": "Take the long way round.",
             "text": "<p>See you out there.</p><p>Questions? Have a look at our <a href=\"/pages/faq\">FAQ</a> or write to <a href=\"mailto:hi@thenorthernlinks.com\">hi@thenorthernlinks.com</a>.</p>"
           }

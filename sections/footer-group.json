@@ -8,27 +8,28 @@
         "footer-link-shop": {
           "type": "link_list",
           "settings": {
-            "heading": "Shop"
-          }
-        },
-        "footer-link-about": {
-          "type": "link_list",
-          "settings": {
-            "heading": "About",
-            "menu": "footer-about"
+            "heading": "Shop",
+            "menu": "footer-shop"
           }
         },
         "footer-link-help": {
           "type": "link_list",
           "settings": {
-            "heading": "Help"
+            "heading": "Support",
+            "menu": "footer-support"
+          }
+        },
+        "footer-payment": {
+          "type": "payment",
+          "settings": {
+            "heading": "Zahlung"
           }
         }
       },
       "block_order": [
         "footer-link-shop",
-        "footer-link-about",
-        "footer-link-help"
+        "footer-link-help",
+        "footer-payment"
       ],
       "settings": {
         "color_scheme": "scheme-4",

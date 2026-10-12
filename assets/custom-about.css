@@ -33,6 +33,11 @@
   max-width: none;
 }
 
+/* Zentrierter Textblock (z. B. Schluss): schmaler, damit die Zeilen nicht ausfransen */
+.custom-about__text-inner .custom-section-heading--center {
+  max-width: 54rem;
+}
+
 /* Listen im Textblock: ruhig, ohne Aufzählungspunkte-Wirrwarr */
 .custom-about__text .custom-section-heading__text p {
   margin: 0 0 1.4rem;

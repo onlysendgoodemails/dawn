@@ -43,7 +43,7 @@
               eyebrow: block.settings.eyebrow,
               heading: block.settings.heading,
               text: block.settings.text,
-              alignment: 'left',
+              alignment: block.settings.alignment,
               heading_tag: 'h2'
             %}
           </div>
@@ -161,6 +161,16 @@
           "id": "text",
           "label": "Text",
           "info": "Lists and bold text are supported."
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Centered" }
+          ],
+          "default": "left"
         }
       ]
     },
