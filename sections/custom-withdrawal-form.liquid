@@ -1,0 +1,303 @@
+{%- comment -%}
+  custom-withdrawal-form.liquid: Widerrufsformular (Schritt 10, erste Stufe).
+  Aufbau wie custom-contact-form.liquid (Shopify-Kontaktformular). Die Mail geht an die Shop-Adresse (hi@).
+  Das Stichwort "WIDERRUF" steht im Mailtext (verstecktes Feld), damit sich die Mails filtern lassen.
+  Es gibt noch keine automatische Eingangsbestätigung an den Kunden. Sie ist vor dem Go-live nötig (§ 356a BGB).
+  Der Seitentitel und der Einleitungstext kommen aus der Seite im Admin, nicht aus diesem Abschnitt.
+{%- endcomment -%}
+
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px !important;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom }}px !important;
+    }
+  }
+
+  .custom-withdrawal__group {
+    margin: 0 0 2.4rem;
+    padding: 0;
+    border: 0;
+  }
+
+  .custom-withdrawal__legend {
+    margin: 0 0 1.2rem;
+    padding: 0;
+    font-weight: 600;
+  }
+
+  .custom-withdrawal__option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 0.8rem;
+    cursor: pointer;
+  }
+
+  .custom-withdrawal__option input {
+    flex: 0 0 auto;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    accent-color: rgb(var(--color-foreground));
+  }
+
+  .custom-withdrawal__return {
+    margin: 2.4rem 0 1.6rem;
+    max-width: 60rem;
+    line-height: 1.6;
+  }
+
+  .custom-withdrawal__return strong {
+    display: block;
+    margin-top: 0.4rem;
+    white-space: pre-line;
+  }
+
+  .custom-withdrawal__privacy {
+    margin: 2rem 0 0;
+    max-width: 60rem;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: rgba(var(--color-foreground), 0.7);
+  }
+
+  .custom-withdrawal__privacy a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
+    {%- liquid
+      assign form_class = 'isolate'
+      if settings.animations_reveal_on_scroll
+        assign form_class = 'isolate scroll-trigger animate--slide-in'
+      endif
+    -%}
+    {%- form 'contact', id: 'WithdrawalForm', class: form_class -%}
+      {%- if form.posted_successfully? -%}
+        <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+          {{- 'icon-success.svg' | inline_asset_content -}}
+          Ihre Widerrufserklärung ist bei uns eingegangen. Wir melden uns per E-Mail bei Ihnen.
+        </h2>
+      {%- else -%}
+        {%- if form.errors -%}
+          <div class="form__message">
+            <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+              {{- 'icon-error.svg' | inline_asset_content -}}
+              {{ 'templates.contact.form.error_heading' | t }}
+            </h2>
+          </div>
+          <ul class="form-status-list caption-large" role="list">
+            <li>
+              <a href="#WithdrawalForm-email" class="link">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </a>
+            </li>
+          </ul>
+        {%- endif -%}
+
+        <input type="hidden" name="contact[Betreff]" value="WIDERRUF">
+
+        <fieldset class="custom-withdrawal__group">
+          <legend class="custom-withdrawal__legend">Ich widerrufe *</legend>
+          <label class="custom-withdrawal__option">
+            <input type="radio" name="contact[Umfang]" value="Gesamte Bestellung" required checked>
+            <span>die gesamte Bestellung</span>
+          </label>
+          <label class="custom-withdrawal__option">
+            <input type="radio" name="contact[Umfang]" value="Teilweise" id="WithdrawalForm-partial">
+            <span>nur einen Teil der Bestellung</span>
+          </label>
+        </fieldset>
+
+        <div class="contact__fields">
+          <div class="field">
+            <input
+              class="field__input"
+              autocomplete="name"
+              type="text"
+              id="WithdrawalForm-name"
+              name="contact[Name]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              aria-required="true"
+              required
+              placeholder="Name"
+            >
+            <label class="field__label" for="WithdrawalForm-name">
+              Name
+              <span aria-hidden="true">*</span>
+            </label>
+          </div>
+          <div class="field field--with-error">
+            <input
+              autocomplete="email"
+              type="email"
+              id="WithdrawalForm-email"
+              class="field__input"
+              name="contact[email]"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              aria-required="true"
+              required
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="WithdrawalForm-email-error"
+              {% endif %}
+              placeholder="E-Mail"
+            >
+            <label class="field__label" for="WithdrawalForm-email">
+              E-Mail
+              <span aria-hidden="true">*</span>
+            </label>
+            {%- if form.errors contains 'email' -%}
+              <small class="contact__field-error" id="WithdrawalForm-email-error">
+                <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                <span class="form__message">
+                  <span class="svg-wrapper">
+                    {{- 'icon-error.svg' | inline_asset_content -}}
+                  </span>
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </span>
+              </small>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="field">
+          <input
+            class="field__input"
+            type="text"
+            id="WithdrawalForm-order"
+            name="contact[Bestellnummer]"
+            placeholder="Bestellnummer (optional)"
+          >
+          <label class="field__label" for="WithdrawalForm-order">Bestellnummer (optional)</label>
+        </div>
+
+        <div class="field">
+          <textarea
+            rows="5"
+            id="WithdrawalForm-items"
+            class="text-area field__input"
+            name="contact[Artikel und Hinweise]"
+            placeholder="Bei Teil-Widerruf: Welche Artikel? (optional bei ganzer Bestellung)"
+          ></textarea>
+          <label class="form__label field__label" for="WithdrawalForm-items">
+            Bei Teil-Widerruf: Welche Artikel? (optional bei ganzer Bestellung)
+          </label>
+        </div>
+
+        {%- if section.settings.return_address != blank -%}
+          <p class="custom-withdrawal__return">
+            Bitte senden Sie die Ware ausreichend frankiert an:
+            <strong>{{ section.settings.return_address | escape }}</strong>
+            Bitte legen Sie die Bestellnummer bei.
+          </p>
+        {%- endif -%}
+
+        <div class="contact__button">
+          <button type="submit" class="button">
+            {{ section.settings.button_label }}
+          </button>
+        </div>
+
+        {%- if shop.privacy_policy != blank -%}
+          <p class="custom-withdrawal__privacy">
+            Wir verwenden Ihre Angaben, um Ihren Widerruf zu bearbeiten. Mehr dazu in unserer <a href="{{ shop.privacy_policy.url }}">Datenschutzerklärung</a>.
+          </p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var form = document.getElementById('WithdrawalForm');
+    if (!form) return;
+    var items = document.getElementById('WithdrawalForm-items');
+    var radios = form.querySelectorAll('input[name="contact[Umfang]"]');
+    function update() {
+      var partial = document.getElementById('WithdrawalForm-partial').checked;
+      items.required = partial;
+    }
+    radios.forEach(function (radio) {
+      radio.addEventListener('change', update);
+    });
+    update();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Withdrawal Form",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "return_address",
+      "label": "Rücksendeadresse (steht über dem Button)",
+      "default": "Northern Links\nc/o Henrik Haake\nHofweg 20\n22085 Hamburg"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Beschriftung des Buttons",
+      "default": "Widerruf bestätigen"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Withdrawal Form"
+    }
+  ]
+}
+{% endschema %}
