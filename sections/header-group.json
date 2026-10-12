@@ -17,8 +17,8 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
-            "link": ""
+            "text": "Jedes Teil wird auf Bestellung in Deutschland veredelt",
+            "link": "shopify://pages/about-us"
           }
         }
       },
