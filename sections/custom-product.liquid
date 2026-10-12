@@ -87,7 +87,8 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
-    <div class="page-width">
+    {%- comment -%} 2026-10-12: volle Breite statt page-width. Bild bündig am linken Rand, Aufteilung 50 zu 50 (assets/custom-product.css). {%- endcomment -%}
+    <div class="custom-product-layout">
       <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
         <div class="grid__item product__media-wrapper">
           {%- comment -%} AP6: eigene Galerie mit Miniaturleiste {%- endcomment -%}
@@ -985,6 +986,18 @@
       </script>
     </div>
   </product-component>
+
+  {%- comment -%}
+    Mobil: Kaufbutton klebt unten am Bildschirm, solange der eigene Button der Kaufbox noch nicht erreicht ist
+    (Vorbild Closed). Der Button sendet über das Attribut form dasselbe Produktformular ab, Text und Zustand spiegelt
+    assets/custom-product-buybox.js vom echten Button. Ohne gewählte Größe blockiert das Skript das Absenden,
+    rollt zur Größenreihe und zeigt den Hinweis. Ab 750 px ist die Leiste per CSS ausgeblendet.
+  {%- endcomment -%}
+  <div class="custom-sticky-buy" data-custom-sticky-buy data-section="{{ section.id }}">
+    <button type="submit" form="product-form-{{ section.id }}" name="add" class="button button--primary button--full-width custom-sticky-buy__button">
+      <span></span>
+    </button>
+  </div>
 </product-info>
 
 {% schema %}

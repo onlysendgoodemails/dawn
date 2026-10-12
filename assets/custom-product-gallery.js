@@ -43,8 +43,34 @@
     });
   }
 
+  /* Mobil: Linie mit schwarzem Schieber unter der Wischgalerie. Breite des Schiebers = sichtbarer Anteil, Lage = Scrollposition. */
+  function initProgress(progress) {
+    var slider = progress.parentElement && progress.parentElement.querySelector('.product__media-list');
+    var thumb = progress.querySelector('.custom-gallery-progress__thumb');
+    if (!slider || !thumb) return;
+
+    function update() {
+      var max = slider.scrollWidth - slider.clientWidth;
+      if (max <= 1) {
+        progress.hidden = true;
+        return;
+      }
+      progress.hidden = false;
+      var width = (slider.clientWidth / slider.scrollWidth) * 100;
+      var left = (slider.scrollLeft / max) * (100 - width);
+      thumb.style.width = width + '%';
+      thumb.style.left = left + '%';
+    }
+
+    slider.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    if ('MutationObserver' in window) new MutationObserver(update).observe(slider, { childList: true });
+    update();
+  }
+
   function ready() {
     document.querySelectorAll('.custom-gallery-thumbs').forEach(init);
+    document.querySelectorAll('.custom-gallery-progress').forEach(initProgress);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready);

@@ -32,7 +32,7 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin: -1rem 0 0;
+  margin: 1.8rem 0 0;
   color: rgba(var(--color-foreground), 0.75);
 }
 
@@ -269,13 +269,6 @@ dialog.custom-size-guide::backdrop {
   color: rgba(var(--color-foreground), 0.75);
 }
 
-@media screen and (max-width: 749px) {
-  /* Mobil steht der Preis unter dem Titel, links ausgerichtet */
-  .product__price-wrap {
-    flex-basis: 100%;
-    text-align: left;
-  }
-}
 
 /* Größenwahl: Name und gewählte Größe links, "Größentabelle" rechts auf gleicher Höhe, darunter die Feldreihe */
 .custom-size-picker-wrap {
@@ -417,4 +410,190 @@ dialog.custom-size-guide::backdrop {
 
 .product__info-container .product__heading-row {
   margin-bottom: 0.8rem;
+}
+
+
+/* ===== Layout 2026-10-12: Bild bündig links, Aufteilung 50 zu 50, mehr Luft in der Infospalte ===== */
+
+.custom-product-layout {
+  width: 100%;
+}
+
+/* Infospalte: seitlicher Innenabstand, weil die Seite keine page-width mehr hat */
+.custom-product-layout .product__info-wrapper {
+  padding: 3.2rem 2rem 4rem;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-product-layout .product__info-wrapper {
+    padding: 3.2rem 3rem 4rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .product--large:not(.product--no-media) .product__media-wrapper,
+  .product--large:not(.product--no-media) .product__info-wrapper {
+    max-width: 50%;
+    width: 50%;
+  }
+
+  .product--large:not(.product--no-media) .product__info-wrapper {
+    padding: 4rem 6rem 5rem;
+  }
+
+  /* Inhalt der Kaufbox mittig in der rechten Hälfte, nicht breiter als 56 rem */
+  .custom-product-layout .product__info-container {
+    max-width: 56rem;
+    margin-inline: auto;
+  }
+}
+
+/* Luftigere Abstände in der Kaufbox */
+.product__info-container .product__eyebrow {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+}
+
+.product__info-container .product__heading-row {
+  margin-bottom: 3.2rem;
+}
+
+.product__heading-row .product__title h1,
+.product__heading-row .product__title h2 {
+  font-size: 2.6rem;
+  line-height: 1.2;
+}
+
+.product__price-wrap .price {
+  font-size: 2.2rem;
+}
+
+.custom-size-picker-wrap {
+  margin-top: 0;
+}
+
+.custom-size-picker__label {
+  margin-bottom: 1.4rem;
+}
+
+.custom-size-picker__cell {
+  min-height: 4.8rem;
+}
+
+.product__info-container .product-form__buttons {
+  margin-top: 2.4rem;
+}
+
+.product__info-container .product-form__submit {
+  min-height: 5.4rem;
+}
+
+.product__info-container .custom-accordion--compact {
+  margin-top: 3.2rem;
+}
+
+.product__info-container .custom-accordion--compact + .custom-accordion--compact {
+  margin-top: 0;
+}
+
+.custom-accordion--compact .custom-accordion__row > summary {
+  padding: 2.2rem 0;
+}
+
+/* ===== Mobil: Bilder bis an beide Ränder, kein Vorschaubild des nächsten, Linie mit Schieber ===== */
+@media screen and (max-width: 749px) {
+  .custom-gallery .product__media-list {
+    margin: 0;
+    width: 100%;
+    column-gap: 0;
+  }
+
+  .product__media-wrapper slider-component:not(.thumbnail-slider--no-slide) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .custom-gallery .product__media-list .product__media-item {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  /* Dawns eigene Scrollleiste durch die Linie unten ersetzen */
+  .custom-gallery .slider.product__media-list {
+    scrollbar-width: none;
+  }
+
+  .custom-gallery .slider.product__media-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-gallery .slider-buttons {
+    display: none;
+  }
+
+  .custom-gallery-progress {
+    position: relative;
+    height: 0.3rem;
+    margin: 0;
+    background: rgba(var(--color-foreground), 0.2);
+  }
+
+  .custom-gallery-progress[hidden] {
+    display: none;
+  }
+
+  .custom-gallery-progress__thumb {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 25%;
+    background: rgb(var(--color-foreground));
+    transition: left 0.1s linear;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .custom-gallery-progress {
+    display: none;
+  }
+}
+
+/* ===== Mobil: Kaufbutton klebt unten, bis der echte Button erreicht ist ===== */
+.custom-sticky-buy {
+  display: none;
+}
+
+@media screen and (max-width: 749px) {
+  .custom-sticky-buy {
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    padding: 1.2rem 2rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
+    background: rgb(var(--color-background));
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    transform: translateY(100%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s;
+  }
+
+  .custom-sticky-buy.is-visible {
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  .custom-sticky-buy__button {
+    min-height: 4.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-sticky-buy {
+    transition: none;
+  }
 }

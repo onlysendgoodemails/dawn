@@ -105,13 +105,13 @@
     </ul>
   {%- endif -%}
   <div id="GalleryStatus-{{ section.id }}" class="visually-hidden" role="status"></div>
-  <slider-component id="GalleryViewer-{{ section.id }}" class="slider-mobile-gutter">
+  <slider-component id="GalleryViewer-{{ section.id }}">
     <a class="skip-to-content-link button visually-hidden quick-add-hidden" href="#ProductInfo-{{ section.id }}">
       {{ 'accessibility.skip_to_product_info' | t }}
     </a>
     <ul
       id="Slider-Gallery-{{ section.id }}"
-      class="product__media-list contains-media grid grid--peek list-unstyled slider slider--mobile"
+      class="product__media-list contains-media grid list-unstyled slider slider--mobile"
       role="list"
     >
       {%- if product.selected_or_first_available_variant.featured_media != null -%}
@@ -178,6 +178,12 @@
         {%- endunless -%}
       {%- endfor -%}
     </ul>
+    {%- comment -%} 2026-10-12: Mobil statt Punkten eine Linie mit schwarzem Schieber (Vorbild Closed), siehe assets/custom-product-gallery.js {%- endcomment -%}
+    {%- if media_count > 1 and limit == null -%}
+      <div class="custom-gallery-progress" aria-hidden="true">
+        <span class="custom-gallery-progress__thumb"></span>
+      </div>
+    {%- endif -%}
     <div class="slider-buttons quick-add-hidden{% if hide_mobile_slider %} small-hide{% endif %}">
       <button
         type="button"

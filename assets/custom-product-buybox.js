@@ -38,8 +38,9 @@
       group.classList.add('custom-size-picker--error');
       var error = group.querySelector('.custom-size-picker__error');
       if (error) error.hidden = false;
+      group.scrollIntoView({ behavior: 'smooth', block: 'center' });
       var first = group.querySelector('input[type="radio"]:not(.disabled)');
-      if (first) first.focus();
+      if (first) first.focus({ preventScroll: true });
     },
     true
   );
@@ -50,4 +51,49 @@
     var group = input.closest('fieldset.custom-size-picker');
     if (group) hideError(group);
   });
+
+  /* Sticky-Kaufbutton (nur mobil sichtbar, siehe .custom-sticky-buy in assets/custom-product.css):
+     spiegelt Text und Zustand des echten Buttons und erscheint nur, solange der echte Button noch unter dem Sichtfeld liegt. */
+  function initSticky() {
+    var bar = document.querySelector('[data-custom-sticky-buy]');
+    if (!bar) return;
+    var section = bar.getAttribute('data-section');
+    var button = bar.querySelector('button');
+    var label = button.querySelector('span');
+
+    function real() {
+      return document.getElementById('ProductSubmitButton-' + section);
+    }
+
+    function sync() {
+      var source = real();
+      if (!source) return;
+      var text = source.querySelector('span');
+      label.textContent = text ? text.textContent.trim() : '';
+      if (source.hasAttribute('disabled')) button.setAttribute('disabled', 'disabled');
+      else button.removeAttribute('disabled');
+    }
+
+    var source = real();
+    if (!source) return;
+    sync();
+    if ('MutationObserver' in window) {
+      new MutationObserver(sync).observe(source, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+    }
+
+    if (!('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (entries) {
+      var entry = entries[entries.length - 1];
+      var below = entry.boundingClientRect.top > (entry.rootBounds ? entry.rootBounds.height : window.innerHeight);
+      bar.classList.toggle('is-visible', !entry.isIntersecting && below);
+    }).observe(source);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSticky);
+  else initSticky();
 })();
