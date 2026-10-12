@@ -96,4 +96,33 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSticky);
   else initSticky();
+
+  /* Sticky-Kaufbox am Desktop: Ist sie höher als das Fenster, wird "top" negativ gesetzt. Die Box läuft dann mit der Seite,
+     bis ihr unteres Ende im Fenster ist, und bleibt dort stehen. So ist alles erreichbar, ohne eigenen Scrollbalken.
+     Neu berechnet bei Größenänderung des Fensters und der Box (zum Beispiel beim Aufklappen eines Akkordeons). */
+  function initStickyColumn() {
+    var box = document.querySelector('.product__info-container.product__column-sticky');
+    if (!box) return;
+    var desktop = window.matchMedia('(min-width: 990px)');
+
+    function update() {
+      if (!desktop.matches) {
+        box.style.top = '';
+        return;
+      }
+      var header = document.querySelector('sticky-header') || document.querySelector('.section-header');
+      var headerHeight = header ? header.offsetHeight : 0;
+      var gap = 20;
+      var top = Math.min(headerHeight + gap, window.innerHeight - box.offsetHeight - gap);
+      box.style.top = top + 'px';
+    }
+
+    update();
+    window.addEventListener('resize', update);
+    if (typeof desktop.addEventListener === 'function') desktop.addEventListener('change', update);
+    if ('ResizeObserver' in window) new ResizeObserver(update).observe(box);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initStickyColumn);
+  else initStickyColumn();
 })();

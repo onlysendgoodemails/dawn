@@ -28,9 +28,15 @@
   display: none;
 }
 
-.custom-accordion__row > summary:focus-visible {
-  outline: 0.2rem solid rgb(var(--color-foreground));
-  outline-offset: 0.2rem;
+/* Fokus: kein Rahmen (er wurde nach dem Anklicken als dicke Linien oben und unten sichtbar), stattdessen
+   wird der Titel unterstrichen. Per Tastatur bleibt damit erkennbar, wo man steht. */
+.custom-accordion__row > summary:focus {
+  outline: none;
+}
+
+.custom-accordion__row > summary:focus-visible .custom-accordion__title {
+  text-decoration: underline;
+  text-underline-offset: 0.5rem;
 }
 
 .custom-accordion__title {

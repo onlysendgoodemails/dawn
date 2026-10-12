@@ -396,15 +396,12 @@ dialog.custom-size-guide::backdrop {
   margin-top: 1.6rem;
 }
 
-/* Kaufbox mit den Zeilen bleibt beim Scrollen durch die Bilder stehen. Ist sie höher als das Fenster,
-   scrollt sie in sich, damit nichts unerreichbar wird. */
+/* Kaufbox mit den Zeilen bleibt beim Scrollen durch die Bilder stehen. Die Position "top" setzt
+   assets/custom-product-buybox.js: Ist die Kaufbox höher als das Fenster (z. B. mit aufgeklapptem Akkordeon),
+   läuft sie mit der Seite mit, bis ihr Ende im Fenster ist, und bleibt dann unten stehen. Kein eigener Scrollbalken. */
 @media screen and (min-width: 990px) {
   .product__info-container.product__column-sticky {
     top: calc(var(--header-height, 8rem) + 2rem);
-    max-height: calc(100vh - var(--header-height, 8rem) - 4rem);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    padding-bottom: 0.2rem;
   }
 }
 
