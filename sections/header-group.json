@@ -14,16 +14,32 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_HiR7RV": {
+          "type": "announcement",
+          "settings": {
+            "text": "This is Northern Links.",
+            "link": ""
+          }
+        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Cut from a different cloth. Laid-back, stylish and bloody comfortable. This is Northern Links.",
-            "link": "shopify://pages/about-us"
+            "text": "Cut from a different cloth.",
+            "link": ""
+          }
+        },
+        "announcement_BEfnhq": {
+          "type": "announcement",
+          "settings": {
+            "text": "Laid-back, stylish and bloody comfortable.",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "announcement_HiR7RV",
+        "announcement-bar-0",
+        "announcement_BEfnhq"
       ],
       "settings": {
         "auto_rotate": false,
@@ -40,6 +56,7 @@
       "settings": {
         "mobile_logo_position": "left",
         "menu": "main-menu",
+        "right_items": 0,
         "sticky_header_type": "always",
         "show_line_separator": false,
         "color_scheme": "scheme-1",
