@@ -49,6 +49,89 @@ footer.custom-footer {
   text-underline-offset: 0.3rem;
 }
 
+/* Newsletter column: sits at the far right on desktop, below the other columns on mobile. */
+@media screen and (min-width: 990px) {
+  .custom-footer__column--newsletter {
+    margin-left: auto;
+  }
+}
+
+.custom-footer__column--newsletter {
+  width: 100%;
+  max-width: 32rem;
+}
+
+.custom-footer__newsletter-text {
+  margin: 0 0 1.4rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.custom-footer__newsletter-field {
+  display: flex;
+  align-items: center;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.6);
+}
+
+.custom-footer__newsletter-field:focus-within {
+  border-bottom-color: rgb(var(--color-foreground));
+}
+
+.custom-footer__newsletter-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 1.2rem 0;
+  border: 0;
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+  outline: none;
+}
+
+.custom-footer__newsletter-input::placeholder {
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.custom-footer__newsletter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+}
+
+.custom-footer__newsletter-button .svg-wrapper,
+.custom-footer__newsletter-button svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.custom-footer__newsletter-disclaimer,
+.custom-footer__newsletter-message {
+  margin: 1rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.custom-footer__newsletter-disclaimer a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.custom-footer__newsletter-message {
+  color: rgb(var(--color-foreground));
+}
+
 /* Payment icons: small and quiet (greyscale, slightly transparent), full colour on hover. */
 .custom-footer__payment {
   display: flex;

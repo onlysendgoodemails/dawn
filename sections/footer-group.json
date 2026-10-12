@@ -24,12 +24,20 @@
           "settings": {
             "heading": "Zahlung"
           }
+        },
+        "footer-newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Newsletter",
+            "text": "Neue Drops direkt ins Postfach."
+          }
         }
       },
       "block_order": [
         "footer-link-shop",
         "footer-link-help",
-        "footer-payment"
+        "footer-payment",
+        "footer-newsletter"
       ],
       "settings": {
         "color_scheme": "scheme-4",
