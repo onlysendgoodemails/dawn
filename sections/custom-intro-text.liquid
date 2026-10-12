@@ -12,6 +12,12 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  {%- if section.settings.italic_text %}
+    .section-{{ section.id }}-padding .custom-section-heading__text {
+      font-style: italic;
+    }
+  {%- endif %}
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -51,6 +57,12 @@
       "id": "text",
       "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
       "label": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "italic_text",
+      "label": "Text in italics",
+      "default": false
     },
     {
       "type": "color_scheme",

@@ -45,3 +45,49 @@
     min-height: max(36rem, calc(100svh - var(--header-group-height, 160px)));
   }
 }
+
+/* Hero text block (Malbon-like): large uppercase headline and a readable sub line, anchored bottom
+   left but with real gutters instead of sitting in the corner. A soft gradient at the bottom keeps
+   the white text readable on bright photos. */
+.custom-hero .banner__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 50%);
+  pointer-events: none;
+}
+
+.custom-hero .banner__content {
+  max-width: none;
+  padding: 0 clamp(2rem, 5vw, 8rem) clamp(3.2rem, 9vh, 9rem);
+}
+
+.custom-hero .banner__box {
+  max-width: 82rem;
+  padding: 0;
+  background: none;
+  text-align: left;
+}
+
+.custom-hero .banner__heading {
+  margin: 0;
+  font-size: clamp(3.6rem, 7vw, 9rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.custom-hero .banner__text {
+  max-width: 52rem;
+  margin: 1.6rem 0 0;
+  font-size: clamp(1.5rem, 1.4vw, 2rem);
+  line-height: 1.5;
+}
+
+.custom-hero .banner__text p {
+  margin: 0;
+}
+
+.custom-hero .banner__buttons {
+  margin-top: 2.4rem;
+}

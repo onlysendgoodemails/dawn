@@ -15,8 +15,8 @@
         "image": "shopify://shop_images/golf-outfit-herren-weisses-t-shirt-kueste-hero-desktop-3840x2160-02.jpg",
         "image_overlay_opacity": 0,
         "color_scheme": "scheme-4",
-        "heading": "Golf, the long way round.",
-        "text": "For golf without the dress code theatre.",
+        "heading": "Relaxed golf apparel.",
+        "text": "Tees, sweatshirts, hoodies, caps and beanies for the course and everything after it. No dress code theatre.",
         "button_label": "Shop the Collection",
         "button_link": "shopify://collections/shop-all"
       }
@@ -26,6 +26,7 @@
       "settings": {
         "eyebrow": "Northern Links",
         "heading": "Out where the wind is.",
+        "italic_text": true,
         "text": "<p>Amidst the untamed majesty of the northern landscapes, where the wind whispers secrets through rugged dunes and the sea meets the sky in endless dialogue, golf becomes more than a sport - it is a meditation. Here, nature commands your focus, grounding you in its vastness while the rhythm of the game aligns with the pulse of the earth.</p>",
         "color_scheme": "scheme-1",
         "padding_top": 64,
@@ -296,9 +297,9 @@
   },
   "order": [
     "hero",
-    "intro_text",
-    "image_band",
     "icon_row",
+    "image_band",
+    "intro_text",
     "category_nav",
     "custom_category_block_BQEKXU",
     "custom_category_block_WVJzUh",
