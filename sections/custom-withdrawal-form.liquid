@@ -61,6 +61,32 @@
     white-space: pre-line;
   }
 
+  .custom-withdrawal__next {
+    margin: 2.4rem 0 0;
+    max-width: 60rem;
+    line-height: 1.6;
+  }
+
+  .custom-withdrawal__next ol {
+    margin: 0 0 1.6rem;
+    padding-left: 2rem;
+  }
+
+  .custom-withdrawal__next li {
+    margin-bottom: 1rem;
+  }
+
+  .custom-withdrawal__next strong {
+    display: block;
+    margin-top: 0.4rem;
+    white-space: pre-line;
+  }
+
+  .custom-withdrawal__next p strong {
+    display: inline;
+    margin: 0;
+  }
+
   .custom-withdrawal__privacy {
     margin: 2rem 0 0;
     max-width: 60rem;
@@ -88,8 +114,24 @@
       {%- if form.posted_successfully? -%}
         <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
           {{- 'icon-success.svg' | inline_asset_content -}}
-          Ihre Widerrufserklärung ist bei uns eingegangen. Wir melden uns per E-Mail bei Ihnen.
+          Danke, Ihr Widerruf ist bei uns eingegangen.
         </h2>
+        <div class="custom-withdrawal__next">
+          <p><strong>So geht es weiter:</strong></p>
+          <ol>
+            <li>
+              Senden Sie Ihre Retoure ausreichend frankiert an:
+              <strong>{{ section.settings.return_address | escape }}</strong>
+            </li>
+            <li>
+              Wir bestätigen den Eingang Ihres Widerrufs per E-Mail. Das kann ein bis zwei Werktage dauern, zum Beispiel wenn ein Wochenende dazwischenliegt.
+            </li>
+            <li>
+              Ist alles in Ordnung, erstatten wir den Betrag auf das Zahlungsmittel, mit dem Sie bezahlt haben, und informieren Sie per E-Mail.
+            </li>
+          </ol>
+          <p>Wir hoffen, Sie finden bald wieder etwas, das Ihnen gefällt.</p>
+        </div>
       {%- else -%}
         {%- if form.errors -%}
           <div class="form__message">
@@ -205,7 +247,6 @@
           <p class="custom-withdrawal__return">
             Bitte senden Sie die Ware ausreichend frankiert an:
             <strong>{{ section.settings.return_address | escape }}</strong>
-            Bitte legen Sie die Bestellnummer bei.
           </p>
         {%- endif -%}
 
