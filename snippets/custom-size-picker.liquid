@@ -1,0 +1,94 @@
+{%- comment -%}
+  custom-size-picker.liquid
+  Eigene Größenwahl der Produktseite, Ersatz für snippets/product-variant-picker.liquid (Original bleibt unberührt).
+  Aufbau: Zeile mit Optionsname ("Größe") und gewählter Größe dahinter, darunter eine verbundene Reihe
+  gleich breiter eckiger Felder (mindestens 44 px hoch). Ausverkaufte Größen sind durchgestrichen.
+  Keine Vorauswahl: Ohne ?variant= in der Adresse entfernt das Inline-Skript die Dawn-Vorauswahl. Den Hinweis
+  "Bitte Größe wählen" und das Blockieren des Absendens übernimmt assets/custom-product-buybox.js.
+  Das Element variant-selects und die Attribute data-* bleiben wie bei Dawn, damit assets/product-info.js und
+  assets/global.js weiter funktionieren (sie tauschen den Block bei jeder Auswahl gegen die Server-Fassung aus).
+
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} block (nur für shopify_attributes).
+  - product_form_id: {String} Id des Produktformulars.
+{%- endcomment -%}
+{%- unless product.has_only_default_variant -%}
+  <variant-selects
+    id="variant-selects-{{ section.id }}"
+    class="custom-size-picker-root"
+    data-section="{{ section.id }}"
+    data-product-handle="{{ product.handle }}"
+    data-product-title="{{ product.title | escape }}"
+    data-product-id="{{ product.id }}"
+    data-currency-code="{{ cart.currency.iso_code }}"
+    {% # theme-check-disable %}
+    data-selected-price-amount="{{ product.selected_or_first_available_variant.price | default: 0 | money_amount | escape }}"
+    {% # theme-check-enable %}
+    {{ block.shopify_attributes }}
+  >
+    {%- for option in product.options_with_values -%}
+      <fieldset class="js product-form__input custom-size-picker">
+        <legend class="custom-size-picker__label">
+          <span class="custom-size-picker__name">{{ option.name | escape }}</span>
+          <span class="custom-size-picker__value" data-selected-value>{{ option.selected_value | escape }}</span>
+        </legend>
+        <div class="custom-size-picker__options">
+          {%- for value in option.values -%}
+            {%- liquid
+              assign option_disabled = true
+              if value.available
+                assign option_disabled = false
+              endif
+              assign escaped_value = value | escape
+              assign input_id = section.id | append: '-' | append: option.position | append: '-' | append: forloop.index0
+              assign input_name = option.name | append: '-' | append: option.position
+            -%}
+            <input
+              type="radio"
+              id="{{ input_id }}"
+              name="{{ input_name | escape }}"
+              value="{{ escaped_value }}"
+              form="{{ product_form_id }}"
+              class="custom-size-picker__input{% if option_disabled %} disabled{% endif %}"
+              {% if value.selected %}checked{% endif %}
+              data-product-url="{{ value.product_url }}"
+              data-option-value-id="{{ value.id }}"
+              data-option-name="{{ option.name | escape }}"
+            >
+            <label for="{{ input_id }}" class="custom-size-picker__cell{% if option_disabled %} custom-size-picker__cell--soldout{% endif %}">
+              {{- value -}}
+              <span class="visually-hidden label-unavailable">
+                {{- 'products.product.variant_sold_out_or_unavailable' | t -}}
+              </span>
+            </label>
+          {%- endfor -%}
+        </div>
+        <p class="custom-size-picker__error" role="alert" hidden>Bitte Größe wählen.</p>
+      </fieldset>
+    {%- endfor -%}
+
+    <script type="application/json" data-selected-variant>
+      {{ product.selected_or_first_available_variant | json }}
+    </script>
+  </variant-selects>
+  {%- comment -%}
+    Keine Vorauswahl beim ersten Laden: Steht keine Variante in der Adresse, werden alle Auswahlfelder
+    abgewählt und der Wert hinter dem Namen geleert. Das Skript steht direkt hinter dem Block, damit
+    kein Flackern entsteht. Es läuft nur beim ersten Laden, nicht bei Dawns Austausch des Blocks.
+  {%- endcomment -%}
+  <script>
+    (function () {
+      if (/[?&]variant=/.test(window.location.search)) return;
+      var root = document.getElementById('variant-selects-{{ section.id }}');
+      if (!root) return;
+      root.querySelectorAll('input[type="radio"]').forEach(function (input) {
+        input.checked = false;
+      });
+      root.querySelectorAll('[data-selected-value]').forEach(function (el) {
+        el.textContent = '';
+      });
+      root.setAttribute('data-no-selection', 'true');
+    })();
+  </script>
+{%- endunless -%}

@@ -227,3 +227,194 @@ dialog.custom-size-guide::backdrop {
     padding: 1rem 0.8rem;
   }
 }
+
+
+/* Kaufbox, Überarbeitung 2026-10-12 (Konzept Closed/Acne): ruhig, eine Zeile Titel und Preis, verbundene Größenfelder. */
+
+/* Titelzeile: Kurztitel links, Preis rechts, Preishinweis unter dem Preis */
+.product__heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.4rem 2rem;
+}
+
+.product__heading-row .product__title {
+  flex: 1 1 18rem;
+  min-width: 0;
+  margin: 0;
+}
+
+.product__heading-row .product__title h1,
+.product__heading-row .product__title h2 {
+  margin: 0;
+  font-size: 2.2rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.product__price-wrap {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.product__price-wrap .price {
+  font-size: 2rem;
+}
+
+.product__price-wrap .product__tax {
+  margin: 0.2rem 0 0;
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+@media screen and (max-width: 749px) {
+  /* Mobil steht der Preis unter dem Titel, links ausgerichtet */
+  .product__price-wrap {
+    flex-basis: 100%;
+    text-align: left;
+  }
+}
+
+/* Größenwahl: Name und gewählte Größe links, "Größentabelle" rechts auf gleicher Höhe, darunter die Feldreihe */
+.custom-size-picker-wrap {
+  position: relative;
+  margin-top: 1.6rem;
+}
+
+.custom-size-picker-wrap .custom-size-guide__trigger {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+}
+
+.custom-size-picker-wrap .custom-size-guide__open {
+  font-size: 1.4rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgb(var(--color-foreground));
+}
+
+.custom-size-picker {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.custom-size-picker__label {
+  display: block;
+  float: left;
+  width: 100%;
+  margin: 0 0 1rem;
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+.custom-size-picker__value {
+  margin-left: 0.6rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.custom-size-picker__options {
+  clear: both;
+  display: flex;
+}
+
+/* Radiobuttons unsichtbar, aber per Tastatur erreichbar */
+.custom-size-picker__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.custom-size-picker__cell {
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 4.4rem;
+  margin-left: -0.1rem;
+  padding: 0 0.4rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.3);
+  font-size: 1.4rem;
+  letter-spacing: 0.05rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.custom-size-picker__options > .custom-size-picker__cell:first-of-type {
+  margin-left: 0;
+}
+
+@media (hover: hover) {
+  .custom-size-picker__input:not(:checked):not(.disabled) + .custom-size-picker__cell:hover {
+    border-color: rgb(var(--color-foreground));
+    z-index: 1;
+  }
+}
+
+.custom-size-picker__input:checked + .custom-size-picker__cell {
+  background: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  z-index: 1;
+}
+
+.custom-size-picker__input:focus-visible + .custom-size-picker__cell {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.2rem;
+  z-index: 2;
+}
+
+/* Ausverkauft: durchgestrichen, bleibt wählbar, damit Dawn die Nichtverfügbarkeit melden kann */
+.custom-size-picker__cell--soldout {
+  color: rgba(var(--color-foreground), 0.45);
+  text-decoration: line-through;
+}
+
+/* Fehlerzustand: Reihe markieren und Hinweis zeigen */
+.custom-size-picker--error .custom-size-picker__cell {
+  border-color: rgb(var(--color-foreground));
+}
+
+.custom-size-picker__error {
+  margin: 0.8rem 0 0;
+  font-size: 1.3rem;
+  color: rgb(var(--color-foreground));
+  font-weight: 600;
+}
+
+.custom-size-picker__error[hidden] {
+  display: none;
+}
+
+/* Weniger Abstand zwischen Größen, Button und Zeilen; keine Menge, keine Subline mehr */
+.product__info-container .product-form__buttons {
+  margin-top: 1.6rem;
+}
+
+/* Kaufbox mit den Zeilen bleibt beim Scrollen durch die Bilder stehen. Ist sie höher als das Fenster,
+   scrollt sie in sich, damit nichts unerreichbar wird. */
+@media screen and (min-width: 990px) {
+  .product__info-container.product__column-sticky {
+    top: calc(var(--header-height, 8rem) + 2rem);
+    max-height: calc(100vh - var(--header-height, 8rem) - 4rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-bottom: 0.2rem;
+  }
+}
+
+.product__info-container .product__heading-row {
+  margin-bottom: 0.8rem;
+}

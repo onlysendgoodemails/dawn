@@ -6,18 +6,12 @@
         "title": {
           "type": "title"
         },
-        "price": {
-          "type": "price"
-        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
             "picker_type": "button",
             "swatch_shape": "circle"
           }
-        },
-        "quantity_selector": {
-          "type": "quantity_selector"
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -30,13 +24,7 @@
           "type": "custom_accordion",
           "settings": {
             "kind": "details",
-            "open": true
-          }
-        },
-        "acc_fit": {
-          "type": "custom_accordion",
-          "settings": {
-            "kind": "fit"
+            "open": false
           }
         },
         "acc_material": {
@@ -51,31 +39,21 @@
             "kind": "shipping"
           }
         },
-        "acc_manufacturer": {
+        "acc_origin": {
           "type": "custom_accordion",
           "settings": {
-            "kind": "manufacturer"
-          }
-        },
-        "share": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
+            "kind": "origin"
           }
         }
       },
       "block_order": [
         "title",
-        "price",
         "variant_picker",
-        "quantity_selector",
         "buy_buttons",
         "acc_details",
-        "acc_fit",
         "acc_material",
         "acc_shipping",
-        "acc_manufacturer",
-        "share"
+        "acc_origin"
       ],
       "settings": {
         "enable_sticky_info": true,

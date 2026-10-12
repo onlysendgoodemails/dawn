@@ -109,8 +109,9 @@
 
 .custom-accordion--compact .custom-accordion__row > summary {
   padding: 1.8rem 0;
-  font-size: 1.5rem;
-  letter-spacing: 0.05rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
 }
 
 .custom-accordion--compact .custom-accordion__content {

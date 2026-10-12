@@ -22,6 +22,7 @@
   {{ 'custom-accordion.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'custom-product-gallery.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'custom-size-guide.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'custom-product-buybox.js' | asset_url }}" defer="defer"></script>
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -112,32 +113,55 @@
                   </p>
                 {%- when 'title' -%}
                   {%- comment -%}
-                    AP3: Eyebrow (Linie · NORTHERN LINKS), Kurztitel und Subline kommen aus Metafeldern (Namespace custom).
-                    Ohne Metafeld custom.line steht nur NORTHERN LINKS, ohne custom.short_title der volle Produkttitel.
+                    AP3, überarbeitet 2026-10-12 (Konzept Closed/Acne): Eyebrow (Linie · NORTHERN LINKS), darunter eine Zeile mit
+                    Kurztitel links und Preis rechts, darunter der Preishinweis "Inkl. MwSt. · zzgl. Versand". Der Preis steht mit
+                    der id price-SECTION hier, damit Dawn ihn bei Größenwechsel aktualisiert; der eigene Block "price" wird nicht
+                    mehr gebraucht. Die Subline steht jetzt in den Produktdetails. Ohne Metafeld custom.line steht nur
+                    NORTHERN LINKS, ohne custom.short_title der volle Produkttitel.
+                    Der Link "Versand" springt zum Abschnitt #versand der FAQ-Seite (Handle faq). Gibt es die Seite nicht, nimmt er
+                    die Versandrichtlinie von Shopify, sonst steht der Hinweis ohne Link da.
                   {%- endcomment -%}
                   {%- liquid
                     assign nl_display_title = product.metafields.custom.short_title.value | default: product.title
                     assign nl_line = product.metafields.custom.line.value
-                    assign nl_subline = product.metafields.custom.subline.value
                     assign nl_eyebrow = 'NORTHERN LINKS'
                     if nl_line != blank
                       assign nl_eyebrow = nl_line | append: ' · NORTHERN LINKS'
+                    endif
+                    assign nl_ship_url = ''
+                    if pages['faq'].title != blank
+                      assign nl_ship_url = pages['faq'].url | append: '#versand'
+                    elsif shop.shipping_policy.body != blank
+                      assign nl_ship_url = shop.shipping_policy.url
                     endif
                   -%}
                   {%- if nl_eyebrow != blank -%}
                     <p class="product__eyebrow caption-with-letter-spacing">{{ nl_eyebrow | escape }}</p>
                   {%- endif -%}
-                  <div class="product__title" {{ block.shopify_attributes }}>
-                    <h1>{{ nl_display_title | escape }}</h1>
-                    <a href="{{ product.url }}" class="product__title">
-                      <h2 class="h1">
-                        {{ nl_display_title | escape }}
-                      </h2>
-                    </a>
+                  <div class="product__heading-row" {{ block.shopify_attributes }}>
+                    <div class="product__title">
+                      <h1>{{ nl_display_title | escape }}</h1>
+                      <a href="{{ product.url }}" class="product__title">
+                        <h2 class="h1">
+                          {{ nl_display_title | escape }}
+                        </h2>
+                      </a>
+                    </div>
+                    <div class="product__price-wrap">
+                      <div id="price-{{ section.id }}" role="status">
+                        {%- render 'price', product: product, use_variant: true, show_badges: true -%}
+                      </div>
+                      <div class="product__tax caption rte">
+                        {%- if cart.taxes_included -%}Inkl. MwSt. · {% endif -%}
+                        zzgl.
+                        {% if nl_ship_url != blank -%}
+                          <a href="{{ nl_ship_url }}">Versand</a>
+                        {%- else -%}
+                          Versand
+                        {%- endif -%}
+                      </div>
+                    </div>
                   </div>
-                  {%- if nl_subline != blank -%}
-                    <p class="product__subline">{{ nl_subline | escape }}</p>
-                  {%- endif -%}
                 {%- when 'price' -%}
                   <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                     {%- render 'price',
@@ -290,9 +314,12 @@
                           assign acc_title = 'Versand & Rückgabe'
                         when 'manufacturer'
                           assign acc_title = 'Herstellerangaben'
+                        when 'origin'
+                          assign acc_title = 'Herkunft & Hersteller'
                       endcase
                     endif
 
+                    assign acc_subline = product.metafields.custom.subline.value
                     assign acc_fit = product.metafields.custom.fit_note.value
                     assign acc_guide = product.metafields.custom.size_guide.value
                     assign acc_fiber = product.metafields.custom.fiber_composition.value
@@ -304,7 +331,7 @@
                     assign acc_has_content = false
                     case acc_kind
                       when 'details'
-                        if product.description != blank
+                        if product.description != blank or acc_subline != blank
                           assign acc_has_content = true
                         endif
                       when 'fit'
@@ -312,7 +339,11 @@
                           assign acc_has_content = true
                         endif
                       when 'material'
-                        if acc_fiber != blank or acc_material != blank or acc_care != blank or acc_origin != blank or acc_standards != blank
+                        if acc_fiber != blank or acc_material != blank or acc_care != blank or acc_standards != blank
+                          assign acc_has_content = true
+                        endif
+                      when 'origin'
+                        if acc_origin != blank or acc_facts != blank and acc_facts.manufacturer.value != blank
                           assign acc_has_content = true
                         endif
                       when 'shipping'
@@ -335,6 +366,9 @@
                         <div class="custom-accordion__content rte">
                           {%- case acc_kind -%}
                             {%- when 'details' -%}
+                              {%- if acc_subline != blank -%}
+                                <p class="custom-accordion__line">{{ acc_subline | escape }}</p>
+                              {%- endif -%}
                               {{ product.description }}
                             {%- when 'fit' -%}
                               {%- if acc_fit != blank -%}
@@ -354,9 +388,6 @@
                               {%- endif -%}
                               {%- if acc_standards != blank -%}
                                 <p class="custom-accordion__line"><span class="custom-accordion__label">Zertifizierung:</span> {{ acc_standards | join: ', ' | escape }}</p>
-                              {%- endif -%}
-                              {%- if acc_origin != blank -%}
-                                <p class="custom-accordion__line"><span class="custom-accordion__label">Herkunft:</span> {{ acc_origin | escape }}</p>
                               {%- endif -%}
                               {%- if acc_care != blank -%}
                                 <div class="custom-accordion__line"><span class="custom-accordion__label">Pflege:</span> {{ acc_care | metafield_tag }}</div>
@@ -381,6 +412,17 @@
                               <p class="custom-accordion__line">
                                 <a href="/pages/faq#versand">Mehr zu Versand</a> · <a href="/pages/faq#widerruf">Mehr zu Rückgabe und Widerruf</a>
                               </p>
+                            {%- when 'origin' -%}
+                              {%- if acc_origin != blank -%}
+                                <p class="custom-accordion__line"><span class="custom-accordion__label">Herkunft:</span> {{ acc_origin | escape }}</p>
+                              {%- endif -%}
+                              {%- if acc_facts.manufacturer.value != blank -%}
+                                <p class="custom-accordion__line">{{ acc_facts.manufacturer.value | escape | newline_to_br }}</p>
+                              {%- endif -%}
+                              {%- if product.type != blank -%}
+                                <p class="custom-accordion__line"><span class="custom-accordion__label">Produktart:</span> {{ product.type | escape }}</p>
+                              {%- endif -%}
+                              <p class="custom-accordion__line"><span class="custom-accordion__label">Produkt:</span> {{ product.title | escape }}</p>
                             {%- when 'manufacturer' -%}
                               <p class="custom-accordion__line">{{ acc_facts.manufacturer.value | escape | newline_to_br }}</p>
                               {%- if product.type != blank -%}
@@ -650,15 +692,17 @@
                     surface: 'product_page'
                   -%}
                 {%- when 'variant_picker' -%}
-                  {% render 'product-variant-picker',
-                    product: product,
-                    block: block,
-                    product_form_id: product_form_id
-                  %}
-                  {%- comment -%} AP5a: Größentabelle als Dialog, wenn am Produkt ein size_guide hängt {%- endcomment -%}
-                  {% render 'custom-size-guide', product: product, section_id: section.id %}
+                  {%- comment -%}
+                    2026-10-12: eigene Größenwahl (verbundene Felder, keine Vorauswahl, gewählte Größe hinter dem Namen).
+                    Der Link "Größentabelle" steht rechts auf der Höhe des Namens (CSS: .custom-size-picker-wrap).
+                  {%- endcomment -%}
+                  <div class="custom-size-picker-wrap">
+                    {% render 'custom-size-picker', product: product, block: block, product_form_id: product_form_id %}
+                    {%- comment -%} AP5a: Größentabelle als Dialog, wenn am Produkt ein size_guide hängt {%- endcomment -%}
+                    {% render 'custom-size-guide', product: product, section_id: section.id %}
+                  </div>
                 {%- when 'buy_buttons' -%}
-                  {%- render 'buy-buttons',
+                  {%- render 'custom-buy-buttons',
                     block: block,
                     product: product,
                     product_form_id: product_form_id,
@@ -1219,7 +1263,8 @@
             { "value": "fit", "label": "Größe & Passform" },
             { "value": "material", "label": "Material & Pflege" },
             { "value": "shipping", "label": "Versand & Rückgabe" },
-            { "value": "manufacturer", "label": "Herstellerangaben" }
+            { "value": "manufacturer", "label": "Herstellerangaben" },
+            { "value": "origin", "label": "Herkunft & Hersteller" }
           ],
           "default": "details"
         },

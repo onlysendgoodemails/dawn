@@ -55,8 +55,13 @@
   dem Präfix GalleryThumbnails, damit assets/media-gallery.js sie nicht als Dawn-Miniaturen behandelt.
 {%- endcomment -%}
 {%- liquid
+  comment
+    2026-10-12 (Entscheidung Henrik): Miniaturleiste aus, die Bilder stehen ruhig untereinander (wie Acne, Closed).
+    Zum Wiedereinschalten nl_thumbs_enabled auf true setzen.
+  endcomment
+  assign nl_thumbs_enabled = false
   assign nl_show_thumbs = false
-  if section.settings.gallery_layout == 'stacked' and media_count > 1 and limit == null
+  if nl_thumbs_enabled and section.settings.gallery_layout == 'stacked' and media_count > 1 and limit == null
     assign nl_show_thumbs = true
   endif
 -%}
