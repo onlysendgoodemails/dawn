@@ -1,0 +1,118 @@
+/* About-us-Seite (sections/custom-about.liquid). Schrift und Farben kommen aus dem Theme.
+   Aufbau: Einstieg mittig, Textblöcke in schmaler Spalte, Bildbänder mit leichtem Parallax.
+   Das Bild im Rahmen ist höher als der Rahmen (120 %), custom-about.js verschiebt es beim Scrollen. */
+
+.custom-about__block {
+  padding-top: 4.8rem;
+  padding-bottom: 4.8rem;
+}
+
+.custom-about__intro {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.custom-about__intro .custom-section-heading {
+  max-width: 72rem;
+}
+
+.custom-about__intro .custom-section-heading__title {
+  font-size: 4rem;
+}
+
+.custom-about__intro .custom-section-heading__text {
+  font-size: 1.8rem;
+}
+
+.custom-about__text-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.custom-about__text-inner .custom-section-heading {
+  max-width: none;
+}
+
+/* Listen im Textblock: ruhig, ohne Aufzählungspunkte-Wirrwarr */
+.custom-about__text .custom-section-heading__text p {
+  margin: 0 0 1.4rem;
+}
+
+.custom-about__text .custom-section-heading__text ul {
+  margin: 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-about__text .custom-section-heading__text li {
+  padding: 1.4rem 0;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.custom-about__image {
+  margin: 1.2rem 0;
+}
+
+.custom-about__frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: rgba(var(--color-foreground), 0.05);
+}
+
+.custom-about__img {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  object-position: var(--image-focal, 50% 50%);
+  will-change: transform;
+}
+
+.custom-about__frame .placeholder-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-about__block {
+    padding-top: 7.2rem;
+    padding-bottom: 7.2rem;
+  }
+
+  .custom-about__intro {
+    padding-top: 9.6rem;
+    padding-bottom: 9.6rem;
+  }
+
+  .custom-about__intro .custom-section-heading__title {
+    font-size: 7.2rem;
+    line-height: 1.05;
+  }
+
+  .custom-about__intro .custom-section-heading__text {
+    font-size: 2rem;
+  }
+
+  .custom-about__image {
+    margin: 2.4rem 0;
+  }
+
+  .custom-about__frame {
+    aspect-ratio: var(--about-ratio-desktop, 16 / 9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-about__img {
+    top: 0;
+    height: 100%;
+    transform: none !important;
+    will-change: auto;
+  }
+}

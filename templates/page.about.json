@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "main": {
+      "type": "custom-about",
+      "blocks": {
+        "intro": {
+          "type": "intro",
+          "settings": {
+            "eyebrow": "About us",
+            "heading": "Wind, dunes, open sea.",
+            "text": "<p>Up north the course sets the tone, and all you have to do is play. That is the feeling we wanted to wear.</p>"
+          }
+        },
+        "image_1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/golf-outfit-herren-weisses-t-shirt-kueste-hero-desktop-3840x2160-01.jpg",
+            "full_width": true,
+            "desktop_ratio": "16 / 9",
+            "parallax": true
+          }
+        },
+        "brand": {
+          "type": "text",
+          "settings": {
+            "eyebrow": "The brand",
+            "heading": "Cut from a different cloth.",
+            "text": "<p>The Northern Links is a golf brand from Europe. We took the style of the most exciting brands from the US and gave it a European attitude: relaxed, a bit dry, never trying too hard.</p><p>We have no time for the stiff club routine. No dress code theatre, no popped polo collars, no cuts and fabrics that stopped being stylish years ago. We make clothes for people who love the game and still want to look like themselves after the last hole.</p><p>Laid-back, stylish and bloody comfortable. That's the brief.</p>"
+          }
+        },
+        "image_2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/golf-outfit-gruppe-golfplatz-image-band-1536x1024-01.png",
+            "full_width": false,
+            "desktop_ratio": "16 / 9",
+            "parallax": true
+          }
+        },
+        "making": {
+          "type": "text",
+          "settings": {
+            "eyebrow": "How we make it",
+            "heading": "Made to order.",
+            "text": "<p>Everything we sell is made to order.</p><ul><li><strong>Organic cotton.</strong> Our blanks are organic cotton, GOTS certified and tested to OEKO-TEX Standard 100.</li><li><strong>Finished in Germany, on demand.</strong> Every piece is printed or embroidered in Germany, only once you order it. No pile of unsold stock.</li><li><strong>Cleaner production.</strong> Renewable electricity and water-based inks for the prints, shipped in cartons made from recycled paper.</li></ul><p>The certificates cover the unprinted blank.</p>"
+          }
+        },
+        "image_3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/golfplatz-am-meer-duenen-newsletter-1536x1024-01.png",
+            "full_width": true,
+            "desktop_ratio": "21 / 9",
+            "parallax": true
+          }
+        },
+        "closing": {
+          "type": "text",
+          "settings": {
+            "eyebrow": "",
+            "heading": "Take the long way round.",
+            "text": "<p>See you out there.</p><p>Questions? Have a look at our <a href=\"/pages/faq\">FAQ</a> or write to <a href=\"mailto:hi@thenorthernlinks.com\">hi@thenorthernlinks.com</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "intro",
+        "image_1",
+        "brand",
+        "image_2",
+        "making",
+        "image_3",
+        "closing"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

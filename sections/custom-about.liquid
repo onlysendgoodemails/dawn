@@ -1,0 +1,205 @@
+{%- comment -%}
+  custom-about.liquid (AP18, siehe webpage/01_inhalte/about-us-entwurf.md)
+  "About us"-Seite aus Blöcken: Einstieg (intro), Textblock (text), Bildband mit leichtem Parallax (image).
+  Die Reihenfolge der Blöcke legt die Seitenvorlage templates/page.about.json fest, die Texte stehen dort.
+{%- endcomment -%}
+
+{{ 'custom-section-heading.css' | asset_url | stylesheet_tag }}
+{{ 'custom-about.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-about.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="custom-about color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'intro' -%}
+        <div class="page-width custom-about__block custom-about__intro" {{ block.shopify_attributes }}>
+          {% render 'custom-section-heading',
+            eyebrow: block.settings.eyebrow,
+            heading: block.settings.heading,
+            text: block.settings.text,
+            alignment: 'center',
+            heading_tag: 'h1'
+          %}
+        </div>
+
+      {%- when 'text' -%}
+        <div class="page-width custom-about__block custom-about__text" {{ block.shopify_attributes }}>
+          <div class="custom-about__text-inner">
+            {% render 'custom-section-heading',
+              eyebrow: block.settings.eyebrow,
+              heading: block.settings.heading,
+              text: block.settings.text,
+              alignment: 'left',
+              heading_tag: 'h2'
+            %}
+          </div>
+        </div>
+
+      {%- when 'image' -%}
+        <div
+          class="custom-about__image{% if block.settings.full_width %} custom-about__image--full{% else %} page-width{% endif %}"
+          style="--about-ratio-desktop: {{ block.settings.desktop_ratio }};"
+          {{ block.shopify_attributes }}
+        >
+          <div
+            class="custom-about__frame"
+            {% if block.settings.parallax %}
+              data-about-parallax
+            {% endif %}
+          >
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 2400
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '100vw',
+                  widths: '750, 1100, 1500, 1800, 2400',
+                  class: 'custom-about__img',
+                  style: '--image-focal: ' | append: block.settings.image.presentation.focal_point
+              }}
+            {%- else -%}
+              {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Custom About",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "intro",
+      "name": "Intro",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "About us"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading (page title)",
+          "default": "Wind, dunes, open sea."
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "info": "Lists and bold text are supported."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image band",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Set the focal point so the subject stays in view."
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full width (edge to edge)",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "desktop_ratio",
+          "label": "Image ratio on desktop",
+          "options": [
+            { "value": "21 / 9", "label": "21:9 panorama" },
+            { "value": "16 / 9", "label": "16:9 landscape" },
+            { "value": "3 / 2", "label": "3:2 landscape" }
+          ],
+          "default": "16 / 9"
+        },
+        {
+          "type": "checkbox",
+          "id": "parallax",
+          "label": "Light parallax effect",
+          "info": "The image moves slightly slower than the page. Switched off automatically for visitors who prefer reduced motion.",
+          "default": true
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

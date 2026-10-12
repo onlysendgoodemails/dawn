@@ -14,7 +14,8 @@
         "footer-link-about": {
           "type": "link_list",
           "settings": {
-            "heading": "About"
+            "heading": "About",
+            "menu": "footer-about"
           }
         },
         "footer-link-help": {
