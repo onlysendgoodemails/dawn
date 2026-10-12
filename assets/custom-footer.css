@@ -49,16 +49,19 @@ footer.custom-footer {
   text-underline-offset: 0.3rem;
 }
 
-/* Newsletter column: sits at the far right on desktop, below the other columns on mobile. */
+/* Desktop: all columns side by side in one row (grid). The newsletter column is the widest and sits
+   at the far right. Below 990px the columns wrap (flex rule above), on mobile they stack. */
 @media screen and (min-width: 990px) {
-  .custom-footer__column--newsletter {
-    margin-left: auto;
+  .custom-footer__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.4fr);
+    gap: 4rem 6rem;
   }
 }
 
 .custom-footer__column--newsletter {
   width: 100%;
-  max-width: 32rem;
+  max-width: 36rem;
 }
 
 .custom-footer__newsletter-text {
@@ -137,7 +140,7 @@ footer.custom-footer {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
-  max-width: 24rem;
+  max-width: 26rem;
   margin: 0;
   padding: 0;
 }
@@ -150,7 +153,10 @@ footer.custom-footer {
   width: 3.8rem;
   height: 2.4rem;
   filter: grayscale(1);
-  opacity: 0.7;
+  opacity: 0.8;
+  border-radius: 0.3rem;
+  /* thin outline so dark icons (Mastercard, Amex) stay visible on the dark footer */
+  box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.3);
   transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
