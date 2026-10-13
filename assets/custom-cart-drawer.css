@@ -45,7 +45,7 @@
 }
 
 .cart-drawer .cart-item {
-  grid-template-columns: 13rem minmax(0, 1fr);
+  grid-template-columns: 12rem minmax(0, 1fr);
   grid-template-rows: 1fr auto auto 1fr;
   column-gap: 2.4rem;
   row-gap: 0;
@@ -62,6 +62,8 @@
 .cart-drawer .cart-item__media {
   grid-column: 1;
   grid-row: 1 / 5;
+  /* Dawn fixes this cell at 10rem on wide screens, which kept the image at 100px. */
+  width: 12rem;
 }
 
 .cart-drawer .cart-item__image {
@@ -209,5 +211,9 @@
   .cart-drawer .cart-item {
     grid-template-columns: 10rem minmax(0, 1fr);
     column-gap: 1.6rem;
+  }
+
+  .cart-drawer .cart-item__media {
+    width: 10rem;
   }
 }
