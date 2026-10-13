@@ -33,6 +33,45 @@
   width: 1.4rem;
 }
 
+/* ---- Free-shipping hint: thin bar and one line, between header and items. ---- */
+.cart-drawer .cart-drawer__shipping {
+  margin: 0 -2.4rem;
+  padding: 1.8rem 2.4rem 1.6rem;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.12);
+}
+
+.cart-drawer .cart-drawer__shipping-bar {
+  height: 0.4rem;
+  background: rgba(var(--color-foreground), 0.1);
+}
+
+.cart-drawer .cart-drawer__shipping-bar span {
+  display: block;
+  height: 100%;
+  background: rgb(var(--color-button));
+  animation: cart-drawer-shipping-fill 0.6s ease-out;
+}
+
+.cart-drawer .cart-drawer__shipping-text {
+  margin: 1.2rem 0 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@keyframes cart-drawer-shipping-fill {
+  from {
+    width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-drawer .cart-drawer__shipping-bar span {
+    animation: none;
+  }
+}
+
 /* ---- Line item: image left; title, price, size and quantity stacked and centred on the right. ---- */
 
 /* The column headings (Produkt, Gesamtsumme) are redundant here; kept for screen readers only. */
