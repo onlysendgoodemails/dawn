@@ -78,12 +78,12 @@
       </div>
       {%- comment -%}
         Free-shipping hint (Germany). The threshold is read from shop_facts (free_shipping_de, text such as
-        "100 €"), so it is maintained in one place. Without a readable value the hint is left out.
+        "100 €", also with a non-breaking space), so it is maintained in one place. Without a readable value the hint is left out.
         The bar is redrawn with the drawer on every cart change.
       {%- endcomment -%}
       {%- liquid
         assign ship_facts = shop.metaobjects.shop_facts.values.first
-        assign ship_threshold = ship_facts.free_shipping_de.value | remove: '€' | remove: ' ' | replace: ',', '.' | times: 100 | round
+        assign ship_threshold = ship_facts.free_shipping_de.value | remove: '€' | remove: ' ' | remove: ' ' | remove: ' ' | replace: ',', '.' | times: 100 | round
         if cart != empty and ship_threshold > 0
           assign ship_remaining = ship_threshold | minus: cart.total_price
           assign ship_percent = cart.total_price | times: 100 | divided_by: ship_threshold
