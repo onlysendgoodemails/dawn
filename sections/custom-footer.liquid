@@ -180,9 +180,17 @@
         {%- if privacy_url != blank -%}
           <li><a href="{{ privacy_url }}" class="link link--text">Datenschutz</a></li>
         {%- endif -%}
-        {%- if section.settings.cookies_link_url != blank -%}
-          <li><a href="{{ section.settings.cookies_link_url }}" class="link link--text">Cookies</a></li>
-        {%- endif -%}
+        {%- comment -%}
+          Cookies (Henrik, 2026-10-14): Textlink, öffnet das Cookie-Banner von Shopify wieder (Widerruf der Einwilligung).
+          Ohne Banner-API folgt der Link der optionalen Ausweich-URL aus den Abschnittseinstellungen, sonst passiert nichts.
+        {%- endcomment -%}
+        <li>
+          <a
+            href="{{ section.settings.cookies_link_url | default: '#' }}"
+            class="link link--text"
+            data-open-cookie-preferences
+          >Cookies</a>
+        </li>
         {%- if terms_url != blank -%}
           <li><a href="{{ terms_url }}" class="link link--text">AGB</a></li>
         {%- endif -%}
@@ -190,6 +198,17 @@
           <li><a href="{{ refund_url }}" class="link link--text">Widerrufsbelehrung</a></li>
         {%- endif -%}
       </ul>
+      <script>
+        document.addEventListener('click', function (event) {
+          var link = event.target.closest('[data-open-cookie-preferences]');
+          if (!link) return;
+          var api = window.privacyBanner || (window.Shopify && window.Shopify.customerPrivacy);
+          if (api && typeof api.showPreferences === 'function') {
+            event.preventDefault();
+            api.showPreferences();
+          }
+        });
+      </script>
       {%- if section.settings.cancellation_link_url != blank -%}
         <a href="{{ section.settings.cancellation_link_url }}" class="custom-footer__cancel-button">
           {{ section.settings.cancellation_link_label }}
@@ -245,7 +264,8 @@
     {
       "type": "url",
       "id": "cookies_link_url",
-      "label": "Cookies – URL"
+      "label": "Cookies – Ausweich-URL (optional)",
+      "info": "Der Link „Cookies“ öffnet das Cookie-Banner. Nur eine URL eintragen, falls das Banner nicht verfügbar ist."
     },
     {
       "type": "url",
