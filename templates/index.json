@@ -287,7 +287,7 @@
     "newsletter": {
       "type": "custom-newsletter",
       "settings": {
-        "image": "shopify://shop_images/golfplatz-am-meer-duenen-newsletter-1536x1024-02.png",
+        "image": "shopify://shop_images/golfplatz-am-meer-duenen-newsletter-1536x1024-01.png",
         "image_overlay_opacity": 30,
         "color_scheme": "scheme-4",
         "eyebrow": "Stay in Touch",
