@@ -1,8 +1,7 @@
 /* Newsletter section (Paket 7, see plans/startseite.md). Full-bleed background photo like the
    hero (Paket 2) — color_scheme only controls the eyebrow/heading/text over the photo. The
-   fields+button row is wrapped in color-scheme-5 (Snow White/Fjord Navy) directly in the
-   markup so it always renders light fields + a dark button, regardless of that color_scheme,
-   the same "always readable over any photo" approach as the hero's button. */
+   sign-up form itself is the embedded Klaviyo form "Newsletter Home" (white card, designed in
+   the Klaviyo editor), so it stays readable over any photo. */
 
 .custom-newsletter .custom-section-heading {
   margin-bottom: 0.4rem;
@@ -10,19 +9,8 @@
 
 .custom-newsletter__form {
   width: 100%;
-  max-width: 44rem;
+  max-width: 56rem;
   margin-top: 2.8rem;
-}
-
-.custom-newsletter__disclaimer {
-  margin: 1.2rem 0 0;
-  font-size: 1.3rem;
-  text-align: center;
-  color: rgba(var(--color-foreground), 0.85);
-}
-
-.custom-newsletter__disclaimer a {
-  color: inherit;
 }
 
 /* Dawn only defines the bottom-center content position from 750px up (see
@@ -38,25 +26,4 @@
     align-items: flex-end;
     justify-content: center;
   }
-}
-
-/* Fields + button always stack in a single column (Vorname, then E-Mail, then the CTA),
-   at every viewport width, so each field gets the full form width instead of splitting it
-   three ways in a cramped row. */
-.custom-newsletter__fields {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  width: 100%;
-  padding: 1.6rem;
-  border-radius: var(--inputs-radius-outset, 0);
-}
-
-.custom-newsletter__field {
-  width: 100%;
-}
-
-.custom-newsletter__button {
-  width: 100%;
-  flex-shrink: 0;
 }

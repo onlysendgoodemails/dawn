@@ -45,65 +45,16 @@
           {%- endif -%}
         {%- elsif block.type == 'newsletter' -%}
           {%- comment -%}
-            Kleine Newsletter-Anmeldung. Läuft wie der große Block auf der Startseite über das Shopify-Kundenformular.
-            Sobald Klaviyo angebunden ist, muss dieses Formular (und das auf der Startseite) dorthin zeigen.
+            Kleine Newsletter-Anmeldung: eingebettetes Klaviyo-Formular "Newsletter Footer" (Form-ID XQjh3S,
+            Liste "Email List", Double-Opt-in). Erscheint nur, wenn das Klaviyo-Onsite-Script im Theme läuft
+            und das Formular in Klaviyo auf Live steht. Look (Linie, Pfeil, Einwilligung) steht im Klaviyo-Editor.
           {%- endcomment -%}
-          {% form 'customer', id: 'ContactFooter', class: 'custom-footer__newsletter newsletter-form' %}
-            <input type="hidden" name="contact[tags]" value="newsletter">
-            {%- if block.settings.text != blank -%}
-              <p class="custom-footer__newsletter-text">{{ block.settings.text | escape }}</p>
-            {%- endif -%}
-            <div class="custom-footer__newsletter-field">
-              <label class="visually-hidden" for="FooterNewsletterEmail-{{ block.id }}">{{ 'newsletter.label' | t }}</label>
-              <input
-                id="FooterNewsletterEmail-{{ block.id }}"
-                type="email"
-                name="contact[email]"
-                class="custom-footer__newsletter-input"
-                value="{{ form.email }}"
-                aria-required="true"
-                autocorrect="off"
-                autocapitalize="off"
-                autocomplete="email"
-                placeholder="{{ 'newsletter.label' | t }}"
-                required
-                {%- if form.errors %}
-                  aria-invalid="true"
-                  aria-describedby="FooterNewsletterError-{{ block.id }}"
-                {%- elsif form.posted_successfully? %}
-                  aria-describedby="FooterNewsletterSuccess-{{ block.id }}"
-                {%- endif %}
-              >
-              <button
-                type="submit"
-                class="custom-footer__newsletter-button"
-                name="commit"
-                aria-label="{{ 'newsletter.button_label' | t }}"
-              >
-                <span class="svg-wrapper">{{- 'icon-arrow.svg' | inline_asset_content -}}</span>
-              </button>
-            </div>
-            {%- if shop.privacy_policy != blank -%}
-              <p class="custom-footer__newsletter-disclaimer">
-                {{ 'sections.custom-newsletter.privacy_disclaimer_html' | t: link: shop.privacy_policy.url }}
-              </p>
-            {%- endif -%}
-            {%- if form.errors -%}
-              <p class="custom-footer__newsletter-message" id="FooterNewsletterError-{{ block.id }}" role="alert">
-                {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
-              </p>
-            {%- endif -%}
-            {%- if form.posted_successfully? -%}
-              <p
-                class="custom-footer__newsletter-message"
-                id="FooterNewsletterSuccess-{{ block.id }}"
-                role="status"
-                tabindex="-1"
-              >
-                {{- 'newsletter.success' | t -}}
-              </p>
-            {%- endif -%}
-          {% endform %}
+          {%- if block.settings.text != blank -%}
+            <p class="custom-footer__newsletter-text">{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+          <div class="custom-footer__klaviyo">
+            <div class="klaviyo-form-XQjh3S"></div>
+          </div>
         {%- elsif block.settings.menu != blank -%}
           <ul class="custom-footer__links list-unstyled">
             {%- for link in block.settings.menu.links -%}
@@ -347,7 +298,7 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Small sign-up form. Uses the Shopify customer form like the large block on the home page. Once Klaviyo is connected, both must post there."
+          "content": "Small sign-up form. Embeds the Klaviyo form \"Newsletter Footer\" (form ID XQjh3S). Design, texts and consent are edited in Klaviyo, not here."
         },
         {
           "type": "text",

@@ -37,84 +37,15 @@
         text: section.settings.text,
         alignment: 'center'
       %}
-      {% form 'customer', class: 'newsletter-form custom-newsletter__form' %}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="custom-newsletter__fields color-scheme-5 gradient">
-          <div class="field custom-newsletter__field">
-            <input
-              id="NewsletterFirstName-{{ section.id }}"
-              type="text"
-              name="contact[first_name]"
-              class="field__input"
-              value="{{ form.first_name }}"
-              autocomplete="given-name"
-              placeholder="{{ 'customer.register.first_name' | t }}"
-            >
-            <label class="field__label" for="NewsletterFirstName-{{ section.id }}">
-              {{ 'customer.register.first_name' | t }}
-            </label>
-          </div>
-          <div class="field custom-newsletter__field">
-            <input
-              id="NewsletterEmail-{{ section.id }}"
-              type="email"
-              name="contact[email]"
-              class="field__input"
-              value="{{ form.email }}"
-              aria-required="true"
-              autocorrect="off"
-              autocapitalize="off"
-              autocomplete="email"
-              {%- if form.errors %}
-                autofocus
-                aria-invalid="true"
-                aria-describedby="NewsletterError-{{ section.id }}"
-              {%- elsif form.posted_successfully? %}
-                aria-describedby="NewsletterSuccess-{{ section.id }}"
-              {%- endif %}
-              placeholder="{{ 'newsletter.label' | t }}"
-              required
-            >
-            <label class="field__label" for="NewsletterEmail-{{ section.id }}">
-              {{ 'newsletter.label' | t }}
-            </label>
-          </div>
-          <button
-            type="submit"
-            class="custom-newsletter__button button button--primary"
-            name="commit"
-          >
-            {{ 'newsletter.button_label' | t }}
-          </button>
-        </div>
-        {%- if shop.privacy_policy != blank -%}
-          <p class="custom-newsletter__disclaimer">
-            {{ 'sections.custom-newsletter.privacy_disclaimer_html' | t: link: shop.privacy_policy.url }}
-          </p>
-        {%- endif -%}
-        {%- if form.errors -%}
-          <small class="newsletter-form__message form__message" id="NewsletterError-{{ section.id }}">
-            <span class="svg-wrapper">
-              {{- 'icon-error.svg' | inline_asset_content -}}
-            </span>
-            {{- form.errors.translated_fields.email | capitalize }}
-            {{ form.errors.messages.email -}}
-          </small>
-        {%- endif -%}
-        {%- if form.posted_successfully? -%}
-          <h3
-            class="newsletter-form__message newsletter-form__message--success form__message"
-            id="NewsletterSuccess-{{ section.id }}"
-            tabindex="-1"
-            autofocus
-          >
-            <span class="svg-wrapper">
-              {{- 'icon-success.svg' | inline_asset_content -}}
-            </span>
-            {{- 'newsletter.success' | t }}
-          </h3>
-        {%- endif -%}
-      {% endform %}
+      {%- comment -%}
+        Anmeldung über das eingebettete Klaviyo-Formular "Newsletter Home" (Form-ID WTEWwK, Liste "Email List",
+        Double-Opt-in). Das Formular erscheint nur, wenn das Klaviyo-Onsite-Script im Theme läuft
+        (App-Einbettung "Klaviyo Onsite JavaScript") und das Formular in Klaviyo auf Live steht.
+        Stil, Texte und Einwilligung stehen im Klaviyo-Editor, nicht hier.
+      {%- endcomment -%}
+      <div class="custom-newsletter__form">
+        <div class="klaviyo-form-WTEWwK"></div>
+      </div>
     </div>
   </div>
 </div>
