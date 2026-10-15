@@ -10,7 +10,7 @@
 .custom-newsletter__form {
   width: 100%;
   max-width: 56rem;
-  margin-top: 2.8rem;
+  margin: 2.8rem auto 0;
 }
 
 /* Dawn only defines the bottom-center content position from 750px up (see
